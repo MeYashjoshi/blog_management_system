@@ -486,6 +486,13 @@
                 </li>
 
                 <li>
+                    <a href="/categories" class="{{ request()->is('categories') ? 'active' : '' }}">
+                        <i class="fa-solid fa-list"></i>
+                        <span>Categories</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="/rolesandpermissions" class="{{ request()->is('rolesandpermissions') ? 'active' : '' }}">
                         <i class="fa-solid fa-user-shield"></i>
                         <span>Roles & Permissions</span>
@@ -547,8 +554,14 @@
                         <span>Requested Blog</span>
                         @elseif(request()->is('profile'))
                         <span>Profile</span>
-                        @elseif(request()->is('createblog'))
-                        <span>Create Blog</span>
+                        @elseif(request()->is('manageblog'))
+                        <span>Manage Blog</span>
+                        @elseif(request()->is('categories'))
+                        <span>Categories</span>
+                        @elseif(request()->is('managecategory'))
+                        <a href="categories">Category</a>
+                         <span>/</span>
+                        <span>Manage Category</span>
                         @elseif(request()->is('rolesandpermissions'))
                         <span>Roles & Permissions</span>
 
