@@ -125,7 +125,7 @@
 									</li>
 
 									<li class="dropdown-menu-parrent">
-										<a href="/allblogs" class="main1">Blogs</a>
+										<a href="/blogs" class="main1">Blogs</a>
 									</li>
 
 									<li class="dropdown-menu-parrent">
