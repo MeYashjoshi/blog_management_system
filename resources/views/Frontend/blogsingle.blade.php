@@ -192,7 +192,12 @@
 											<p class="mt-2">8/2/2024</p>
 										</div>
 									</div>
-									<a href="#" class="reply-btn"><i class="fa-solid fa-reply"></i> Reply</a>
+                                    <div class="comment-area">
+									    <a href="#" class="reply-btn p-2"><i class="fa-solid fa-reply"></i></a>
+									    <a href="#" class="reply-btn p-2"><i class="fa-solid fa-pen-to-square"></i></a>
+									    <a href="#" class="reply-btn p-2"><i class="fa-solid fa-trash"></i></a>
+                                    </div>
+
 								</div>
 
 								<div class="heading1 mt-20">
