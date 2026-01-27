@@ -10,7 +10,7 @@
 								<div class="heading">
 									<a href="#" class="date"><img src="{{ asset('assets/img/icons/date1.svg') }}" alt="vexon" /> Oct
 										13, 2024</a>
-									<h5><a href="blog-single.html">The Power of Storytelling: How Make Your Brand’s
+									<h5><a href="/blog/1">The Power of Storytelling: How Make Your Brand’s
 											Voice...</a></h5>
 								</div>
 							</div>
@@ -24,7 +24,7 @@
 								<div class="heading">
 									<a href="#" class="date"><img src="{{ asset('assets/img/icons/date1.svg') }}" alt="vexon" /> Oct
 										12, 2024</a>
-									<h5><a href="blog-single.html">Mastering Content Calendars: A Guide to Consistent
+									<h5><a href="/blog/1">Mastering Content Calendars: A Guide to Consistent
 											Strat...</a></h5>
 								</div>
 							</div>
@@ -38,7 +38,7 @@
 								<div class="heading">
 									<a href="#" class="date"><img src="{{ asset('assets/img/icons/date1.svg') }}" alt="vexon" /> Oct
 										21, 2024</a>
-									<h5><a href="blog-single.html">Social Media Trends for 2024: What to Watch and How
+									<h5><a href="/blog/1">Social Media Trends for 2024: What to Watch and How
 											to...</a></h5>
 								</div>
 							</div>
@@ -52,7 +52,7 @@
 								<div class="heading">
 									<a href="#" class="date"><img src="{{ asset('assets/img/icons/date1.svg') }}" alt="vexon" /> Oct
 										19, 2024 </a>
-									<h5><a href="blog-single.html">Creating a Visual Identity: Tips for Aesthetic &
+									<h5><a href="/blog/1">Creating a Visual Identity: Tips for Aesthetic &
 											Brand Consi...</a></h5>
 								</div>
 							</div>

@@ -51,7 +51,7 @@
                                 <a href="categories.html" class="time d-flex gap-2"><img
                                         src="{{asset('assets/img/icons/time1.svg')}}" alt="vexon" /> 3 min read</a>
                             </div>
-                            <h4><a href="blog-single.html">The Art of Building a Strong Personal Brand on Social
+                            <h4><a href="/blog/1">The Art of Building a Strong Personal Brand on Social
                                     Media</a></h4>
                             <p class="mt-16">Gen Z is reshaping digital interaction. Learn what matters to this
                                 generation and how to create authentic, meaningful content.</p>
@@ -81,7 +81,7 @@
                                 <a href="categories.html" class="time d-flex gap-2"><img
                                         src="{{asset('assets/img/icons/time1.svg')}}" alt="vexon" /> 3 min read</a>
                             </div>
-                            <h4><a href="blog-single.html">The Art of Building a Strong Personal Brand on Social
+                            <h4><a href="/blog/1">The Art of Building a Strong Personal Brand on Social
                                     Media</a></h4>
                             <p class="mt-16">Gen Z is reshaping digital interaction. Learn what matters to this
                                 generation and how to create authentic, meaningful content.</p>
@@ -111,7 +111,7 @@
                                 <a href="categories.html" class="time d-flex gap-2"><img
                                         src="{{asset('assets/img/icons/time1.svg')}}" alt="vexon" /> 3 min read</a>
                             </div>
-                            <h4><a href="blog-single.html">The Art of Building a Strong Personal Brand on Social
+                            <h4><a href="/blog/1">The Art of Building a Strong Personal Brand on Social
                                     Media</a></h4>
                             <p class="mt-16">Gen Z is reshaping digital interaction. Learn what matters to this
                                 generation and how to create authentic, meaningful content.</p>
@@ -141,7 +141,7 @@
                                 <a href="categories.html" class="time d-flex gap-2"><img
                                         src="{{asset('assets/img/icons/time1.svg')}}" alt="vexon" /> 3 min read</a>
                             </div>
-                            <h4><a href="blog-single.html">The Art of Building a Strong Personal Brand on Social
+                            <h4><a href="/blog/1">The Art of Building a Strong Personal Brand on Social
                                     Media</a></h4>
                             <p class="mt-16">Gen Z is reshaping digital interaction. Learn what matters to this
                                 generation and how to create authentic, meaningful content.</p>
@@ -171,7 +171,7 @@
                                 <a href="categories.html" class="time d-flex gap-2"><img
                                         src="{{asset('assets/img/icons/time1.svg')}}" alt="vexon" /> 3 min read</a>
                             </div>
-                            <h4><a href="blog-single.html">The Art of Building a Strong Personal Brand on Social
+                            <h4><a href="/blog/1">The Art of Building a Strong Personal Brand on Social
                                     Media</a></h4>
                             <p class="mt-16">Gen Z is reshaping digital interaction. Learn what matters to this
                                 generation and how to create authentic, meaningful content.</p>
@@ -201,7 +201,7 @@
                                 <a href="categories.html" class="time d-flex gap-2"><img
                                         src="{{asset('assets/img/icons/time1.svg')}}" alt="vexon" /> 3 min read</a>
                             </div>
-                            <h4><a href="blog-single.html">The Art of Building a Strong Personal Brand on Social
+                            <h4><a href="/blog/1">The Art of Building a Strong Personal Brand on Social
                                     Media</a></h4>
                             <p class="mt-16">Gen Z is reshaping digital interaction. Learn what matters to this
                                 generation and how to create authentic, meaningful content.</p>
@@ -231,7 +231,7 @@
                                 <a href="categories.html" class="time d-flex gap-2"><img
                                         src="{{asset('assets/img/icons/time1.svg')}}" alt="vexon" /> 3 min read</a>
                             </div>
-                            <h4><a href="blog-single.html">The Art of Building a Strong Personal Brand on Social
+                            <h4><a href="/blog/1">The Art of Building a Strong Personal Brand on Social
                                     Media</a></h4>
                             <p class="mt-16">Gen Z is reshaping digital interaction. Learn what matters to this
                                 generation and how to create authentic, meaningful content.</p>
@@ -261,7 +261,7 @@
                                 <a href="categories.html" class="time d-flex gap-2"><img
                                         src="{{asset('assets/img/icons/time1.svg')}}" alt="vexon" /> 3 min read</a>
                             </div>
-                            <h4><a href="blog-single.html">The Art of Building a Strong Personal Brand on Social
+                            <h4><a href="/blog/1">The Art of Building a Strong Personal Brand on Social
                                     Media</a></h4>
                             <p class="mt-16">Gen Z is reshaping digital interaction. Learn what matters to this
                                 generation and how to create authentic, meaningful content.</p>

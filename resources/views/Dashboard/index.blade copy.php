@@ -62,7 +62,7 @@
 													<a href="#" class="social">Social Media</a>
 													<a href="#" class="time"><img src="assets/img/icons/time1.svg" alt="vexon" /> 3 min read</a>
 												</div>
-												<h4><a href="blog-single.html">The Art of Building a Strong Personal Brand on Social Media</a></h4>
+												<h4><a href="/blog/1">The Art of Building a Strong Personal Brand on Social Media</a></h4>
 												<p class="mt-16">This post explores strategies to help create an authentic and memorable brand presence on social media that resonates with audience.</p>
 												{{-- Reject Action --}}
                                                 <div class="author-area">
@@ -95,7 +95,7 @@
 													<a href="#" class="social">Social Media</a>
 													<a href="#" class="time"><img src="assets/img/icons/time1.svg" alt="vexon" /> 3 min read</a>
 												</div>
-												<h4><a href="blog-single.html">Proven Strategies to Boost Your Social Media Metrics</a></h4>
+												<h4><a href="/blog/1">Proven Strategies to Boost Your Social Media Metrics</a></h4>
 												<p class="mt-16">Engagement is key to building a loyal following. Learn techniques for crafting posts that invite interaction, encouraging shares.</p>
 												<div class="author-area">
 													<div class="author">
@@ -122,7 +122,7 @@
 													<a href="#" class="social">Brand’s</a>
 													<a href="#" class="time"><img src="assets/img/icons/time1.svg" alt="vexon" /> 3 min read</a>
 												</div>
-												<h4><a href="blog-single.html">The Power of Storytelling: How to Make Your Brand’s Voice Stand Out</a></h4>
+												<h4><a href="/blog/1">The Power of Storytelling: How to Make Your Brand’s Voice Stand Out</a></h4>
 												<p class="mt-16">Discover ways to create relatable and impactful stories that reinforce your brand and keep followers coming back.</p>
 												<div class="author-area">
 													<div class="author">
@@ -149,7 +149,7 @@
 													<a href="#" class="social">Content</a>
 													<a href="#" class="time"><img src="assets/img/icons/time1.svg" alt="vexon" /> 3 min read</a>
 												</div>
-												<h4><a href="blog-single.html">Mastering Content Calendars: A Guide to Consistent and Strategic.</a></h4>
+												<h4><a href="/blog/1">Mastering Content Calendars: A Guide to Consistent and Strategic.</a></h4>
 												<p class="mt-16">Consistency is crucial for success on social media. This guide helps you create an effective content calendar to stay organized.</p>
 												<div class="author-area">
 													<div class="author">
@@ -176,7 +176,7 @@
 													<a href="#" class="social">Trending</a>
 													<a href="#" class="time"><img src="assets/img/icons/time1.svg" alt="vexon" /> 3 min read</a>
 												</div>
-												<h4><a href="blog-single.html">Social Media Trends for 2024: What to Watch and How to Adapt </a></h4>
+												<h4><a href="/blog/1">Social Media Trends for 2024: What to Watch and How to Adapt </a></h4>
 												<p class="mt-16">The social media landscape evolves quickly. Stay ahead of the curve by understanding key trends for 2024,</p>
 												<div class="author-area">
 													<div class="author">
@@ -203,7 +203,7 @@
 													<a href="#" class="social">Brand Consistency</a>
 													<a href="#" class="time"><img src="assets/img/icons/time1.svg" alt="vexon" /> 3 min read</a>
 												</div>
-												<h4><a href="blog-single.html">Creating a Visual Identity: Tips for Aesthetic and Brand Consistency </a></h4>
+												<h4><a href="/blog/1">Creating a Visual Identity: Tips for Aesthetic and Brand Consistency </a></h4>
 												<p class="mt-16">This post covers tips on color schemes, fonts, and visuals to keep your profile visually appealing and cohesive.</p>
 												<div class="author-area">
 													<div class="author">
@@ -230,7 +230,7 @@
 													<a href="#" class="social">Gen - Z</a>
 													<a href="#" class="time"><img src="assets/img/icons/time1.svg" alt="vexon" /> 3 min read</a>
 												</div>
-												<h4><a href="blog-single.html">How to Build Authentic Connections with the New Generation</a></h4>
+												<h4><a href="/blog/1">How to Build Authentic Connections with the New Generation</a></h4>
 												<p class="mt-16">Gen Z is reshaping digital interaction. Learn what matters to this generation and how to create authentic, meaningful content.</p>
 												<div class="author-area">
 													<div class="author">
@@ -257,7 +257,7 @@
 													<a href="#" class="social">Social Media</a>
 													<a href="#" class="time"><img src="assets/img/icons/time1.svg" alt="vexon" /> 3 min read</a>
 												</div>
-												<h4><a href="blog-single.html">Harnessing Analytics: Using Data to Refine Your Social Media Strategy</a></h4>
+												<h4><a href="/blog/1">Harnessing Analytics: Using Data to Refine Your Social Media Strategy</a></h4>
 												<p class="mt-16">Gen Z is reshaping digital interaction. Learn what matters to this generation and how to create authentic, meaningful content.</p>
 												<div class="author-area">
 													<div class="author">
@@ -284,7 +284,7 @@
 													<a href="#" class="social">Social Media</a>
 													<a href="#" class="time"><img src="assets/img/icons/time1.svg" alt="vexon" /> 3 min read</a>
 												</div>
-												<h4><a href="blog-single.html">From Follower to Customer: Turning Social Engagement into Sales</a></h4>
+												<h4><a href="/blog/1">From Follower to Customer: Turning Social Engagement into Sales</a></h4>
 												<p class="mt-16">Transforming followers into customers requires a solid strategy. This post offers insights on using social media as a powerful tool convert.</p>
 												<div class="author-area">
 													<div class="author">

@@ -115,7 +115,7 @@
 							</div>
 
 							<div class="col-md-4" data-aos="fade-up" data-aos-offset="50" data-aos-duration="400" data-aos-delay="0">
-								<div class="blog1-single-box mt-30">
+								<div class="blog1-single-box sm:mt-30">
 									<div class="thumbnail image-anime">
 										<img src="assets/img/blog/blog1-image3.png" alt="vexon" />
 									</div>
