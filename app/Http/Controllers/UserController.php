@@ -5,15 +5,27 @@ namespace App\Http\Controllers;
 class UserController extends Controller
 {
 
-    public function listUsers()
-    {
-    }
-
     public function getUserDetails()
     {
     }
 
+    public function getUsers()
+    {
+    }
+
     public function manageUser()
+    {
+    }
+
+    public function statusUser()
+    {
+    }
+
+    public function userStatistics()
+    {
+    }
+
+    public function BlogsByAuthor()
     {
     }
 
