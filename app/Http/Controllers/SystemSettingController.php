@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 
 class SystemSettingController extends Controller
 {
+    public function showSystemSettings()
+    {
+        return view("dashboard.systemsettings");
+    }
+
     public function getSystemSettingDetails()
     {
 
