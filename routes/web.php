@@ -139,6 +139,8 @@ Route::controller(UserController::class)->group(function () {
 
 Route::controller(SystemSettingController::class)->group(function () {
 
+    Route::get('/systemsettings', 'showSystemSettings')->name('page.systemsettings');
+
     Route::get('getSystemSettingDetails', 'getSystemSettingDetails')->name('getSystemSettingDetails');
     Route::get('getSystemSettings', 'getSystemSettings')->name('getSystemSettings');
     Route::post('manageSystemSetting', 'manageSystemSetting')->name('manageSystemSetting');
@@ -149,6 +151,9 @@ Route::controller(SystemSettingController::class)->group(function () {
 });
 
 Route::controller(TagController::class)->group(function () {
+
+    Route::get('/tags', 'showTags')->name('page.tags');
+    Route::get('/managetag', 'showManageTag')->name('page.managetag');
 
     Route::get('getTagsDetails', 'getTagsDetails')->name('getTagsDetails');
     Route::get('getTags', 'getTags')->name('getTags');
