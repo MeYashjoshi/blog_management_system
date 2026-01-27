@@ -1,4 +1,5 @@
-@extends('layout.main')
+@extends('frontend.layout.main')
+@section('title', 'Reset Password')
 @section('content')
 
 <!--===== CONTENT AREA START=======-->

@@ -41,9 +41,7 @@
 							</div>
 							<div class="text-start">
 								<p class="text"><input type="checkbox" name="checkbox1" id="checkbox1" /> <label aria-colspan="checkbox1" for="checkbox1">I have read and agree to the </label><a href="#">Terms & Consitions.</a></p>
-								<p class="or"><span>Or</span></p>
-								<a href="#" class="google-btn"><img src="{{ asset('assets/img/icons/google.svg') }}" alt="vexon" /> Sign Up With Google</a>
-								<a href="#" class="google-btn mt-20"><img src="{{ asset('assets/img/icons/facebook.svg') }}" alt="vexon" /> Sign Up With Facebook</a>
+
 							</div>
 						</form>
 					</div>

@@ -151,8 +151,11 @@
 
 							<div class="header1-buttons">
 
-								<a class="theme-btn1" href="sigup.html">Sign Up </a>
-
+                                @if(request()->is('signup'))
+								<a class="theme-btn1" href="/login">Login</a>
+                                @else
+								<a class="theme-btn1" href="/signup">Sign Up </a>
+                                @endif
 
                                 <div class="dropdown">
                                     <img src="{{ asset('assets/img/author/top-author-1.png') }}" alt="Profile" class="profile-img dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:40px; height:40px; border-radius:50%; cursor:pointer;">

@@ -35,7 +35,7 @@
 								<button type="submit" class="theme-btn1">Sign In</button>
 							</div>
 							<div class="text-center">
-								<p class="text">Don’t have an account? <a href="sigup">Sign Up Today.</a> <br /><a href="/forgot">Forgot Password</a></p>
+								<p class="text">Don’t have an account? <a href="/signup">Sign Up Today.</a> <br /><a href="/forgot-password">Forgot Password</a></p>
 							</div>
 						</form>
 					</div>
