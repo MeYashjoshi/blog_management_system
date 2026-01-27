@@ -26,7 +26,7 @@
 @endsection
 
 @section('dashboard-right-button')
- <a href="/createblog" class="btn-primary-dashboard">
+ <a href="/manageblog" class="btn-primary-dashboard">
                         <i class="fa-solid fa-plus"></i> New Blog
                     </a>
 @endsection
