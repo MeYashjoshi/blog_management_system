@@ -4,13 +4,20 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
+
+    const STATUS_PENDING = '0';
+    const STATUS_ACTIVE = '1';
+    const STATUS_INACTIVE = '2';
+
+    public const FILE_PATH = 'uploads/users/';
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +25,13 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'firstname',
+        'latsname',
         'email',
         'password',
+        'profile',
+        'bio',
+        'status',
     ];
 
     /**

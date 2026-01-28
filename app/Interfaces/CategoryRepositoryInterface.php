@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-interface BlogCategoryRepositoryInterface
+interface CategoryRepositoryInterface
 {
     public function getCategoryDetails($request);
     public function getCategories($request);

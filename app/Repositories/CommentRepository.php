@@ -2,10 +2,16 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\BlogCommentRepositoryInterface;
+use App\Interfaces\CommentRepositoryInterface;
+use App\Models\Comment;
 
-class BlogCommentRepository implements BlogCommentRepositoryInterface
+class CommentRepository implements CommentRepositoryInterface
 {
+    protected Comment $commentModel;
+
+    public function __construct(Comment $commentModel) {
+        $this->commentModel = $commentModel;
+    }
 
     public function getCommentDetails($request){
 

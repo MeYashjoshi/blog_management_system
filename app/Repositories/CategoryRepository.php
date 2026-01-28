@@ -2,10 +2,16 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\BlogCategoryRepositoryInterface;
+use App\Interfaces\CategoryRepositoryInterface;
+use App\Models\Category;
 
-class BlogCategoryRepository implements BlogCategoryRepositoryInterface
+class CategoryRepository implements CategoryRepositoryInterface
 {
+    protected Category $categoryModel;
+
+    public function __construct(Category $categoryModel) {
+        $this->categoryModel = $categoryModel;
+    }
 
     public function getCategoryDetails($request){
 

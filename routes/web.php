@@ -30,6 +30,10 @@ Route::get('/rolesandpermissions', function () {
     return view('Dashboard.rolesandpermissions');
 })->name('rolesandpermissions');
 
+Route::get('/profile', function () {
+    return view('Dashboard.profile');
+});
+
 
 
 // Route::get('/dashboard', function () {

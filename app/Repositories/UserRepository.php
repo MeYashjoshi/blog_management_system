@@ -3,8 +3,15 @@
  namespace App\Repositories;
 
 use App\Interfaces\UserRepositoryInterface;
+use App\Models\User;
 
  class UserRepository implements UserRepositoryInterface{
+
+    protected User $userModel;
+
+    public function __construct(User $userModel) {
+        $this->userModel = $userModel;
+    }
 
     public function getUserDetails($request){
 

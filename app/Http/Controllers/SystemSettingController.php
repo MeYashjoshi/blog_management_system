@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\SystemSettingRepositoryInterface;
 use Illuminate\Http\Request;
 
-class SystemSettingController extends Controller
+class SystemSettingController extends BaseController
 {
+    protected SystemSettingRepositoryInterface $systemsettingRepository;
+
+    public function __construct(SystemSettingRepositoryInterface $systemsettingRepository) {
+        $this->systemsettingRepository = $systemsettingRepository;
+    }
+
     public function showSystemSettings()
     {
         return view("dashboard.systemsettings");

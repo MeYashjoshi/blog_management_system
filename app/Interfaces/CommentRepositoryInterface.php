@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-interface BlogCommentRepositoryInterface
+interface CommentRepositoryInterface
 {
     public function getCommentDetails($request);
     public function getComments($request);

@@ -2,19 +2,28 @@
 
 namespace App\Http\Controllers;
 
-class BlogController extends Controller
+use App\Interfaces\BlogRepositoryInterface;
+use Illuminate\Http\Request;
+
+class BlogController extends BaseController
 {
+    protected BlogRepositoryInterface $BlogRepository;
 
-
+    public function __construct(BlogRepositoryInterface $BlogRepository) {
+        $this->BlogRepository = $BlogRepository;
+    }
 
     public function showBlogs()
     {
-        return view('frontend.blogs');
+        $blogs = $this->BlogRepository->getBlogs();
+
+        return view('frontend.blogs', compact('blogs'));
     }
 
-    public function showBlog()
+    public function showBlog(Request $request)
     {
-        return view('frontend.blogsingle');
+        $blog = $this->BlogRepository->getBlogs();
+        return view('frontend.blogsingle', compact('blog'));
     }
 
     public function showMyBlogs()
@@ -44,6 +53,9 @@ class BlogController extends Controller
     }
 
     public function getBlogs(){
+
+        $blogs = $this->BlogRepository->getBlogs();
+        return $blogs;
 
     }
 

@@ -3,27 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Interfaces\AuthRepositoryInterface;
 
 class AuthController extends Controller
 {
+    public function __construct(
+        private AuthRepositoryInterface $AuthRepository
+    ) {}
+
    public function showLoginForm()
     {
-        return view('Auth.login');
+        return view('auth.login');
     }
 
    public function showSignupForm()
     {
-        return view('Auth.signup');
+        return view('auth.signup');
     }
 
    public function showForgotPasswordForm()
     {
-        return view('Auth.forgot');
+        return view('auth.forgot');
     }
 
    public function showResetPasswordForm()
     {
-        return view('Auth.reset');
+        return view('auth.reset');
     }
 
    public function login()

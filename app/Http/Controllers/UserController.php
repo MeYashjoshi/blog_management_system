@@ -2,8 +2,16 @@
 
 namespace App\Http\Controllers;
 
-class UserController extends Controller
+use App\Interfaces\UserRepositoryInterface;
+
+class UserController extends BaseController
 {
+
+    protected UserRepositoryInterface $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository) {
+        $this->userRepository = $userRepository;
+    }
 
     public function getUserDetails()
     {

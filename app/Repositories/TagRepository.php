@@ -2,9 +2,16 @@
 
 namespace App\Repositories;
 
-use App\Interfaces\BlogTagRepositoryInterface;
+use App\Interfaces\TagRepositoryInterface;
+use App\Models\Tag;
 
-class BlogTagRepository implements BlogTagRepositoryInterface{
+class TagRepository implements TagRepositoryInterface{
+
+    protected Tag $tagModel;
+
+    public function __construct(Tag $tagModel) {
+        $this->tagModel = $tagModel;
+    }
 
     public function listTags($request){
 

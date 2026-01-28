@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\CategoryRepositoryInterface;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class CategoryController extends BaseController
 {
+    protected CategoryRepositoryInterface $categoryRepository;
+
+    public function __construct(CategoryRepositoryInterface $categoryRepository) {
+        $this->categoryRepository = $categoryRepository;
+    }
+
      public function showCategories()
     {
          return view('dashboard.categories');

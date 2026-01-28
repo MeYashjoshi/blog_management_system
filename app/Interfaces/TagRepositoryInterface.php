@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-interface BlogTagRepositoryInterface
+interface TagRepositoryInterface
 {
    public function listTags($request);
    public function getTagDetails($request);

@@ -41,8 +41,8 @@
                                 <label for="status">Status</label>
                                 <select id="status" name="status">
                                     <option value="draft">Draft</option>
-                                    <option value="published">Published</option>
-                                    <option value="scheduled">Scheduled</option>
+                                    <option value="publish">Publish</option>
+                                    <option value="request" selected>Request</option>
                                 </select>
                             </div>
                         </div>

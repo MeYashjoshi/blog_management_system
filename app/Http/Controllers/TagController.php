@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\TagRepositoryInterface;
 use Illuminate\Http\Request;
 
-class TagController extends Controller
+class TagController extends BaseController
 {
+
+    protected TagRepositoryInterface $tagRepository;
+
+    public function __construct(TagRepositoryInterface $tagRepository) {
+        $this->tagRepository = $tagRepository;
+    }
 
     public function showTags()
     {
