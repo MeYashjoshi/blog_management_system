@@ -125,7 +125,7 @@
 									</li>
 
 									<li class="dropdown-menu-parrent">
-										<a href="/blogs" class="main1">Blogs</a>
+										<a href="/allblogs" class="main1">Blogs</a>
 									</li>
 
 									<li class="dropdown-menu-parrent">
@@ -151,20 +151,31 @@
 
 							<div class="header1-buttons">
 
-                                @if(request()->is('signup'))
-								<a class="theme-btn1" href="/login">Login</a>
+                                @if(Auth::check())
+                                    <div class="dropdown">
+                                        <img src="{{ asset('assets/img/author/top-author-1.png') }}" alt="Profile" class="profile-img dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:40px; height:40px; border-radius:50%; cursor:pointer;">
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+                                        <li><a class="dropdown-item" href="/authorblogs">My Blogs</a></li>
+                                        <li><form action="{{ route('logout') }}" method="post">
+                                        @csrf
+                                                <button type="submit" class="dropdown-item">Logout</button>
+                                        </form>
+                                      </li></li>
+                                        </ul>
+                                    </div>
+
+
                                 @else
-								<a class="theme-btn1" href="/signup">Sign Up </a>
+                                    @if(request()->is('login'))
+                                    <a class="theme-btn1" href="/signup">Sign Up </a>
+                                    @else
+                                    <a class="theme-btn1" href="/login">Login</a>
+                                    @endif
+
                                 @endif
 
-                                <div class="dropdown">
-                                    <img src="{{ asset('assets/img/author/top-author-1.png') }}" alt="Profile" class="profile-img dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:40px; height:40px; border-radius:50%; cursor:pointer;">
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                      <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
-                                      <li><a class="dropdown-item" href="/authorblogs">My Blogs</a></li>
-                                      <li><a class="dropdown-item" href="/logout">Logout</a></li>
-                                    </ul>
-                                </div>
+
 
 							</div>
 						</div>

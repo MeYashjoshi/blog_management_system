@@ -22,7 +22,12 @@
                         </div>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                       <li><a class="dropdown-item" href="/profile">Profile</a></li>
-                                      <li><a class="dropdown-item" href="/login">Logout</a></li>
+                                      <li>
+                                      <form action="{{ route('logout') }}" method="post">
+                                        @csrf
+                                                <button type="submit" class="dropdown-item">Logout</button>
+                                        </form>
+                                      </li>
                         </ul>
                     </div>
                 </div>
