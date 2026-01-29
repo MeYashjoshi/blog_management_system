@@ -3,6 +3,9 @@
 @section('content')
 <!--===== CONTENT AREA START=======-->
 
+
+
+
 	<div class="login-page sp bg-cover" style="background-image: url(assets/img/bg/login-page-bg.jpg)">
 		<div class="container">
 			<div class="row">
@@ -20,16 +23,25 @@
 			<div class="row">
 				<div class="col-lg-5 m-auto">
 					<div class="login-form">
-						<h3>Welcome Back</h3>
+
+
+                    @error('error')
+                        <div class="alert alert-warning" role="alert">
+                        {{ $message }}
+                        </div>
+                    @enderror
+
+                        <h3>Welcome Back</h3>
 						<p>Please fill your email and password to sign in.</p>
-						<form action="#">
+						<form method="POST" action="{{ route('login') }}">
+                        @csrf
 							<div class="single-input">
 								<label>Email</label>
-								<input type="text" placeholder="Email address" />
+								<input type="email" name="email" id="email" placeholder="Email address" />
 							</div>
 							<div class="single-input">
 								<label>Password</label>
-								<input type="password" placeholder="Enter your password" />
+								<input type="password" name="password" id="password" placeholder="Enter your password" />
 							</div>
 							<div class="button mt-30">
 								<button type="submit" class="theme-btn1">Sign In</button>
