@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('frontend.layout.main')
 @section('content')
 
 	<!--===== CONTENT AREA START=======-->
