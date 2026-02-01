@@ -4,16 +4,18 @@
 
 @section('content')
 
+                
 
                 <div class="content-section">
                     <div class="profile-header">
                         <div class="profile-avatar-lg">
-                        <img src="{{ asset('assets/img/author/top-author-1.png') }}" alt="User Avatar">
+                        <img src="{{ $user->profile ? asset('storage/uploads/users/' . $user->profile) : asset('assets/img/author/top-author-1.png') }}" class="img-fluid rounded-circle" alt="User Avatar">
                         </div>
                         <div class="profile-header-info">
-                            <h3>John Doe</h3>
-                            <p>john.doe@example.com</p>
-                            <span class="user-role">Admin</span>
+                            <h3>{{ $user->firstname }} {{ $user->lastname}}</h3>
+                            <p>{{ $user->email }}</p>
+                           
+                            <span class="user-role">{{ Auth::user()->roles()->first()->name }}</span>
                         </div>
                     </div>
                 </div>
@@ -23,29 +25,42 @@
                        Edit Profile
                     </h2>
 
-                    <form>
+                    @error('success')
+                        <div class="alert alert-warning" role="alert">
+                        {{ $message }}
+                        </div>
+                    @enderror
+
+                    <form action="{{ route('manageUser') }}" method="POST" enctype="multipart/form-data">
+                        
+                        @csrf
+
+                        
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="firstName">First Name</label>
-                                <input type="text" id="firstName" name="firstName" placeholder="Enter your first name" value="John" />
+                                <input type="text" id="firstName" name="firstname" placeholder="Enter your first name" value="{{ $user->firstname }}" />
                             </div>
                             <div class="form-group">
                                 <label for="lastName">Last Name</label>
-                                <input type="text" id="lastName" name="lastName" placeholder="Enter your last name" value="Doe" />
+                                <input type="text" id="lastName" name="lastname" placeholder="Enter your last name" value="{{ $user->lastname }}" />
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" placeholder="Enter your email" value="john.doe@example.com" />
+                            <input type="email" id="email" name="email" placeholder="Enter your email" value="{{ $user->email }}" />
                         </div>
 
                         <div class="form-group">
                             <label for="bio">Bio</label>
-                            <textarea id="bio" name="bio" rows="4" placeholder="Tell us about yourself...">I am a real blogger</textarea>
+                            <textarea id="bio" name="bio" rows="4" placeholder="Tell us about yourself...">{{ $user->bio }}</textarea>
                         </div>
 
-
+                        <div class="form-group">
+                            <label for="profile">Profile Picture</label>
+                            <input type="file" id="profile" name="profile" accept="image/*" />
+                        </div>
 
                         <div class="button-group">
                             <button type="submit" class="btn-primary-dashboard">
@@ -62,21 +77,28 @@
                     <h2 class="section-title">
                          Change Password
                     </h2>
+                    @error('password_success')
+                        <div class="alert alert-success" role="alert">
+                        {{ $message }}
+                        </div>
+                    @enderror
 
-                    <form>
+
+                    <form action="{{ route('manageUser') }}" method="POST">
+                        @csrf
                         <div class="form-group">
                             <label for="currentPassword">Current Password</label>
-                            <input type="password" id="currentPassword" name="currentPassword" placeholder="Enter your current password" />
+                            <input type="password" id="currentpassword" name="currentpassword" placeholder="Enter your current password" value="{{ $user->password }}" />
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="newPassword">New Password</label>
-                                <input type="password" id="newPassword" name="newPassword" placeholder="Enter your new password" />
+                                <input type="password" id="newpassword" name="newpassword" placeholder="Enter your new password" value=""/>
                             </div>
                             <div class="form-group">
                                 <label for="confirmPassword">Confirm Password</label>
-                                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your new password" />
+                                <input type="password" id="confirmpassword" name="confirmpassword" placeholder="Confirm your new password" value=""/>
                             </div>
                         </div>
 
