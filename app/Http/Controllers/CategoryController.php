@@ -7,20 +7,22 @@ use Illuminate\Http\Request;
 
 class CategoryController extends BaseController
 {
-    protected CategoryRepositoryInterface $categoryRepository;
+    // protected CategoryRepositoryInterface $categoryRepository;
 
-    public function __construct(CategoryRepositoryInterface $categoryRepository) {
-        $this->categoryRepository = $categoryRepository;
-    }
+    // public function __construct(CategoryRepositoryInterface $categoryRepository) {
+    //     $this->categoryRepository = $categoryRepository;
+    // }
 
      public function showCategories()
     {
-         return view('dashboard.categories');
+        $this->checkPermission("category-view");
+        return view('dashboard.categories');
     }
 
      public function showManageCategory()
     {
-         return view('dashboard.managecategory');
+        $this->checkPermission("category-view");
+        return view('dashboard.managecategory');
     }
 
      public function getCategoryDetails()

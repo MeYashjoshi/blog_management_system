@@ -15,7 +15,8 @@ class BlogController extends BaseController
 
     public function showBlogs()
     {
-        $blogs = $this->BlogRepository->getBlogs();
+        // $blogs = $this->BlogRepository->getBlogs();
+        $blogs = "hello";
 
         return view('frontend.blogs', compact('blogs'));
     }

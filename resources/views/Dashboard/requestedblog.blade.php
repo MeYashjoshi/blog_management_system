@@ -55,13 +55,18 @@ In today's digital age, mastering social media marketing is essential for busine
                         </div>
 
                         <div class="button-group">
-                            <button type="submit" class="btn-primary-dashboard">
-                                <i class="fa-solid fa-check"></i> Approve
-                            </button>
-                            <button type="button" class="btn-secondary-dashboard" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
-                            <i class="fa-solid fa-times"></i>
-                            Reject
-                            </button>
+
+                            @can('blog-approve')
+                                <button type="submit" class="btn-primary-dashboard">
+                                    <i class="fa-solid fa-check"></i> Approve
+                                </button>
+                            @endcan
+                            @can('blog-reject')
+                                <button type="button" class="btn-secondary-dashboard" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+                                <i class="fa-solid fa-times"></i>
+                                Reject
+                                </button>
+                            @endcan
                             <button type="button" class="btn-secondary-dashboard" onclick="window.history.back();">
                                 <i class="fa-solid fa-times"></i> Cancel
                             </button>

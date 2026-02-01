@@ -7,7 +7,7 @@ use App\Interfaces\AuthRepositoryInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
     // public function __construct(
     //     private AuthRepositoryInterface $AuthRepository
@@ -66,8 +66,15 @@ class AuthController extends Controller
         }
 
         if (Auth::attempt($credentials)) {
+
             $request->session()->regenerate();
-            return redirect()->intended('/');
+
+            if (Auth::user()->hasRole('admin')) {
+                return redirect()->intended('/dashboard');
+            } else {
+                return redirect()->intended('/');
+            }
+
         }
 
 

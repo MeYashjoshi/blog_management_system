@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends BaseController
 {
@@ -13,7 +14,9 @@ class HomeController extends BaseController
 
     public function showDashboard()
     {
-            return view('dashboard.index');
+        $this->checkPermission("system-dashboard");
+        return view('dashboard.index');
+
     }
 
     public function showAbout()
@@ -23,5 +26,12 @@ class HomeController extends BaseController
     public function showContactus()
     {
             return view('frontend.contactus');
+    }
+    public function showBlogs()
+    {
+        // $blogs = $this->BlogRepository->getBlogs();
+        $blogs = "hello";
+
+        return view('frontend.blogs', compact('blogs'));
     }
 }

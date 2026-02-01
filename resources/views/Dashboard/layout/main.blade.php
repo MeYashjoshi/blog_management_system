@@ -45,6 +45,8 @@
                         @elseif(request()->is('profile'))
                         <span>Profile</span>
                         @elseif(request()->is('manageblog'))
+                        <a href="myblogs">My Blogs</a>
+                        <span>/</span>
                         <span>Manage Blog</span>
                         @elseif(request()->is('categories'))
                         <span>Categories</span>

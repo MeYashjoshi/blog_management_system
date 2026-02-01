@@ -17,7 +17,6 @@ Route::get('rolesandpermissions', function () {
 })->name('rolesandpermissions');
 
 
-
 Route::controller(HomeController::class)->group(function () {
 
     //Page Routes (Display forms)

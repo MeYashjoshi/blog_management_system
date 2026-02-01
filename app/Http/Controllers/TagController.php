@@ -8,19 +8,21 @@ use Illuminate\Http\Request;
 class TagController extends BaseController
 {
 
-    protected TagRepositoryInterface $tagRepository;
+    // protected TagRepositoryInterface $tagRepository;
 
-    public function __construct(TagRepositoryInterface $tagRepository) {
-        $this->tagRepository = $tagRepository;
-    }
+    // public function __construct(TagRepositoryInterface $tagRepository) {
+    //     $this->tagRepository = $tagRepository;
+    // }
 
     public function showTags()
     {
+        $this->checkPermission("tag-view");
         return view("dashboard.tags");
     }
 
     public function showManageTag()
     {
+        $this->checkPermission("tag-view");
         return view("dashboard.managetag");
     }
 

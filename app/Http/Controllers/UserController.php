@@ -13,6 +13,11 @@ class UserController extends BaseController
         $this->userRepository = $userRepository;
     }
 
+    public function showProfile()
+    {
+        return view('dashboard.profile');
+    }
+
     public function getUserDetails()
     {
     }

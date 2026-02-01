@@ -17,8 +17,9 @@
                     <div class="user-profile">
                          <img src="{{ asset('assets/img/author/top-author-1.png') }}" alt="Profile" class="profile-img dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:40px; height:40px; border-radius:50%; cursor:pointer;">
                         <div class="profile-name">
-                            <p>John Doe</p>
-                            <span>Admin User</span>
+
+                            <p>{{Auth::user()->firstname}}</p>
+                            <span>{{ucfirst(Auth::user()->getRoleNames()->first())}}</span>
                         </div>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                       <li><a class="dropdown-item" href="/profile">Profile</a></li>

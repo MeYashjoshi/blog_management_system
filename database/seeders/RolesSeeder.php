@@ -15,15 +15,15 @@ class RolesSeeder extends Seeder
     public function run(): void
     {
         // Create roles
-        $adminRole = Role::firstOrCreate(['name' => 'admin']);
-        $editorRole = Role::firstOrCreate(['name' => 'editor']);
-        $userRole = Role::firstOrCreate(['name' => 'user']);
+        $adminRole = Role::updateOrCreate(['name' => 'admin']);
+        $editorRole = Role::updateOrCreate(['name' => 'editor']);
+        $userRole = Role::updateOrCreate(['name' => 'user']);
 
 
         $allPermissions = Permission::all();
         $adminRole->syncPermissions($allPermissions);
 
-        $editorPermissions = ['blog-create', 'blog-view', 'blog-edit', 'blog-status', 'category-view', 'category-create', 'category-delete', 'tag-view', 'tag-create', 'tag-delete','system-profile'];
+        $editorPermissions = ['blog-request','blog-create', 'blog-view', 'blog-edit', 'blog-status', 'category-view', 'category-create', 'category-delete', 'tag-view', 'tag-create', 'tag-delete','system-profile'];
 
         $editorRole->syncPermissions(
             Permission::whereIn('name', $editorPermissions)->pluck('name')

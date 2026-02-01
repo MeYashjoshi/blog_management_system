@@ -15,6 +15,8 @@ class SystemSettingController extends BaseController
 
     public function showSystemSettings()
     {
+        $this->checkPermission("system-dashboard");
+
         return view("dashboard.systemsettings");
     }
 
