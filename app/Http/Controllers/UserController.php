@@ -39,11 +39,19 @@ class UserController extends BaseController
 
         $this->checkPermission("system-profile");
 
-        $this->userRepository->manageUser($request->validated());
+        try {
+             $resp = $this->userRepository->manageUser($request->validated());
 
-        return back()->withErrors([
-            'success' => 'Profile updated successfully.',
-        ]);
+            if ($resp == 200) {
+                return back()->with('success','Profile updated successfully.');
+            }
+
+        } catch (\Throwable $e) {
+            return back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
+
     }
 
     public function changePassword(UpdatePasswordRequest $request)

@@ -25,8 +25,14 @@
                        Edit Profile
                     </h2>
 
-                    @error('success')
-                        <div class="alert alert-warning" role="alert">
+
+                    @session('success')
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endsession
+                     @error('error')
+                        <div class="alert alert-danger" role="alert">
                         {{ $message }}
                         </div>
                     @enderror
