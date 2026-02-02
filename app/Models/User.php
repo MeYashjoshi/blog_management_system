@@ -58,4 +58,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function getFullNameAttribute(): string
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
+    public function getProfileUrlAttribute(): string
+    {
+        if ($this->profile) {
+            return asset('storage/public/' . self::FILE_PATH . $this->profile);
+        } else {
+            return asset('images/default-profile.png');
+        }
+    }
+
 }

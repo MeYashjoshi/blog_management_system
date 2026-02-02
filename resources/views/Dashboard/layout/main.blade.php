@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard || Vexon</title>
 
-    <!-- <link rel="shortcut icon" href="{{  $user->profile ? asset('storage/uploads/users/' . $user->profile) : asset('assets/img/author/top-author-1.png')  }}" type="image/x-icon" /> -->
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/fontawesome.css') }}" />

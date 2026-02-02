@@ -6,46 +6,42 @@
 
 {{-- system settings content goes here --}}
 <div class="content-section">
-    @error('success')
-        <div class="alert alert-warning" role="alert">
-        {{ $message }}
+
+    @session('success')
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
         </div>
-    @enderror
+    @endsession
 
     <form action="{{ route('manageSystemSetting') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="form-group">
-            <label for="siteLogo">Site Logo</label>
-            <input type="file" id="siteLogo" name="siteLogo" accept="image/*" />
-            @if($settings && $settings->sitelogo)
-            <img src="{{ asset('storage/uploads/system_settings/' . $settings->sitelogo) }}" class="m-3" alt="Current Logo" id="currentLogo" style="max-width: 200px;" />
-            @else
-            <img src="{{ asset('assets/img/logo/header-logo1.png') }}" class="m-3" alt="Default Logo" id="currentLogo" />
-            @endif
+            <label for="sitelogo">Site Logo</label>
+            <input type="file" id="sitelogo" name="sitelogo" accept="image/*" />
+
+            <img src="{{ $settings->getSitelogoUrlAttribute() }}" class="m-3" alt="Current Logo" id="currentLogo" style="max-width: 200px;" />
+
         </div>
 
         <div class="form-group">
             <label for="favicon">Favicon</label>
             <input type="file" id="favicon" name="favicon" accept="image/*" />
-            @if($settings && $settings->favicon)
-            <img src="{{ asset('storage/uploads/system_settings/' . $settings->favicon) }}" class="m-3" alt="Current Favicon" id="currentFavicon" style="width: 32px; height: 32px;" />
-            @else
-            <img src="{{ asset('assets/img/favicon.png') }}" class="m-3" alt="Default Favicon" id="currentFavicon" style="width: 32px; height: 32px;" />
-            @endif
+            <img src="{{ $settings->getFaviconUrlAttribute() }}" class="m-3" alt="Current Favicon" id="currentFavicon" style="width: 32px; height: 32px;" />
+
         </div>
 
         <div class="form-group">
-            <label for="siteName">Site Name</label>
-            <input type="text" id="siteName" name="siteName" value="{{ $settings->sitename}}" />
+            <label for="sitename">Site Name</label>
+            <input type="text" id="sitename" name="sitename" value="{{ $settings->sitename}}" />
         </div>
         <div class="form-group">
-            <label for="supportEmail">Support Email</label>
-            <input type="email" id="supportEmail" name="supportEmail" value="{{ $settings->supportemail}}" />
+            <label for="supportemail">Support Email</label>
+            <input type="email" id="supportemail" name="supportemail" value="{{ $settings->supportemail}}" />
         </div>
         <div class="form-group">
-            <label for="contactNumber">Contact Number</label>
-            <input type="text" id="contactNumber" name="contactNumber" value="{{ $settings->contactnumber}}" />
+            <label for="contactnumber">Contact Number</label>
+            <input type="text" id="contactnumber" name="contactnumber" value="{{ $settings->contactnumber}}" />
         </div>
         <div class="form-group">
             <label for="address">Address</label>

@@ -4,75 +4,78 @@ namespace App\Repositories;
 
 use App\Interfaces\SystemSettingRepositoryInterface;
 use App\Models\SystemSetting;
+use App\Traits\deleteFile;
 use App\Traits\imageUpload;
+use Exception;
 
-class SystemSettingRepository implements SystemSettingRepositoryInterface{
+class SystemSettingRepository implements SystemSettingRepositoryInterface
+{
 
     protected SystemSetting $systemsettingModel;
 
-    use imageUpload;
+    use imageUpload, deleteFile;
 
-    public function __construct(SystemSetting $systemsettingModel) {
+    public function __construct(SystemSetting $systemsettingModel)
+    {
         $this->systemsettingModel = $systemsettingModel;
     }
 
-    public function getSystemSettingDetails($request){
+    public function getSystemSettingDetails($request)
+    {
         return $this->systemsettingModel->first();
     }
 
-    public function getSystemSettings($request){
+    public function getSystemSettings($request)
+    {
         return $this->systemsettingModel->first();
     }
 
-    public function manageSystemSetting($request){
+    public function manageSystemSetting($request)
+    {
+        // dd($request);
         $setting = $this->systemsettingModel->first();
-        
-    
-        if ($request->hasFile('favicon')) {
-            $file = $request['favicon'];
-            $filename = $file ? $this->uploadImage($file) :($request['favicon'] ?? null);
-            
-            if ($filename) {
-                $file->storeAs('public/' . $this->systemsettingModel::FILE_PATH, $filename);
-                $setting->favicon = $filename;
+
+        try {
+
+            $faviconfilename = $setting->favicon; //old file
+
+            if (isset($request['favicon'])) {
+
+                $file = $request['favicon'];
+                $faviconfilename = $file ? $this->uploadImage($file) : ($request['favicon'] ?? null);
+
+                $file->storeAs('public/' . $this->systemsettingModel::FILE_PATH, $faviconfilename);
+
+                $this->deleteFile('public/' . $this->systemsettingModel::FILE_PATH . '/' . $setting->favicon);
+
+                $setting->favicon = $faviconfilename;
             }
-        }
-        if ($request->hasFile('siteLogo')) {
-            $file = $request['siteLogo'];
-            $filename = $file ? $this->uploadImage($file) : ($request['siteLogo'] ?? null);
-            
-            if ($filename) {
-                $file->storeAs('public/' . $this->systemsettingModel::FILE_PATH, $filename);
-                $setting->sitelogo = $filename;
+
+            if (isset($request['sitelogo'])) {
+
+                $file = $request['sitelogo'];
+                $siteLogofilename = $file ? $this->uploadImage($file) : ($request['sitelogo'] ?? null);
+
+                $file->storeAs('public/' . $this->systemsettingModel::FILE_PATH, $siteLogofilename);
+                $setting->sitelogo = $siteLogofilename;
             }
-        }
 
-        $setting->sitename = $request->input('siteName', $setting->sitename ?? '');
-        $setting->supportemail = $request->input('supportEmail', $setting->supportemail ?? '');
-        $setting->contactnumber = $request->input('contactNumber', $setting->contactnumber ?? '');
-        $setting->address = $request->input('address', $setting->address ?? '');
+            $setting->sitename = $request['sitename'];
+            $setting->supportemail = $request['supportemail'];
+            $setting->contactnumber = $request['contactnumber'];
+            $setting->address = $request['address'];
 
-        $setting->save();
-        return $setting;
-    }
-
-    public function statusSystemSetting($request){
-
-    }
-
-    public function userSystemSettings($request){
-
-    }
-
-    public function deleteSystemSetting($request){
-
-    }
-
-    private function deleteFile($path) {
-        $fullPath = storage_path($path);
-        if (file_exists($fullPath)) {
-            unlink($fullPath);
+            $setting->save();
+            return 200;
+        } catch (Exception $e) {
+            throw new Exception("Failed to update system settings: " . $e->getMessage());
         }
     }
+
+    public function statusSystemSetting($request) {}
+
+    public function userSystemSettings($request) {}
+
+    public function deleteSystemSetting($request) {}
 
 }

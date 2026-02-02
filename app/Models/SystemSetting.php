@@ -29,4 +29,22 @@ class SystemSetting extends Model
         'updated_at',
     ];
 
+    public function getSitelogoUrlAttribute()
+    {
+         if ($this->sitelogo) {
+            return asset('storage/public/' . self::FILE_PATH . $this->sitelogo);
+        } else {
+            return asset('images/default-sitelogo.png');
+        }
+    }
+
+    public function getFaviconUrlAttribute()
+    {
+         if ($this->favicon) {
+            return asset('storage/public/' . self::FILE_PATH . $this->favicon);
+        } else {
+            return asset('images/default-favicon.png');
+        }
+    }
+
 }

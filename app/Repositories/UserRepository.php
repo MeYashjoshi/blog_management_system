@@ -1,68 +1,105 @@
 <?php
 
- namespace App\Repositories;
+namespace App\Repositories;
 
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use App\Traits\imageUpload;
+use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
- class UserRepository implements UserRepositoryInterface{
+class UserRepository implements UserRepositoryInterface
+{
 
     protected User $userModel;
 
     use imageUpload;
 
-    public function __construct(User $userModel) {
+    public function __construct(User $userModel)
+    {
         $this->userModel = $userModel;
     }
 
-    public function getUserDetails($request){
-       
-        return $this->userModel->where("id",$request->id)->first();
+    public function getUserDetails($request)
+    {
 
+        return $this->userModel->where("id", $request->id)->first();
     }
-    public function getUsers($request){
+    public function getUsers($request) {}
 
-    }
-    public function manageUser($request){
-   
-// dd($request['profile']);
-    
-        $user = $this->userModel->where("id",Auth::user()->id)->first();
+    public function manageUser($request)
+    {
+        $user = $this->userModel->where('id', Auth::id())->first();
 
-        if (isset($request['newpassword']) && isset($request['confirmpassword'])) {
-            
-            $user->password = bcrypt($request['newpassword']);
-        } else {
+
+        $filename = $user->profile; //old file
+
+        if (isset($request['profile'])) {
+
             $file = $request['profile'];
-            $filename =$file ? $this->uploadImage($file) : ($request['profile'] ?? null);
+            $filename = $file ? $this->uploadImage($file) : ($request['profile'] ?? null);
 
-            $user->firstname = $request['firstname'];
-            $user->lastname = $request['lastname'];
-            $user->email = $request['email'];
-            $user->profile = $filename;
-            $user->bio = $request['bio'];
-            
-            if($file && $filename){
-                $file->storeAs('public/'. $this->userModel::FILE_PATH, $filename);
-            }
+            $file->storeAs('public/' . $this->userModel::FILE_PATH, $filename);
         }
-        
-        
-       
-        $user->save();  
+
+        $user->firstname = $request['firstname'];
+        $user->lastname  = $request['lastname'];
+        $user->email     = $request['email'];
+        $user->profile   = $filename;
+        $user->bio       = $request['bio'];
+
+
+        $user->save();
         return $user;
-
-    }
-    public function statusUser($request){
-
-    }
-    public function userStatistics($request){
-
-    }
-    public function deleteUser($request){
-
     }
 
- }
+    // public function changePassword($request)
+    // {
+
+    //     $user = $this->userModel->where('id', Auth::id())->first();
+
+    //     if(Hash::check($request['currentpassword'], $user->password)){
+
+    //         $user->password = bcrypt($request['newpassword']);
+
+    //         $user->save();
+    //         return $user;
+    //     }
+
+    //    return back()->withErrors(
+    //         ['error' => 'Current password is wrong']
+    //     );
+
+    // }
+    public function changePassword($request)
+    {
+       try {
+        $user = $this->userModel->where('id', Auth::id())->first();
+
+        if (!Hash::check($request['currentpassword'], $user->password)) {
+            return 1;
+        }
+
+        if ($request['newpassword'] !== $request['confirmpassword']) {
+            return 2;
+        }
+
+        $user->password = bcrypt($request['newpassword']);
+        $user->save();
+
+        // return $user;
+        return 0;
+
+        } catch (Exception $e) {
+        throw new Exception("Failed to change password: " . $e->getMessage());
+       }
+    }
+
+
+
+
+    public function statusUser($request) {}
+    public function userStatistics($request) {}
+    public function deleteUser($request) {}
+}

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdatePasswordRequest;
+use App\Http\Requests\UpdateProfileRequest;
 use App\Interfaces\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,89 +13,77 @@ class UserController extends BaseController
 
     protected UserRepositoryInterface $userRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository) {
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
         $this->userRepository = $userRepository;
     }
 
     public function showProfile()
     {
         $this->checkPermission("system-profile");
-      
-        
+
+
         $user = $this->userRepository->getUserDetails(Auth::user());
-    
+
 
         return view('dashboard.profile', compact('user'));
     }
 
-    public function getUserDetails()
-    {
-    }
+    public function getUserDetails() {}
 
-    public function getUsers()
-    {
-    }
+    public function getUsers() {}
 
-    public function manageUser(Request $request)
+    public function manageUser(UpdateProfileRequest $request)
     {
-        
+
+
         $this->checkPermission("system-profile");
 
-        if ($request->newpassword) {
+        $this->userRepository->manageUser($request->validated());
 
-            if ($request->newpassword !== $request->confirmpassword) {
+        return back()->withErrors([
+            'success' => 'Profile updated successfully.',
+        ]);
+    }
+
+    public function changePassword(UpdatePasswordRequest $request)
+    {
+
+
+        $this->checkPermission("system-profile");
+
+        try {
+           $resp =  $this->userRepository->changePassword($request->validated());
+            //  dd($resp);
+
+            if ($resp == 1) {
                 return back()->withErrors([
-                    'error' => 'New password and confirm password do not match.',
+                    'password_error' => 'currentpassword is incorrect.',
+                ]);
+            } else if ($resp == 2) {
+                return back()->withErrors([
+                    'password_error' => 'New password and confirm password do not match.',
                 ]);
             }
 
-            $validatedData = $request->validate([
-                'newpassword' => 'required|string|min:8',
-                'confirmpassword' => 'required|string|min:8',
-            ]);
-            $this->userRepository->manageUser($validatedData);
-            
-            return back()->withErrors(
-                ['password_success' => 'Password changed successfully.']);
+            return back()->with('password_success','Password changed successfully.');
 
 
-        } else {
-
-            $validatedData = $request->validate([
-                'firstname' => 'required|string|max:255',
-                'lastname' => 'required|string|max:255',
-                'email' => 'required|email|max:255',
-                'profile' => 'nullable|image|max:2048',
-                'bio' => 'nullable|string',
-            ]);
-
-
-            $this->userRepository->manageUser($validatedData);
-
+        } catch (\Exception $e) {
 
             return back()->withErrors([
-                'success' => 'Profile updated successfully.',
+                'password_error' => $e->getMessage(),
             ]);
         }
-        
 
 
     }
 
-    public function statusUser()
-    {
-    }
+    public function statusUser() {}
 
-    public function userStatistics()
-    {
-    }
+    public function userStatistics() {}
 
-    public function BlogsByAuthor()
-    {
-    }
+    public function BlogsByAuthor() {}
 
-    public function deleteUser()
-    {
-    }
-
+    public function deleteUser() {}
 }

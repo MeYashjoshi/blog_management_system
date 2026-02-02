@@ -24,7 +24,7 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('about', 'showAbout')->name('about.page');
     Route::get('contactus', 'showContactus')->name('contactus.page');
     Route::get('dashboard', 'showDashboard')->name('dashboard.page');
-    Route::get('allblogs', 'showBlogs')->name('blogs.page');
+    Route::get('allblogs', 'showBlogs')->name('allblogs.page');
 });
 
 
@@ -104,6 +104,7 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('getUserDetails', 'getUserDetails')->name('getUserDetails');
         Route::get('getUsers', 'getUsers')->name('getUsers');
         Route::post('manageUser', 'manageUser')->name('manageUser');
+        Route::post('changePassword', 'changePassword')->name('changePassword');
         Route::post('statusUser', 'statusUser')->name('statusUser');
         Route::get('userStatistics', 'userStatistics')->name('userStatistics');
         Route::post('deleteUser', 'deleteUser')->name('deleteUser');

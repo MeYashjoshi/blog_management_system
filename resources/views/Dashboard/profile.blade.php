@@ -4,17 +4,17 @@
 
 @section('content')
 
-                
+
 
                 <div class="content-section">
                     <div class="profile-header">
                         <div class="profile-avatar-lg">
-                        <img src="{{ $user->profile ? asset('storage/uploads/users/' . $user->profile) : asset('assets/img/author/top-author-1.png') }}" class="img-fluid rounded-circle" alt="User Avatar">
+                        <img src="{{ $user->getProfileUrlAttribute() }}" class="img-fluid rounded-circle" alt="User Avatar">
                         </div>
                         <div class="profile-header-info">
-                            <h3>{{ $user->firstname }} {{ $user->lastname}}</h3>
+                            <h3>{{ $user->getFullNameAttribute() }}</h3>
                             <p>{{ $user->email }}</p>
-                           
+
                             <span class="user-role">{{ Auth::user()->roles()->first()->name }}</span>
                         </div>
                     </div>
@@ -32,10 +32,10 @@
                     @enderror
 
                     <form action="{{ route('manageUser') }}" method="POST" enctype="multipart/form-data">
-                        
+
                         @csrf
 
-                        
+
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="firstName">First Name</label>
@@ -56,7 +56,7 @@
                             <label for="bio">Bio</label>
                             <textarea id="bio" name="bio" rows="4" placeholder="Tell us about yourself...">{{ $user->bio }}</textarea>
                         </div>
-
+                        {{ $user->profile }}
                         <div class="form-group">
                             <label for="profile">Profile Picture</label>
                             <input type="file" id="profile" name="profile" accept="image/*" />
@@ -77,18 +77,26 @@
                     <h2 class="section-title">
                          Change Password
                     </h2>
-                    @error('password_success')
+
+
+                    @session('password_success')
                         <div class="alert alert-success" role="alert">
+                            {{ session('password_success') }}
+                        </div>
+                    @endsession
+
+                    @error('password_error')
+                        <div class="alert alert-danger" role="alert">
                         {{ $message }}
                         </div>
                     @enderror
 
 
-                    <form action="{{ route('manageUser') }}" method="POST">
+                    <form action="{{ route('changePassword') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="currentPassword">Current Password</label>
-                            <input type="password" id="currentpassword" name="currentpassword" placeholder="Enter your current password" value="{{ $user->password }}" />
+                            <input type="password" id="currentpassword" name="currentpassword" placeholder="Enter your current password" value="" />
                         </div>
 
                         <div class="form-row">
