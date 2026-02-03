@@ -46,16 +46,25 @@
                             <div class="form-group">
                                 <label for="firstName">First Name</label>
                                 <input type="text" id="firstName" name="firstname" placeholder="Enter your first name" value="{{ $user->firstname }}" />
+                                @if($errors->has('firstname'))
+                                    <div class="text-danger">{{ $errors->first('firstname') }}</div>
+                                @endif
                             </div>
                             <div class="form-group">
                                 <label for="lastName">Last Name</label>
                                 <input type="text" id="lastName" name="lastname" placeholder="Enter your last name" value="{{ $user->lastname }}" />
+                                 @if($errors->has('lastname'))
+                                    <div class="text-danger">{{ $errors->first('lastname') }}</div>
+                                @endif
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email Address</label>
                             <input type="email" id="email" name="email" placeholder="Enter your email" value="{{ $user->email }}" />
+                            @if($errors->has('email'))
+                                <div class="text-danger">{{ $errors->first('email') }}</div>
+                            @endif
                         </div>
 
                         <div class="form-group">
@@ -72,9 +81,7 @@
                             <button type="submit" class="btn-primary-dashboard">
                                 <i class="fa-solid fa-check"></i> Save Changes
                             </button>
-                            <button type="button" class="btn-secondary-dashboard">
-                                <i class="fa-solid fa-times"></i> Cancel
-                            </button>
+
                         </div>
                     </form>
                 </div>

@@ -22,11 +22,29 @@ class UpdateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-                'firstname' => 'required|string|max:255',
-                'lastname' => 'required|string|max:255',
+                'firstname' => 'required|string|max:20',
+                'lastname' => 'required|string|max:20',
                 'email' => 'required|email|max:255',
                 'profile' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
                 'bio' => 'nullable|string',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'firstname.required' => 'Firstname field is required.',
+            'firstname.string' => 'Firstname field must be a string.',
+            'firstname.max' => 'Firstname field must not exceed 20 characters.',
+
+            'lastname.required' => 'Lastname field is required.',
+            'lastname.string' => 'Lastname field must be a string.',
+            'lastname.max' => 'Lastname field must not exceed 20 characters.',
+
+            'email.required' => 'Email field is required.',
+            'email.email' => 'Please enter a valid email address.',
+
+
         ];
     }
 }
