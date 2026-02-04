@@ -26,9 +26,19 @@
 @endsection
 
 @section('dashboard-right-button')
- <a href="/managecategory" class="btn-primary-dashboard">
-                        <i class="fa-solid fa-plus"></i> New Category
-                    </a>
+ @can('category-create')
+    <a href="/managecategory" class="btn-primary-dashboard">
+        <i class="fa-solid fa-plus"></i> New Category
+    </a>
+
+@endcan
+
+@endsection
+
+@section('breadcrumb')
+    <a href="dashboard">Home</a>
+    <span>/</span>
+    <span>Category</span>
 @endsection
 
 @section('content')
@@ -42,7 +52,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-1">Total Categories</h6>
-                        <h3 class="fw-bold mb-0">120</h3>
+                        <h3 class="fw-bold mb-0">{{ $categoryStatistics['total'] }}</h3>
                     </div>
                     <div class="icon-box fs-2">
                         <i class="fa-solid fa-list"></i>
@@ -57,7 +67,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-1">Active</h6>
-                        <h3 class="fw-bold mb-0">80</h3>
+                        <h3 class="fw-bold mb-0">{{ $categoryStatistics['active'] }}</h3>
                     </div>
                     <div class="icon-box fs-2">
                         <i class="fa-solid fa-toggle-on"></i>
@@ -72,7 +82,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-1">Archive</h6>
-                        <h3 class="fw-bold mb-0">25</h3>
+                        <h3 class="fw-bold mb-0">{{ $categoryStatistics['pending'] }}</h3>
                     </div>
                     <div class="icon-box fs-2">
                         <i class="fa-solid fa-box-archive"></i>
@@ -87,7 +97,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-1">Inactive</h6>
-                        <h3 class="fw-bold mb-0">15</h3>
+                        <h3 class="fw-bold mb-0">{{ $categoryStatistics['inactive'] }}</h3>
                     </div>
                     <div class="icon-box fs-2">
                         <i class="fa-solid fa-toggle-off"></i>
@@ -101,6 +111,18 @@
 
 
    <div class="content-section">
+
+                    @session('success')
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endsession
+                    @error('error')
+                        <div class="alert alert-danger" role="alert">
+                        {{ $message }}
+                        </div>
+                    @enderror
+
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
@@ -113,39 +135,54 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
 
-                                    <td><strong>Thechnology</strong></td>
-                                    <td>All Tech tend will use this category</td>
-                                    <td>Jan 15, 2025</td>
-                                    <td>Active</td>
-                                    <td>
-                                        <button class="btn-secondary-dashboard btn-sm">Edit</button>
-                                        <button class="btn-secondary-dashboard btn-sm">Delete</button>
-                                    </td>
-                                </tr>
-                                <tr>
 
-                                    <td><strong>Thechnology</strong></td>
-                                    <td>All Tech tend will use this category</td>
-                                    <td>Jan 15, 2025</td>
-                                    <td>Active</td>
-                                    <td>
-                                        <button class="btn-secondary-dashboard btn-sm">Edit</button>
-                                        <button class="btn-secondary-dashboard btn-sm">Delete</button>
-                                    </td>
-                                </tr>
-                                <tr>
+                            @if ($res!=null)
 
-                                    <td><strong>Thechnology</strong></td>
-                                    <td>All Tech tend will use this category</td>
-                                    <td>Jan 15, 2025</td>
-                                    <td>Active</td>
-                                    <td>
-                                        <button class="btn-secondary-dashboard btn-sm">Edit</button>
-                                        <button class="btn-secondary-dashboard btn-sm">Delete</button>
-                                    </td>
-                                </tr>
+                                @foreach ($res as $data )
+
+                                        <tr>
+
+                                            <td><strong>{{$data->title}}</strong></td>
+                                            <td>{{ $data->description }}</td>
+                                            <td>{{ $data->CreatedDate }}</td>
+                                            <td>{{ $data->status == 0 ? "Archive" : ($data->status == 1 ? "Active" : "Inactive") }}</td>
+                                            <td class="d-flex">
+                                                <form action="{{ route('managecategories.page') }}" method="GET" class="me-2">
+                                                    @csrf
+
+                                                    <input type="hidden" id="id" name="id"  value="{{ $data->id }}" />
+                                                    @can('category-edit')
+                                                    <button class="btn-secondary-dashboard btn-sm">Edit</button>
+                                                    @endcan
+                                                </form>
+
+                                                <form action="{{ route('deleteCategory') }}" method="POST">
+                                                    @csrf
+
+                                                    <input type="hidden" id="id" name="id"  value="{{ $data->id }}" />
+                                                     @can('category-delete')
+                                                    <button class="btn-secondary-dashboard btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                                                     @endcan
+                                                </form>
+
+                                            </td>
+                                        </tr>
+
+
+                                @endforeach
+
+                                @else
+                                        <tr>
+                                            <td colspan="5" class="text-center">No categories avilable</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                @endif
+
+
 
                             </tbody>
                         </table>
