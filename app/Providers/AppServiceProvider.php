@@ -2,16 +2,16 @@
 
 namespace App\Providers;
 
-use App\Interfaces\BlogCategoryRepositoryInterface;
-use App\Interfaces\BlogCommentRepositoryInterface;
+use App\Interfaces\CategoryRepositoryInterface;
+use App\Interfaces\CommentRepositoryInterface;
 use App\Interfaces\BlogRepositoryInterface;
-use App\Interfaces\BlogTagRepositoryInterface;
+use App\Interfaces\TagRepositoryInterface;
 use App\Interfaces\SystemSettingRepositoryInterface;
 use App\Interfaces\UserRepositoryInterface;
-use App\Repositories\BlogCategoryRepository;
-use App\Repositories\BlogCommentRepository;
+use App\Repositories\CategoryRepository;
+use App\Repositories\CommentRepository;
 use App\Repositories\BlogRepository;
-use App\Repositories\BlogTagRepository;
+use App\Repositories\TagRepository;
 use App\Repositories\SystemSettingRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Support\ServiceProvider;
@@ -24,13 +24,13 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            BlogCategoryRepositoryInterface::class,
-            BlogCategoryRepository::class
+            CategoryRepositoryInterface::class,
+            CategoryRepository::class
         );
 
         $this->app->bind(
-            BlogCommentRepositoryInterface::class,
-            BlogCommentRepository::class
+            CommentRepositoryInterface::class,
+            CommentRepository::class
         );
 
         $this->app->bind(
@@ -39,8 +39,8 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            BlogTagRepositoryInterface::class,
-            BlogTagRepository::class
+            TagRepositoryInterface::class,
+            TagRepository::class
         );
 
         $this->app->bind(
