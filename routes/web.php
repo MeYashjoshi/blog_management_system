@@ -83,7 +83,6 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('getCategories', 'getCategories')->name('getCategories');
         Route::post('manageCategory', 'manageCategory')->name('manageCategory');
         Route::post('statusCategory', 'statusCategory')->name('statusCategory');
-        Route::get('categoryStatistics', 'categoryStatistics')->name('categoryStatistics');
         Route::post('deleteCategory', 'deleteCategory')->name('deleteCategory');
     });
 
