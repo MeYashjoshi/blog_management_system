@@ -13,92 +13,85 @@ class AuthController extends BaseController
     //     private AuthRepositoryInterface $AuthRepository
     // ) {}
 
-   public function showLoginForm()
+    public function showLoginForm()
     {
         if (Auth::check()) {
-             return redirect("/");
+            return redirect("/");
         }
 
         return view('auth.login');
     }
 
-   public function showSignupForm()
+    public function showSignupForm()
     {
         if (Auth::check()) {
-             return redirect("/");
+            return redirect("/");
         }
         return view('auth.signup');
     }
 
-   public function showForgotPasswordForm()
+    public function showForgotPasswordForm()
     {
         return view('auth.forgot');
     }
 
-   public function showResetPasswordForm()
+    public function showResetPasswordForm()
     {
         return view('auth.reset');
     }
 
-   public function login(Request $request)
+    public function login(Request $request)
     {
+        try {
 
+            $credentials = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required'
+            ]);
 
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+            $user = User::where('email', $credentials['email'])->first();
 
-        $user = User::where('email', $credentials['email'])->first();
+            if ($user) {
+                if ($user->status === User::STATUS_INACTIVE) {
+                    return back()->withErrors([
+                        'error' => 'Your account is inactive.',
+                    ]);
+                }
 
-        if ($user) {
-            if ($user->status === User::STATUS_INACTIVE) {
-                return back()->withErrors([
-                    'error' => 'Your account is inactive.',
-                ]);
+                if ($user->status === User::STATUS_PENDING) {
+                    return back()->withErrors([
+                        'error' => 'Your account is pending approval.',
+                    ]);
+                }
             }
 
-            if ($user->status === User::STATUS_PENDING) {
-                return back()->withErrors([
-                    'error' => 'Your account is pending approval.',
-                ]);
-            }
-        }
+            if (Auth::attempt($credentials)) {
 
-        if (Auth::attempt($credentials)) {
+                $request->session()->regenerate();
 
-            $request->session()->regenerate();
-
-            if (Auth::user()->hasRole('admin')) {
-                return redirect()->intended('/dashboard');
+                if (Auth::user()->hasRole('admin')) {
+                    return redirect()->intended('/dashboard');
+                } else {
+                    return redirect()->intended('/');
+                }
             } else {
-                return redirect()->intended('/');
+                return back()->withErrors([
+                    'error' => 'Opps! You have entered invalid credentials',
+                ]);
             }
-
+        } catch (\Throwable $e) {
+            return back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
         }
-
-
-        return redirect("login")->withError('Opps! You have entered invalid credentials');
-
     }
 
-   public function signup(Request $request)
-    {
+    public function signup(Request $request) {}
+    public function sendPasswordResetLink() {}
+    public function resetPassword() {}
 
-    }
-   public function sendPasswordResetLink()
-    {
-    }
-   public function resetPassword()
-    {
-    }
-
-    public function getUserStatus()
-    {
-    }
-    public function getUserRole()
-    {
-    }
+    public function getUserStatus() {}
+    public function getUserRole() {}
 
     public function logout(Request $request)
     {
