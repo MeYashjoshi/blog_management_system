@@ -2,34 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBlogRequest;
 use App\Interfaces\BlogRepositoryInterface;
+use App\Interfaces\CategoryRepositoryInterface;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 
 class BlogController extends BaseController
 {
-    protected BlogRepositoryInterface $BlogRepository;
+    protected BlogRepositoryInterface $blogRepository;
+    protected CategoryRepositoryInterface $categoryRepository;
 
-    public function __construct(BlogRepositoryInterface $BlogRepository) {
-        $this->BlogRepository = $BlogRepository;
+    public function __construct(BlogRepositoryInterface $blogRepository, CategoryRepositoryInterface $categoryRepository) {
+        $this->blogRepository = $blogRepository;
+        $this->categoryRepository = $categoryRepository;
     }
 
     public function showBlogs()
     {
-        // $blogs = $this->BlogRepository->getBlogs();
-        $blogs = "hello";
 
-        return view('frontend.blogs', compact('blogs'));
+        return view('frontend.blogs');
     }
 
     public function showBlog(Request $request)
     {
-        $blog = $this->BlogRepository->getBlogs();
+        $blog = $this->blogRepository->getBlogs();
         return view('frontend.blogsingle', compact('blog'));
     }
 
     public function showMyBlogs()
     {
-        return view('dashboard.myblogs');
+        $blogs = $this->blogRepository->getBlogs();
+
+        $blogStatistics = $this->blogStatistics();
+
+        return view('dashboard.myblogs', compact('blogs','blogStatistics'));
     }
 
     public function showBlogRequests()
@@ -42,9 +49,27 @@ class BlogController extends BaseController
         return view('dashboard.requestedblog');
     }
 
-    public function showManageBlog()
+    public function showManageBlog(Request $request)
     {
-        return view('dashboard.manageblog');
+
+       $this->checkPermission("blog-edit");
+
+        try {
+
+            $blog = $this->blogRepository->getBlogDetails($request);
+            $categories = $this->categoryRepository->getCategories(null);
+
+
+
+
+            return view('dashboard.manageblog',compact('blog','categories'));
+
+        } catch (\Throwable $e) {
+            return back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
+
     }
 
 
@@ -55,13 +80,31 @@ class BlogController extends BaseController
 
     public function getBlogs(){
 
-        $blogs = $this->BlogRepository->getBlogs();
+        $blogs = $this->blogRepository->getBlogs();
         return $blogs;
 
     }
 
-    public function manageBlog()
+    public function manageBlog(StoreBlogRequest $request)
     {
+        $this->checkPermission("blog-create");
+
+        try {
+
+            $resp = $this->blogRepository->manageBlog($request->validated());
+
+             if ($resp == 201) {
+                return redirect()->route('manageblog.page')->with('success', 'blog created successfully.');
+            } elseif ($resp == 200) {
+                return back()->with('success', 'blog updated successfully.');
+            }
+
+        } catch (\Throwable $e) {
+            return back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
+
 
     }
 
@@ -72,6 +115,14 @@ class BlogController extends BaseController
 
     public function blogStatistics()
     {
+        try {
+            $resp = $this->blogRepository->blogStatistics();
+            return $resp;
+        } catch (\Throwable $e) {
+           return back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
 
     }
 
@@ -85,8 +136,21 @@ class BlogController extends BaseController
 
     }
 
-    public function deleteBlog()
+    public function deleteBlog(Request $request)
     {
+        try {
+
+            $resp =  $this->blogRepository->deleteBlog($request->id);
+
+            if ($resp == 204) {
+                return back()->with('success', 'blog deleted successfully.');
+            }
+            return $resp;
+        } catch (\Throwable $e) {
+            return back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
 
     }
 

@@ -11,66 +11,126 @@
 
 @endsection
 
+@section('breadcrumb')
+    <a href="dashboard">Home</a>
+    <span>/</span>
+    <a href="myblogs">My Blogs</a>
+    <span>/</span>
+    <span>{{$blog?->id ? "Update Blog" : "Add Blog"}}</span>
+@endsection
+
 @section('content')
 
                 <div class="content-section">
-                    <h2 class="section-title">
-                        Create New Blog
-                    </h2>
 
-                    <form id="createBlogForm">
+                    @session('success')
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endsession
+                    @error('error')
+                        <div class="alert alert-danger" role="alert">
+                        {{ $message }}
+                        </div>
+                    @enderror
+
+                    <form action="{{ route('manageBlog') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+
                         <div class="form-group">
-                            <label for="blogTitle">Blog Title</label>
-                            <input type="text" id="blogTitle" name="title" placeholder="Enter an engaging blog title" />
+                            <label for="title">Blog Title</label>
+                            <input type="text" id="title" name="title" placeholder="Enter an engaging blog title" value="{{ $blog?->title }}" />
+                            <input type="hidden" id="id" name="id" value="{{ $blog?->id }}"/>
+                            @if($errors->has('title'))
+                                <div class="text-danger">{{ $errors->first('title') }}</div>
+                            @endif
                         </div>
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="category">Category</label>
-                                <select id="category" name="category">
+                                <label for="category_id">Category</label>
+                                <select id="category_id" name="category_id">
                                     <option value="">Select a category</option>
-                                    <option value="marketing">Digital Marketing</option>
-                                    <option value="social-media">Social Media</option>
-                                    <option value="content">Content Creation</option>
-                                    <option value="branding">Branding</option>
-                                    <option value="seo">SEO</option>
-                                    <option value="other">Other</option>
+
+                                    @foreach ($categories as $category )
+                                        <option value="{{$category->id}}" {{ ($blog?->category_id??null) == $category->id ? "selected" :"" }} >{{$category->title}}</option>
+                                    @endforeach
+
                                 </select>
+                            @if($errors->has('category'))
+                                <div class="text-danger">{{ $errors->first('category') }}</div>
+                            @endif
                             </div>
+
                             <div class="form-group">
                                 <label for="status">Status</label>
-                                <select id="status" name="status">
-                                    <option value="draft">Draft</option>
-                                    <option value="publish">Publish</option>
-                                    <option value="request" selected>Request</option>
+                                
+                                <select id="status" name="status" disabled>
+                                    
+                                    <option value="0" {{ ($blog?->status ?? null) == 0 ? "selected" :"" }}>Request</option>
+                                    <option value="1" {{ ($blog?->status ?? null) == 1 ? "selected" :"" }}>Publish</option>
+                                    <option value="2" {{ ($blog?->status ?? null) == 2 ? "selected" :"" }}>Inactive</option>
+                                    <option value="3" {{ ($blog?->status ?? null) == 3 ? "selected" :"" }}>Draft</option>
+                                    <option value="4" {{ ($blog?->status ?? null) == 4 ? "selected" :"" }}>Rejected</option>
+                                   
                                 </select>
+
+                            @if($errors->has('status'))
+                                <div class="text-danger">{{ $errors->first('status') }}</div>
+                            @endif
+
+
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="featuredImage">Featured Image</label>
-                                <input type="file" id="fileInput" name="featured_image" accept="image/*" />
+                            <label for="featured_image2">Featured Image</label>
+                                <input type="file" id="featured_image" name="featured_image" accept="image/*" onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('preview').style.display = 'block';" />
 
-                            <img id="previewImage" class="preview-image" style="display: none;" />
+                            <img id="previewImage" class="preview-image w-25" src="{{ $blog?->featured_image_url}}" />
+
+                            @if($errors->has('featured_image'))
+                                <div class="text-danger">{{ $errors->first('featured_image') }}</div>
+                            @endif
                         </div>
 
                         <div class="form-group">
                             <label for="content">Content</label>
-                            <textarea id="content" name="content" rows="10" placeholder="Write your blog content here..."></textarea>
+                            <textarea id="content" name="content" rows="10" placeholder="Write your blog content here...">{{$blog?->content}}</textarea>
+                            @if($errors->has('content'))
+                                <div class="text-danger">{{ $errors->first('content') }}</div>
+                            @endif
                         </div>
 
                         <div class="form-group">
                             <label for="tags">Tags (comma separated)</label>
-                            <input type="text" id="tags" name="tags" placeholder="e.g., marketing, SEO, branding" />
+                            <input type="text" id="tags" name="tags" placeholder="e.g., marketing, SEO, branding" value="{{ $blog?->blog_tags }}" />
+                            @if($errors->has('tags'))
+                                <div class="text-danger">{{ $errors->first('tags') }}</div>
+                            @endif
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tags">Active</label>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input pe-4" type="checkbox" id="status" {{ ($blog?->is_active ?? false) ? "checked" :"" }} >
+                            </div>
+                            @if($errors->has('is_active'))
+                                <div class="text-danger">{{ $errors->first('is_active') }}</div>
+                            @endif
                         </div>
 
                         <div class="button-group">
-                            <button type="submit" class="btn-primary-dashboard">
-                                <i class="fa-solid fa-paper-plane"></i> Publish Blog
-                            </button>
-                            <button type="button" class="btn-secondary-dashboard" id="saveDraftBtn">
-                                <i class="fa-solid fa-floppy-disk"></i> Save as Draft
-                            </button>
+                            @can('blog-create')
+                                <button type="submit" class="btn-primary-dashboard" name="status" value="0">
+                                    <i class="fa-solid fa-paper-plane"></i> Save and Submit
+                                </button>
+                            @endcan
+
+                             <button type="submit" class="btn-primary-dashboard" name="status" value="3">
+                                    <i class="fa-solid fa-archive"></i> Save Draft
+                                </button>
+                          
                             <button type="button" class="btn-secondary-dashboard" onclick="window.history.back();">
                                 <i class="fa-solid fa-times"></i> Cancel
                             </button>

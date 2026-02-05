@@ -25,6 +25,12 @@
     </style>
 @endsection
 
+@section('breadcrumb')
+    <a href="dashboard">Home</a>
+    <span>/</span>
+     <span>My Blogs</span>
+@endsection
+
 @section('dashboard-right-button')
  <a href="/manageblog" class="btn-primary-dashboard">
                         <i class="fa-solid fa-plus"></i> New Blog
@@ -42,7 +48,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-1">Total Blogs</h6>
-                        <h3 class="fw-bold mb-0">120</h3>
+                        <h3 class="fw-bold mb-0">{{ $blogStatistics['total']}}</h3>
                     </div>
                     <div class="icon-box fs-2">
                         <i class="fa-solid fa-blog"></i>
@@ -57,7 +63,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-1">Published</h6>
-                        <h3 class="fw-bold mb-0">80</h3>
+                        <h3 class="fw-bold mb-0">{{ $blogStatistics['published'] }}</h3>
                     </div>
                     <div class="icon-box fs-2">
                         <i class="fa-solid fa-newspaper"></i>
@@ -72,7 +78,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-1">Draft</h6>
-                        <h3 class="fw-bold mb-0">25</h3>
+                        <h3 class="fw-bold mb-0">{{ $blogStatistics['draft'] }}</h3>
                     </div>
                     <div class="icon-box fs-2">
                         <i class="fa-solid fa-box-archive"></i>
@@ -87,7 +93,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-1">Rejected</h6>
-                        <h3 class="fw-bold mb-0">15</h3>
+                        <h3 class="fw-bold mb-0">{{ $blogStatistics['rejected'] }}</h3>
                     </div>
                     <div class="icon-box fs-2">
                         <i class="fa-solid fa-xmark"></i>
@@ -101,13 +107,24 @@
 
 
    <div class="content-section">
+
+                    @session('success')
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endsession
+                    @error('error')
+                        <div class="alert alert-danger" role="alert">
+                        {{ $message }}
+                        </div>
+                    @enderror
+
                     <div class="table-responsive">
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>Banner</th>
                                     <th>Title</th>
-                                    <th>Views</th>
                                     <th>Rejection Reason</th>
                                     <th>Uploaded Date</th>
                                     <th>Status</th>
@@ -115,70 +132,44 @@
                                 </tr>
                             </thead>
                             <tbody>
+
+                                @foreach ($blogs as $blog )
                                 <tr>
                                     <td>
                                         <div class="table-img">
-                                            <img src="{{asset('assets/img/blog/blog-thumb-1.png')}}" alt="Blog Banner" />
+                                            <img src="{{$blog->getFeaturedImageUrlAttribute()}}" alt="Blog Banner" />
                                         </div>
                                     </td>
-                                    <td><strong>How to Master Social Media Marketing</strong></td>
-                                    <td>245</td>
+                                    <td><strong>{{$blog->title}}</strong></td>
                                     <td>N/A</td>
-                                    <td>Jan 15, 2025</td>
-                                    <td>Published</td>
+                                    <td>{{ $blog->published_at }}</td>
+                                    {{-- <td>{{ $blog->status == 0 ? "Requested" : $blog->status == 1 ? "Published" : $blog->status == 2 ? "Inactive" : $blog->status == 3 ? "Draft" : $blog->status == 4 ? "Rejected" }}</td> --}}
+                                    <td>{{ $blog->status == 0 ? "Requested" : ($blog->status == 1 ? "Published" : ($blog->status == 2 ? "Inactive" : ($blog->status == 3 ? "Draft" : "Rejected"))) }}</span></td>
                                     <td>
-                                        <button class="btn-secondary-dashboard btn-sm">Edit</button>
-                                        <button class="btn-secondary-dashboard btn-sm">Delete</button>
-                                    </td>
+                                                <form action="{{ route('manageblog.page') }}" method="GET" class="float-start me-2" >
+                                                    @csrf
+
+                                                    <input type="hidden" id="id" name="id"  value="{{ $blog->id }}" />
+                                                    @can('category-edit')
+                                                    <button class="btn-secondary-dashboard btn-sm">Edit</button>
+                                                    @endcan
+                                                </form>
+
+                                                <form action="{{ route('deleteBlog') }}" method="POST" class="float-start">
+                                                    @csrf
+
+                                                    <input type="hidden" id="id" name="id"  value="{{ $blog->id }}" />
+                                                     @can('category-delete')
+                                                    <button class="btn-secondary-dashboard btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                                                     @endcan
+                                                </form>
+
+                                            </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <div class="table-img">
-                                            <img src="{{asset('assets/img/blog/blog-thumb-2.png')}}" alt="Blog Banner" />
-                                        </div>
-                                    </td>
-                                    <td><strong>10 Tips for Content Creation</strong></td>
-                                    <td>389</td>
-                                    <td>N/A</td>
-                                    <td>Jan 12, 2025</td>
-                                    <td>Published</td>
-                                    <td>
-                                        <button class="btn-secondary-dashboard btn-sm">Edit</button>
-                                        <button class="btn-secondary-dashboard btn-sm">Delete</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="table-img">
-                                            <img src="{{asset('assets/img/blog/blog-thumb-3.png')}}" alt="Blog Banner" />
-                                        </div>
-                                    </td>
-                                    <td><strong>The Future of Digital Marketing</strong></td>
-                                    <td>512</td>
-                                    <td>N/A</td>
-                                    <td>Jan 08, 2025</td>
-                                    <td>Published</td>
-                                    <td>
-                                        <button class="btn-secondary-dashboard btn-sm">Edit</button>
-                                        <button class="btn-secondary-dashboard btn-sm">Delete</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="table-img">
-                                            <img src="{{asset('assets/img/blog/blog-thumb-4.png')}}" alt="Blog Banner" />
-                                        </div>
-                                    </td>
-                                    <td><strong>Building Your Personal Brand</strong></td>
-                                    <td>678</td>
-                                    <td>N/A</td>
-                                    <td>Jan 02, 2025</td>
-                                    <td>Published</td>
-                                    <td>
-                                        <button class="btn-secondary-dashboard btn-sm">Edit</button>
-                                        <button class="btn-secondary-dashboard btn-sm">Delete</button>
-                                    </td>
-                                </tr>
+                                @endforeach
+
+
+
                             </tbody>
                         </table>
                     </div>

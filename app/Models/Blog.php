@@ -14,6 +14,7 @@ class Blog extends Model
     const STATUS_ACTIVE = '1';
     const STATUS_INACTIVE = '2';
     const STATUS_DRAFT = '3';
+    const STATUS_REJECTED = '4';
 
 
     public const FILE_PATH = 'uploads/featured_images/';
@@ -41,6 +42,10 @@ class Blog extends Model
         'deleted_at',
     ];
 
+    // protected $casts = [
+    //     'tags' => 'json',
+    // ];
+
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
@@ -53,4 +58,32 @@ class Blog extends Model
     {
         return $this->hasMany(Comment::class, 'blog_id');
     }
+
+    public function setTagsAttribute($value)
+    {
+        $this->attributes['tags'] = json_encode($value);
+    }
+
+
+
+    public function getFeaturedImageUrlAttribute()
+    {
+        if ($this->featured_image) {
+            return asset('storage/' . self::FILE_PATH . $this->featured_image);
+        }
+        return asset('images/default-featured-image.png');
+    }
+
+
+    public function getBlogTagsAttribute()
+    {
+        return json_decode($this->tags);
+    }
+
+
+
+
+
+
+
 }
