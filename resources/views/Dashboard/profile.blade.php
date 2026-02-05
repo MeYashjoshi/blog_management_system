@@ -9,10 +9,10 @@
                 <div class="content-section">
                     <div class="profile-header">
                         <div class="profile-avatar-lg">
-                        <img src="{{ $user->getProfileUrlAttribute() }}" class="img-fluid rounded-circle" alt="User Avatar">
+                        <img id="previewImage" src="{{ $user->profile_url }}" class="img-fluid rounded-circle" alt="User Avatar">
                         </div>
                         <div class="profile-header-info">
-                            <h3>{{ $user->getFullNameAttribute() }}</h3>
+                            <h3>{{ $user->full_name }}</h3>
                             <p>{{ $user->email }}</p>
 
                             <span class="user-role">{{ Auth::user()->roles()->first()->name }}</span>
@@ -71,10 +71,10 @@
                             <label for="bio">Bio</label>
                             <textarea id="bio" name="bio" rows="4" placeholder="Tell us about yourself...">{{ $user->bio }}</textarea>
                         </div>
-                        {{ $user->profile }}
+                     
                         <div class="form-group">
                             <label for="profile">Profile Picture</label>
-                            <input type="file" id="profile" name="profile" accept="image/*" />
+                            <input type="file" id="profile" name="profile" accept="image/*" onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('preview').style.display = 'block';"/>
                         </div>
 
                         <div class="button-group">
