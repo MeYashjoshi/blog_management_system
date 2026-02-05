@@ -43,7 +43,7 @@ class UserRepository implements UserRepositoryInterface
                 $file = $request['profile'];
                 $filename = $file ? $this->uploadImage($file) : ($request['profile'] ?? null);
 
-                $file->storeAs('public/' . $this->userModel::FILE_PATH, $filename);
+                $file->storeAs($this->userModel::FILE_PATH, $filename);
             }
 
             $user->firstname = $request['firstname'];

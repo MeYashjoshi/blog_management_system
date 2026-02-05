@@ -51,7 +51,6 @@ class CategoryRepository implements CategoryRepositoryInterface
 
             return 200;
         } catch (Exception $e) {
-            dd($e);
             throw new Exception("Failed to manage category: " . $e->getMessage());
         }
 
@@ -82,6 +81,7 @@ class CategoryRepository implements CategoryRepositoryInterface
 
         try {
             $category = $this->categoryModel->where('id',$request)->first();
+
             $category->deleteOrFail();
 
             return 204;
