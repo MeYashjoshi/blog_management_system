@@ -67,7 +67,7 @@ class User extends Authenticatable
     public function getProfileUrlAttribute(): string
     {
         if ($this->profile) {
-            return asset('storage/public/' . self::FILE_PATH . $this->profile);
+            return asset('storage/' . self::FILE_PATH . $this->profile);
         } else {
             return asset('images/default-profile.png');
         }
