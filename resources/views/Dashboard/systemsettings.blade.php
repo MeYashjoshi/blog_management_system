@@ -18,16 +18,16 @@
 
         <div class="form-group">
             <label for="sitelogo">Site Logo</label>
-            <input type="file" id="sitelogo" name="sitelogo" accept="image/*" />
+            <input type="file" id="sitelogo" name="sitelogo" accept="image/*" onchange="document.getElementById('sitelogopreview').src = window.URL.createObjectURL(this.files[0]);document.getElementById('preview').style.display = 'block';" />
 
-            <img src="{{ $settings->getSitelogoUrlAttribute() }}" class="m-3" alt="Current Logo" id="currentLogo" style="max-width: 200px;" />
+            <img id="sitelogopreview" src="{{ $settings->getSitelogoUrlAttribute() }}" class="m-3" alt="Current Logo" id="currentLogo" style="max-width: 200px;" />
 
         </div>
 
         <div class="form-group">
             <label for="favicon">Favicon</label>
-            <input type="file" id="favicon" name="favicon" accept="image/*" />
-            <img src="{{ $settings->getFaviconUrlAttribute() }}" class="m-3" alt="Current Favicon" id="currentFavicon" style="width: 32px; height: 32px;" />
+            <input type="file" id="favicon" name="favicon" accept="image/*" onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('preview').style.display = 'block';"/>
+            <img id="faviconpreview" src="{{ $settings->getFaviconUrlAttribute() }}" class="m-3" alt="Current Favicon" id="currentFavicon" style="width: 32px; height: 32px;" />
 
         </div>
 
