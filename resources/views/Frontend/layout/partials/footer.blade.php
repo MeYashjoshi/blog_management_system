@@ -5,7 +5,7 @@
 			<div class="row">
 				<div class="col-lg-3 col-md-6">
 					<div class="logo">
-						<a href="index.html"><img src="{{ asset('assets/img/logo/header-logo1.png') }}" alt="vexon" /></a>
+						<a href="index.html"><img src="{{ asset('storage/uploads/system_settings/'.$siteSettings->sitelogo) }}" alt="vexon" /></a>
 					</div>
 					<div class="heading1 mt-16">
 						<p>Vexon is your hub for the latest in digital innovation, technology trends, creative insights. Our mission is to empower creators, businesses, valuable resource.</p>
@@ -46,7 +46,7 @@
 								<img src="{{ asset('assets/img/icons/footer1-icon1.svg') }}" alt="vexon" />
 							</div>
 							<div class="text">
-								<a href="#">support@vexon.com</a>
+								<a href="#">{{$siteSettings->supportemail}}</a>
 							</div>
 						</div>
 
@@ -55,9 +55,7 @@
 								<img src="{{ asset('assets/img/icons/footer1-icon2.svg') }}" alt="vexon" />
 							</div>
 							<div class="text">
-								<a href="#">8708 Technology Forest Pl <br />
-									Suite 125 -G, The Woodlands, <br />
-									TX 773</a>
+								<a href="#">{{$siteSettings->address}}</a>
 							</div>
 						</div>
 
@@ -66,7 +64,7 @@
 								<img src="{{ asset('assets/img/icons/footer1-icon3.svg') }}" alt="vexon" />
 							</div>
 							<div class="text">
-								<a href="#">123-456-7890</a>
+								<a href="#">{{$siteSettings->contactnumber}}</a>
 							</div>
 						</div>
 					</div>

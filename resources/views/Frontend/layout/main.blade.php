@@ -13,7 +13,7 @@
         <title>{{ config('app.name') }}</title>
     @endif
 	<!--=====FAB ICON=======-->
-	<link rel="shortcut icon" href="assets/img/logo/title1.svg" type="image/x-icon" />
+	<link rel="shortcut icon" href="{{ asset('storage/uploads/system_settings/'.$siteSettings->favicon) }}" type="image/x-icon" />
 
 	<!--=====CSS=======-->
 	<link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
@@ -72,7 +72,7 @@
 						<div class="search__top d-flex justify-content-between align-items-center">
 							<div class="search__logo">
 								<a href="index.html">
-									<img src="assets/img/logo/white-logo.png" alt="vexon" />
+									<img src="{{ asset('storage/uploads/system_settings/'.$siteSettings->sitelogo) }}" alt="vexon" />
 								</a>
 							</div>
 							<div class="search__close">
@@ -150,10 +150,10 @@
 							</div>
 
 							<div class="header1-buttons">
-
+                                  
                                 @if(Auth::check())
                                     <div class="dropdown">
-                                        <img src="{{ asset('assets/img/author/top-author-1.png') }}" alt="Profile" class="profile-img dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:40px; height:40px; border-radius:50%; cursor:pointer;">
+                                        <img src="{{ asset(Auth::user()->profile_url) }}" alt="Profile" class="profile-img dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:40px; height:40px; border-radius:50%; cursor:pointer;">
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                         <li><a class="dropdown-item" href="/myblogs">My Blogs</a></li>
                                         <li><form action="{{ route('logout') }}" method="post">
@@ -263,7 +263,7 @@
 						<img src="assets/img/icons/footer1-icon3.svg" alt="vexon" />
 					</div>
 					<div class="text">
-						<a href="tel:123-456-7890">123-456-7890</a>
+						<a href="tel:123-456-7890">{{$siteSettings->contactnumber}}</a>
 					</div>
 				</div>
 			</div>

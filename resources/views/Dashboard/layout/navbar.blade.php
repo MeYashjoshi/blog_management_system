@@ -15,10 +15,10 @@
                     </a>
 
                     <div class="user-profile">
-                         <img src="{{ asset('assets/img/author/top-author-1.png') }}" alt="Profile" class="profile-img dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:40px; height:40px; border-radius:50%; cursor:pointer;">
+                         <img src="{{ asset(Auth::user()->profile_url) }}" alt="Profile" class="profile-img dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:40px; height:40px; border-radius:50%; cursor:pointer;">
                         <div class="profile-name">
 
-                            <p>{{Auth::user()->firstname}}</p>
+                            <p>{{Auth::user()->full_name}}</p>
                             <span>{{ucfirst(Auth::user()->getRoleNames()->first())}}</span>
                         </div>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">

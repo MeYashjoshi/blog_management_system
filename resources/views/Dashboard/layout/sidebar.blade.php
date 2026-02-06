@@ -1,7 +1,7 @@
  <aside class="sidebar">
             <div class="sidebar-logo">
             <a href="/dashboard">
-                <img src="{{ asset('assets/img/logo/header-logo1.png') }}" alt="vexon" />
+                <img src="{{ asset('storage/uploads/system_settings/' . $siteSettings->sitelogo) }}" alt="vexon" />
             </a>
             </div>
 

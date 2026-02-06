@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="{{ asset('assets/css/fontawesome.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" />
 
+   
+    <link rel="icon" href="{{'storage/uploads/system_settings/' . $siteSettings->favicon }}" type="image/x-icon" />
+
     @yield('style')
 
 
@@ -28,7 +31,7 @@
             <div class="dashboard-content">
                 <div class="breadcrumb-section">
                     <nav class="breadcrumb">
-                        <a href="dashboard">Home</a>
+                        {{-- <a href="dashboard">Home</a>
                         <span>/</span>
 
                         @if(request()->is('dashboard'))
@@ -66,9 +69,11 @@
                         <span>Roles & Permissions</span>
 
 
-                        @endif
+                        @endif --}}
 
+                        @yield('breadcrumb')
                     </nav>
+
 
                     @yield('dashboard-right-button')
 
