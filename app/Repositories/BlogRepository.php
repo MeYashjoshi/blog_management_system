@@ -55,7 +55,7 @@ class BlogRepository implements BlogRepositoryInterface
 
                 $file = $request['featured_image'];
                 $filename = $file ? $this->uploadImage($file) : ($request['featured_image'] ?? null);
-
+                $this->deleteFile($this->blogModel::FILE_PATH . $blog->featured_image);
                 $file->storeAs($this->blogModel::FILE_PATH, $filename);
             }
 
