@@ -8,12 +8,14 @@ use App\Interfaces\BlogRepositoryInterface;
 use App\Interfaces\TagRepositoryInterface;
 use App\Interfaces\SystemSettingRepositoryInterface;
 use App\Interfaces\UserRepositoryInterface;
+use App\Models\SystemSetting;
 use App\Repositories\CategoryRepository;
 use App\Repositories\CommentRepository;
 use App\Repositories\BlogRepository;
 use App\Repositories\TagRepository;
 use App\Repositories\SystemSettingRepository;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -62,6 +64,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+       View::composer('*', function ($view) {
+        $settings = SystemSetting::first(); // Assuming you have only one row
+        $view->with('siteSettings', $settings);
+    });
     }
 }
