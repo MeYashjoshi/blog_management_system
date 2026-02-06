@@ -38,7 +38,7 @@
                         @csrf
 
                         <div class="form-group">
-                            <label for="title">Blog Title</label>
+                            <label for="title">Blog Title <span class="fs-5 text-danger">*</span></label>
                             <input type="text" id="title" name="title" placeholder="Enter an engaging blog title" value="{{ $blog?->title }}" />
                             <input type="hidden" id="id" name="id" value="{{ $blog?->id }}"/>
                             @if($errors->has('title'))
@@ -48,8 +48,8 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="category_id">Category</label>
-                                <select id="category_id" name="category_id">
+                                <label for="category_id">Category <span class="fs-5 text-danger">*</span></label>
+                                <select id="category_id" name="category_id" >
                                     <option value="">Select a category</option>
 
                                     @foreach ($categories as $category )
@@ -57,12 +57,12 @@
                                     @endforeach
 
                                 </select>
-                            @if($errors->has('category'))
-                                <div class="text-danger">{{ $errors->first('category') }}</div>
+                            @if($errors->has('category_id'))
+                                <div class="text-danger">{{ $errors->first('category_id') }}</div>
                             @endif
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group pt-2">
                                 <label for="status">Status</label>
                                 
                                 <select id="status" name="status" disabled>
@@ -87,7 +87,8 @@
                             <label for="featured_image2">Featured Image</label>
                                 <input type="file" id="featured_image" name="featured_image" accept="image/*" onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('preview').style.display = 'block';" />
 
-                            <img id="previewImage" class="preview-image w-25" src="{{ $blog?->featured_image_url}}" />
+                 
+                            <img id="previewImage" class="preview-image w-25 d-none" src="{{ $blog?->featured_image_url}}"  />
 
                             @if($errors->has('featured_image'))
                                 <div class="text-danger">{{ $errors->first('featured_image') }}</div>
@@ -95,7 +96,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="content">Content</label>
+                            <label for="content">Content <span class="fs-5 text-danger">*</span></label>
                             <textarea id="content" name="content" rows="10" placeholder="Write your blog content here...">{{$blog?->content}}</textarea>
                             @if($errors->has('content'))
                                 <div class="text-danger">{{ $errors->first('content') }}</div>
