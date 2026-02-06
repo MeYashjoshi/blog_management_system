@@ -94,7 +94,7 @@ class BlogController extends BaseController
             $resp = $this->blogRepository->manageBlog($request->validated());
 
              if ($resp == 201) {
-                return redirect()->route('manageblog.page')->with('success', 'blog created successfully.');
+                return redirect()->route('myblogs.page')->with('success', 'blog created successfully.');
             } elseif ($resp == 200) {
                 return back()->with('success', 'blog updated successfully.');
             }
