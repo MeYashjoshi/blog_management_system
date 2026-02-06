@@ -71,7 +71,7 @@ class Blog extends Model
         if ($this->featured_image) {
             return asset('storage/' . self::FILE_PATH . $this->featured_image);
         }
-        return asset('images/default-featured-image.png');
+        return asset('storage/' . self::FILE_PATH . $this->featured_image.'default-featured-image.svg');
     }
 
 

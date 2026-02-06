@@ -69,7 +69,7 @@ class User extends Authenticatable
         if ($this->profile) {
             return asset('storage/' . self::FILE_PATH . $this->profile);
         } else {
-            return asset('images/default-profile.png');
+            return asset('storage/' . self::FILE_PATH . $this->profile.'default-profile-image.png');
         }
     }
 
