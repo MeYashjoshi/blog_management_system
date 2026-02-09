@@ -22,6 +22,7 @@ class StoreBlogRequest extends FormRequest
      */
     public function rules(): array
     {
+
         $blogId = $this->id??null;
 
         return [
@@ -32,7 +33,7 @@ class StoreBlogRequest extends FormRequest
             'content' => 'required|max:3000',
             'tags' => 'nullable|string',
             'status' => 'required|integer',
-         
+
         ];
 
     }

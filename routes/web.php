@@ -55,8 +55,8 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('blogs', 'showBlogs')->name('blogs.page');
         Route::get('blog/{id}', 'showBlog')->name('showblog.page');
         Route::get('manageblog', 'showManageBlog')->name('manageblog.page');
-        Route::get('blogrequests', 'showBlogRequests')->name('blogrequests.page');
-        Route::get('requestedblog', 'showBlogRequestedBlog')->name('requestedblog.page');
+        Route::get('blogrequests', 'getRequestedBlogs')->name('blogrequests.page');
+        Route::get('requestedblog', 'showRequestedBlog')->name('requestedblog.page');
         Route::get('myblogs', 'showMyBlogs')->name('myblogs.page');
 
 
@@ -69,6 +69,8 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('RecentBlogs', 'RecentBlogs')->name('RecentBlogs');
         Route::get('trendingBlogs', 'trendingBlogs')->name('trendingBlogs');
         Route::post('deleteBlog', 'deleteBlog')->name('deleteBlog');
+        Route::post('updateBlogStatus', 'updateBlogStatus')->name('updateBlogStatus');
+
     });
 
     Route::controller(CategoryController::class)->group(function () {

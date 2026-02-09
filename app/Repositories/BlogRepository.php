@@ -41,11 +41,41 @@ class BlogRepository implements BlogRepositoryInterface
         return $blogs;
     }
 
+    public function getRequestedBlogs()
+    {
+
+        try {
+            $requestedBlogs = $this->blogModel->whereIn('status', [Blog::STATUS_PENDING,Blog::STATUS_REJECTED,Blog::STATUS_ACTIVE])->get();
+
+            return $requestedBlogs;
+        } catch (\Throwable $e) {
+            return back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+
+    }
+
+    public function getRequestedBlog($request)
+    {
+        try {
+            $RequestedBlog = $this->blogModel->whereId($request->id)->first();
+
+            return $RequestedBlog;
+
+        } catch (\Throwable $e) {
+            return back()->withErrors([
+                "errors" => $e->getMessage(),
+            ]);
+        }
+    }
+
     public function manageBlog($request)
     {
 
         try {
-          
+
             $blog = $this->blogModel->where('id', $request['id'])->first();
 
 
@@ -71,6 +101,7 @@ class BlogRepository implements BlogRepositoryInterface
                 'tags' =>  $request['tags'],
                 'published_at' =>  now(),
                 'status' =>  $request['status'],
+                'rejection_reason' => 'N/A'
             ]);
 
             if ($blog->wasRecentlyCreated) {
@@ -92,6 +123,7 @@ class BlogRepository implements BlogRepositoryInterface
         $blog['published'] = $this->blogModel->where('status', Blog::STATUS_ACTIVE)->count();
         $blog['draft'] = $this->blogModel->where('status', Blog::STATUS_DRAFT)->count();
         $blog['rejected'] = $this->blogModel->where('status', Blog::STATUS_REJECTED)->count();
+        $blog['Requested'] = $this->blogModel->where('status', Blog::STATUS_PENDING)->count();
 
         return $blog;
 
@@ -113,6 +145,42 @@ class BlogRepository implements BlogRepositoryInterface
         } catch (Exception $e) {
 
             throw new Exception("Failed to delete category: " . $e->getMessage());
+        }
+    }
+
+    public function updateBlogStatus($request)
+    {
+
+        try {
+
+
+
+            if ($request->status==1) {
+
+                $request->rejection_reason = "N/A";
+
+            }
+
+
+            $blog = $this->blogModel->where('id', $request->id)->first();
+
+            if ($request->status == Blog::STATUS_REJECTED && $blog->status == Blog::STATUS_REJECTED ) {
+                 throw new Exception("The blog is already rejected.");
+            }
+            elseif ($request->status == Blog::STATUS_ACTIVE && $blog->status == Blog::STATUS_ACTIVE ) {
+                 throw new Exception("The blog is already approved.");
+            }
+
+
+
+            $blog->status = $request->status;
+            $blog->rejection_reason = $request->rejection_reason;
+            $blog->save();
+            return 200;
+
+        } catch (Exception $e) {
+
+            throw new Exception("Failed to update blog status: " . $e->getMessage());
         }
     }
 }

@@ -29,6 +29,7 @@ class Blog extends Model
         'tags',
         'published_at',
         'status',
+        'rejection_reason',
     ];
 
     /**

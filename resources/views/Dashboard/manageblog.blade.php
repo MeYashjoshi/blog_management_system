@@ -64,15 +64,15 @@
 
                             <div class="form-group pt-2">
                                 <label for="status">Status</label>
-                                
+
                                 <select id="status" name="status" disabled>
-                                    
+
                                     <option value="0" {{ ($blog?->status ?? null) == 0 ? "selected" :"" }}>Request</option>
                                     <option value="1" {{ ($blog?->status ?? null) == 1 ? "selected" :"" }}>Publish</option>
                                     <option value="2" {{ ($blog?->status ?? null) == 2 ? "selected" :"" }}>Inactive</option>
                                     <option value="3" {{ ($blog?->status ?? null) == 3 ? "selected" :"" }}>Draft</option>
                                     <option value="4" {{ ($blog?->status ?? null) == 4 ? "selected" :"" }}>Rejected</option>
-                                   
+
                                 </select>
 
                             @if($errors->has('status'))
@@ -87,8 +87,8 @@
                             <label for="featured_image2">Featured Image</label>
                                 <input type="file" id="featured_image" name="featured_image" accept="image/*" onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('preview').style.display = 'block';" />
 
-                 
-                            <img id="previewImage" class="preview-image w-25 d-none" src="{{ $blog?->featured_image_url}}"  />
+
+                            <img id="previewImage" class="preview-image w-25 {{ $blog?->featured_image_url? '':'d-none' }}" src="{{ $blog?->featured_image_url}}" />
 
                             @if($errors->has('featured_image'))
                                 <div class="text-danger">{{ $errors->first('featured_image') }}</div>
@@ -123,15 +123,16 @@
 
                         <div class="button-group">
                             @can('blog-create')
-                                <button type="submit" class="btn-primary-dashboard" name="status" value="0">
-                                    <i class="fa-solid fa-paper-plane"></i> Save and Submit
-                                </button>
+                            <button type="submit" class="btn-primary-dashboard" name="status" value="0">
+                                <i class="fa-solid fa-paper-plane"></i> {{ $blog?->id ? "Update Blog" : "Submit Blog" }}
+                            </button>
+
                             @endcan
 
                              <button type="submit" class="btn-primary-dashboard" name="status" value="3">
                                     <i class="fa-solid fa-archive"></i> Save Draft
                                 </button>
-                          
+
                             <button type="button" class="btn-secondary-dashboard" onclick="window.history.back();">
                                 <i class="fa-solid fa-times"></i> Cancel
                             </button>

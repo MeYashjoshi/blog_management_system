@@ -3,29 +3,36 @@
 @section('title', 'Blog Requests')
 
 @section('style')
-    <style>
-        .table-img img {
-            width: 80px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
+<style>
+    .table-img img {
+        width: 80px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
 
-               .custom-card{
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
-    border: 1px solid #e2e8f0 !important;
-    margin-bottom: 30px;
+    .custom-card {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
+        border: 1px solid #e2e8f0 !important;
+        margin-bottom: 30px;
 
-        }
-        .content-section-box h3,.icon-box {
-    color: #6366f1;
-}
-    </style>
+    }
+
+    .content-section-box h3,
+    .icon-box {
+        color: #6366f1;
+    }
+</style>
 @endsection
 
+@section('breadcrumb')
+<a href="dashboard">Home</a>
+<span>/</span>
+<span>Blog Requests</span>
+@endsection
 
 @section('content')
 
@@ -39,10 +46,10 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-1">Total Requests</h6>
-                        <h3 class="fw-bold mb-0">120</h3>
+                        <h3 class="fw-bold mb-0">{{ $blogStatistics['Requested'] }}</h3>
                     </div>
                     <div class="icon-box fs-2">
-                       <i class="fa-solid fa-bell"></i>
+                        <i class="fa-solid fa-bell"></i>
                     </div>
                 </div>
             </div>
@@ -54,10 +61,10 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-1">Approved</h6>
-                        <h3 class="fw-bold mb-0">80</h3>
+                        <h3 class="fw-bold mb-0">{{ $blogStatistics['published'] }}</h3>
                     </div>
                     <div class="icon-box fs-2">
-                       <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-check"></i>
                     </div>
                 </div>
             </div>
@@ -69,7 +76,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-1">Rejected</h6>
-                        <h3 class="fw-bold mb-0">25</h3>
+                        <h3 class="fw-bold mb-0">{{ $blogStatistics['rejected'] }}</h3>
                     </div>
                     <div class="icon-box fs-2">
                         <i class="fa-solid fa-xmark"></i>
@@ -82,80 +89,60 @@
 </div>
 
 
-   <div class="content-section">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Banner</th>
-                                    <th>Title</th>
-                                    <th>Rejection Reason</th>
-                                    <th>Uploaded Date</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="table-img">
-                                            <img src="{{asset('assets/img/blog/blog-thumb-1.png')}}" alt="Blog Banner" />
-                                        </div>
-                                    </td>
-                                    <td><strong>How to Master Social Media Marketing</strong></td>
-                                    <td>N/A</td>
-                                    <td>Jan 15, 2025</td>
-                                    <td>Published</td>
-                                    <td>
-                                        <a href="{{url('requestedblog')}}" class="btn btn-sm btn-primary">View Blog</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                <td>
-                                        <div class="table-img">
-                                            <img src="{{asset('assets/img/blog/blog-thumb-1.png')}}" alt="Blog Banner" />
-                                        </div>
-                                    </td>
-                                    <td><strong>10 Tips for Content Creation</strong></td>
-                                    <td>N/A</td>
-                                    <td>Jan 12, 2025</td>
-                                    <td>Published</td>
-<td>
-                                        <a href="{{url('requestedblog')}}" class="btn btn-sm btn-primary">View Blog</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                <td>
-                                        <div class="table-img">
-                                            <img src="{{asset('assets/img/blog/blog-thumb-1.png')}}" alt="Blog Banner" />
-                                        </div>
-                                    </td>
-                                    <td><strong>The Future of Digital Marketing</strong></td>
-                                    <td>N/A</td>
-                                    <td>Jan 08, 2025</td>
-                                    <td>Published</td>
-<td>
-                                        <a href="{{url('requestedblog')}}" class="btn btn-sm btn-primary">View Blog</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                <td>
-                                        <div class="table-img">
-                                            <img src="{{asset('assets/img/blog/blog-thumb-1.png')}}" alt="Blog Banner" />
-                                        </div>
-                                    </td>
-                                    <td><strong>Building Your Personal Brand</strong></td>
-                                    <td>N/A</td>
-                                    <td>Jan 02, 2025</td>
-                                    <td>Published</td>
-<td>
-                                        <a href="{{url('requestedblog')}}" class="btn btn-sm btn-primary">View Blog</a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+<div class="content-section">
+
+    @session('success')
+    <div class="alert alert-success" role="alert">
+        {{ session('success') }}
+    </div>
+    @endsession
+    @error('error')
+    <div class="alert alert-danger" role="alert">
+        {{ $message }}
+    </div>
+    @enderror
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Banner</th>
+                    <th>Title</th>
+                    <th>Rejection Reason</th>
+                    <th>Uploaded Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach ($requestedBlogs as $requestedBlog)
+
+                <tr>
+                    <td>
+                        <div class="table-img">
+                            <img src="{{$requestedBlog->featured_image_url}}" alt="Blog Banner" />
+                        </div>
+                    </td>
+                    <td><strong>{{$requestedBlog->title}}</strong></td>
+                    <td>{{ $requestedBlog->rejection_reason }}</td>
+                    <td>{{$requestedBlog->created_at}}</td>
+                    <td>{{ $requestedBlog->status==0 ? 'Pending':($requestedBlog->status==1 ? 'Approved':'Rejected') }}
+                    </td>
+                    <td>
+                        <form action="{{ route('requestedblog.page') }}" method="GET">
+                            @csrf
+                            <input type="hidden" id="id" name="id" value="{{ $requestedBlog->id }}" />
+                            @can('blog-approve')
+                            <button type="submit" class="btn-secondary-dashboard btn-sm">View Blog</button>
+                            @endcan
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
 
 @endsection
-
