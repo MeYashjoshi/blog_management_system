@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('content');
             $table->json('tags')->nullable();
             $table->date('published_at');
-            $table->enum('status', ['0', '1', '2','3','4'])->default('0')->comment('0=Pending, 1=Active, 2=Inactive, 3=Draft, 4=Rejected');
+            $table->enum('status', ['0', '1', '2','3','4','5'])->default('0')->comment('0=Pending, 1=Active, 2=Inactive, 3=Draft, 4=Rejected, 5=Unpublished');
             $table->timestamps();
             $table->softDeletes(); // Add soft deletes
 
