@@ -28,21 +28,34 @@
                             {{ session('success') }}
                         </div>
                     @endsession
+
                     @error('error')
                         <div class="alert alert-danger" role="alert">
                         {{ $message }}
                         </div>
                     @enderror
 
-                    <form action="{{ route('manageBlog') }}" method="POST" enctype="multipart/form-data">
+                    <form id="blogForm" action="{{ route('manageBlog') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group">
                             <label for="title">Blog Title <span class="fs-5 text-danger">*</span></label>
                             <input type="text" id="title" name="title" placeholder="Enter an engaging blog title" value="{{ $blog?->title }}" />
                             <input type="hidden" id="id" name="id" value="{{ $blog?->id }}"/>
+
+                            <small id="titleError" class="text-danger d-none"> Only letters, numbers, spaces, hyphen and quotes are allowed.</small>
+
                             @if($errors->has('title'))
                                 <div class="text-danger">{{ $errors->first('title') }}</div>
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="slug">Slug<span class="fs-5 text-danger">*</span></label>
+                            <input type="text" id="slug" name="slug" placeholder="Enter slug " value="{{ $blog?->slung }}" />
+
+                            <small id="slugError" class="text-danger d-none"> Only letters, numbers, spaces and hyphen are allowed.</small>
+                            @if($errors->has('slug'))
+                                <div class="text-danger">{{ $errors->first('slug') }}</div>
                             @endif
                         </div>
 
@@ -72,6 +85,7 @@
                                     <option value="2" {{ ($blog?->status ?? null) == 2 ? "selected" :"" }}>Inactive</option>
                                     <option value="3" {{ ($blog?->status ?? null) == 3 ? "selected" :"" }}>Draft</option>
                                     <option value="4" {{ ($blog?->status ?? null) == 4 ? "selected" :"" }}>Rejected</option>
+                                    <option value="5" {{ ($blog?->status ?? null) == 5 ? "selected" :"" }}>Unpublished</option>
 
                                 </select>
 
@@ -88,7 +102,7 @@
                                 <input type="file" id="featured_image" name="featured_image" accept="image/*" onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('preview').style.display = 'block';" />
 
 
-                            <img id="previewImage" class="preview-image w-25 {{ $blog?->featured_image_url? '':'d-none' }}" src="{{ $blog?->featured_image_url}}" />
+                            <img id="previewImage" class="preview-image w-25" src="{{ $blog?->featured_image_url}}" />
 
                             @if($errors->has('featured_image'))
                                 <div class="text-danger">{{ $errors->first('featured_image') }}</div>
@@ -122,6 +136,9 @@
                         </div>
 
                         <div class="button-group">
+
+                            @if($blog?->status == 0 || $blog?->status == 4 || $blog?->status == 2 || $blog?->status == 3)
+
                             @can('blog-create')
                             <button type="submit" class="btn-primary-dashboard" name="status" value="0">
                                 <i class="fa-solid fa-paper-plane"></i> {{ $blog?->id ? "Update Blog" : "Submit Blog" }}
@@ -132,6 +149,7 @@
                              <button type="submit" class="btn-primary-dashboard" name="status" value="3">
                                     <i class="fa-solid fa-archive"></i> Save Draft
                                 </button>
+                            @endif
 
                             <button type="button" class="btn-secondary-dashboard" onclick="window.history.back();">
                                 <i class="fa-solid fa-times"></i> Cancel
@@ -157,4 +175,44 @@
 		} );
 	</script>
 
+
+    <script>
+
+        // generate slug from title
+
+        $('#title').on('input', function () {
+        const regex = /^[a-zA-Z0-9\s\-'""]*$/;
+
+        const title = $(this).val();
+            const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+            $('#slug').val(slug);
+
+        if (!regex.test(title)) {
+            $('#titleError').removeClass('d-none');
+            $(this).addClass('is-invalid');
+            } else {
+                $('#titleError').addClass('d-none');
+                $(this).removeClass('is-invalid');
+            }
+        });
+
+        $('#slug').on('input', function () {
+        const regex = /^[a-zA-Z0-9\s\-'""]*$/;
+
+        const title = $(this).val();
+            const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+
+        if (!regex.test(title)) {
+            $('#slugError').removeClass('d-none');
+            $(this).addClass('is-invalid');
+            } else {
+                $('#slugError').addClass('d-none');
+                $(this).removeClass('is-invalid');
+            }
+        });
+
+
+
+    </script>
 @endsection
+

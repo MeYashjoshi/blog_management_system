@@ -38,6 +38,7 @@ class CategoryController extends BaseController
     public function showManageCategory(Request $request)
     {
 
+
         $this->checkPermission("category-view");
 
         try {
@@ -55,6 +56,8 @@ class CategoryController extends BaseController
     public function getCategories() {}
     public function manageCategory(StoreCategoryRequest $request)
     {
+
+
 
         $this->checkPermission("category-create");
 

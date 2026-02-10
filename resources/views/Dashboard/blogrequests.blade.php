@@ -56,6 +56,8 @@
         </div>
 
         {{-- Published Blogs --}}
+
+
         <div class="col-md-4 col-sm-6">
             <div class="custom-card shadow-sm border-0">
                 <div class="card-body d-flex align-items-center justify-content-between">
@@ -127,12 +129,18 @@
                     <td><strong>{{$requestedBlog->title}}</strong></td>
                     <td>{{ $requestedBlog->rejection_reason }}</td>
                     <td>{{$requestedBlog->created_at}}</td>
-                    <td>{{ $requestedBlog->status==0 ? 'Pending':($requestedBlog->status==1 ? 'Approved':'Rejected') }}
+                    <td>{{
+                        $requestedBlog->status == 0 ? 'Pending' :
+                        ($requestedBlog->status == 1 ? 'Approved' :
+                        ($requestedBlog->status == 2 ? 'Inactive' :
+                        ($requestedBlog->status == 4 ? 'Rejected' : 'Unpublished')
+                        ))
+                    }}</td>
                     </td>
                     <td>
                         <form action="{{ route('requestedblog.page') }}" method="GET">
-                            @csrf
-                            <input type="hidden" id="id" name="id" value="{{ $requestedBlog->id }}" />
+
+                            <input type="hidden" id="slug" name="slug" value="{{ $requestedBlog->slung }}" />
                             @can('blog-approve')
                             <button type="submit" class="btn-secondary-dashboard btn-sm">View Blog</button>
                             @endcan

@@ -25,7 +25,7 @@ class BlogRepository implements BlogRepositoryInterface
     {
         try {
 
-            $blog = $this->blogModel->where('id', $request['id'])->first();
+            $blog = $this->blogModel->where('slung', $request['slug'])->first();
 
             return $blog;
         } catch (\Throwable $e) {
@@ -45,7 +45,7 @@ class BlogRepository implements BlogRepositoryInterface
     {
 
         try {
-            $requestedBlogs = $this->blogModel->whereIn('status', [Blog::STATUS_PENDING,Blog::STATUS_REJECTED,Blog::STATUS_ACTIVE])->get();
+            $requestedBlogs = $this->blogModel->whereIn('status', [Blog::STATUS_PENDING,Blog::STATUS_REJECTED,Blog::STATUS_ACTIVE,Blog::STATUS_UNPUBLISHED])->get();
 
             return $requestedBlogs;
         } catch (\Throwable $e) {
@@ -60,7 +60,7 @@ class BlogRepository implements BlogRepositoryInterface
     public function getRequestedBlog($request)
     {
         try {
-            $RequestedBlog = $this->blogModel->whereId($request->id)->first();
+            $RequestedBlog = $this->blogModel->where('slung', $request->slug)->first();
 
             return $RequestedBlog;
 
@@ -84,10 +84,17 @@ class BlogRepository implements BlogRepositoryInterface
             if (isset($request['featured_image'])) {
 
                 $file = $request['featured_image'];
+
                 $filename = $file ? $this->uploadImage($file) : ($request['featured_image'] ?? null);
-                $this->deleteFile($this->blogModel::FILE_PATH . $blog->featured_image);
+
+                if($filename && $blog?->featured_image && $filename != $blog->featured_image) {
+                    $this->deleteFile($this->blogModel::FILE_PATH . $blog->featured_image);
+                }
+
                 $file->storeAs($this->blogModel::FILE_PATH, $filename);
-            }
+                }
+                // dd($filename);
+
 
             $blog = $this->blogModel->updateOrCreate([
                 'id' => $request['id']

@@ -55,7 +55,13 @@
             <div class="form-group">
                 <label for="status">Status</label>
                 <input type="text" id="status" name="status"
-                    value="{{ $requestedBlog->status==0 ? 'Pending':($requestedBlog->status==1 ? 'Approved':'Rejected') }}"
+                    value="{{
+                        $requestedBlog->status == 0 ? 'Pending' :
+                        ($requestedBlog->status == 1 ? 'Approved' :
+                        ($requestedBlog->status == 2 ? 'Inactive' :
+                        ($requestedBlog->status == 4 ? 'Rejected' : 'Unpublished')
+                        ))
+                    }}"
                     readonly />
             </div>
         </div>
@@ -77,20 +83,50 @@
             <input type="text" id="tags" name="tags" value="{{$requestedBlog->blog_tags}}" readonly />
         </div>
 
+        @if ($requestedBlog->status == 4 || $requestedBlog->status == 2)
+
+        <div class="form-group">
+            <label for="tags">Rejection Reason</label>
+            <input type="text" id="tags" name="tags" value="{{$requestedBlog->rejection_reason}}" readonly />
+        </div>
+
+        @endif
+
+
         <div class="button-group">
 
+            @if ($requestedBlog->status == 0 || $requestedBlog->status == 4 || $requestedBlog->status == 2)
             @can('blog-approve')
-            <button type="submit" class="btn-primary-dashboard" name="status" value="1">
-                <i class="fa-solid fa-check"></i> Approve
-            </button>
+                <button type="submit" class="btn-primary-dashboard" name="status" value="1">
+                    <i class="fa-solid fa-check"></i> Approve
+                </button>
             @endcan
+
+
+            @endif
+
+            @if ($requestedBlog->status == 0  || $requestedBlog->status == 2)
+
             @can('blog-reject')
-            <button type="button" class="btn-secondary-dashboard" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                <button type="button" class="btn-secondary-dashboard" data-bs-toggle="modal" data-bs-target="#exampleModal"
                 data-bs-whatever="@mdo">
                 <i class="fa-solid fa-times"></i>
                 Reject
-            </button>
+                </button>
             @endcan
+
+            @endif
+
+
+            @if ($requestedBlog->status == 1 || $requestedBlog->status == 0)
+
+             <button type="button" class="btn-secondary-dashboard" data-bs-toggle="modal" data-bs-target="#unpublishModal"
+                data-bs-whatever="@mdo">
+                <i class="fa-solid fa-times"></i>
+                Unpublish
+            </button>
+            @endif
+
             <button type="button" class="btn-secondary-dashboard" onclick="window.history.back();">
                 <i class="fa-solid fa-times"></i> Cancel
             </button>
@@ -131,6 +167,36 @@
     </div>
 </div>
 
+{{-- Modal for Unpublishing Blog --}}
+
+<div class="modal fade" id="unpublishModal" tabindex="-1" aria-labelledby="unpublishModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form id="unpublishBlogForm" action="{{ route('updateBlogStatus', ['id' => $requestedBlog->id]) }}"
+                method="POST">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="unpublishModalLabel">Unpublish Blog</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Reason for Unpublishing:</label>
+                        <textarea class="form-control" id="unpublish_reason" rows="4" name="rejection_reason"
+                            required>{{ $requestedBlog->rejection_reason }}</textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary-dashboard" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn-primary-dashboard" name="status" value="5">Submit
+                        Unpublishing</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 @endsection
 
@@ -146,6 +212,7 @@
 
             })
     });
+
 </script>
 
 @endsection

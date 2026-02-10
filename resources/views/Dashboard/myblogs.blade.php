@@ -144,12 +144,12 @@
                                     <td>N/A</td>
                                     <td>{{ $blog->published_at }}</td>
                                     {{-- <td>{{ $blog->status == 0 ? "Requested" : $blog->status == 1 ? "Published" : $blog->status == 2 ? "Inactive" : $blog->status == 3 ? "Draft" : $blog->status == 4 ? "Rejected" }}</td> --}}
-                                    <td>{{ $blog->status == 0 ? "Requested" : ($blog->status == 1 ? "Published" : ($blog->status == 2 ? "Inactive" : ($blog->status == 3 ? "Draft" : "Rejected"))) }}</span></td>
+                                    <td>{{ $blog->status == 0 ? "Requested" : ($blog->status == 1 ? "Published" : ($blog->status == 2 ? "Inactive" : ($blog->status == 3 ? "Draft" : ($blog->status == 4 ? "Rejected" : "Unpublished")))) }}</td>
                                     <td>
                                                 <form action="{{ route('manageblog.page') }}" method="GET" class="float-start me-2" >
-                                                    @csrf
 
-                                                    <input type="hidden" id="id" name="id"  value="{{ $blog->id }}" />
+
+                                                    <input type="hidden" id="slug" name="slug"  value="{{ $blog->slung }}" />
                                                     @can('category-edit')
                                                     <button class="btn-secondary-dashboard btn-sm">Edit</button>
                                                     @endcan

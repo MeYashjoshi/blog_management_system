@@ -64,7 +64,7 @@ class BlogController extends BaseController
         $this->checkPermission('blog-request');
         $this->checkRole('admin');
 
-        if (!$request->has('id')) {
+        if (!$request->has('slug')) {
             return redirect()->route('blogrequests.page')->withErrors([
                 'error' => 'Please select a blog to view details.',
             ]);

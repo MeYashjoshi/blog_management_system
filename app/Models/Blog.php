@@ -15,6 +15,7 @@ class Blog extends Model
     const STATUS_INACTIVE = '2';
     const STATUS_DRAFT = '3';
     const STATUS_REJECTED = '4';
+    const STATUS_UNPUBLISHED = '5';
 
 
     public const FILE_PATH = 'uploads/featured_images/';
