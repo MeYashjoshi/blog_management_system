@@ -149,8 +149,6 @@
                                             <td>{{ $data->status == 0 ? "Archive" : ($data->status == 1 ? "Active" : "Inactive") }}</td>
                                             <td class="d-flex">
                                                 <form action="{{ route('managecategories.page') }}" method="GET" class="me-2">
-                                                    @csrf
-
                                                     <input type="hidden" id="id" name="id"  value="{{ $data->id }}" />
                                                     @can('category-edit')
                                                     <button class="btn-secondary-dashboard btn-sm">Edit</button>

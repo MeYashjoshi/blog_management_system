@@ -15,6 +15,11 @@
 
                 <div class="content-section">
 
+                    @session('success')
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endsession
                     @error('error')
                         <div class="alert alert-danger" role="alert">
                         {{ $message }}

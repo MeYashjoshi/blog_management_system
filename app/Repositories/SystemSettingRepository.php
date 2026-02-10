@@ -46,7 +46,9 @@ class SystemSettingRepository implements SystemSettingRepositoryInterface
 
                 $file->storeAs($this->systemsettingModel::FILE_PATH, $faviconfilename);
 
-                $this->deleteFile($this->systemsettingModel::FILE_PATH . '/' . $setting->favicon);
+                if($faviconfilename && $setting->favicon && $faviconfilename != $setting->favicon) {
+                    $this->deleteFile($this->systemsettingModel::FILE_PATH . $setting->favicon);
+                }
 
                 $setting->favicon = $faviconfilename;
             }
@@ -58,7 +60,9 @@ class SystemSettingRepository implements SystemSettingRepositoryInterface
 
                 $file->storeAs($this->systemsettingModel::FILE_PATH, $siteLogofilename);
 
-                $this->deleteFile($this->systemsettingModel::FILE_PATH . '/' . $setting->sitelogo);
+                if($siteLogofilename && $setting->sitelogo && $siteLogofilename != $setting->sitelogo) {
+                    $this->deleteFile($this->systemsettingModel::FILE_PATH . $setting->sitelogo);
+                }
 
                 $setting->sitelogo = $siteLogofilename;
             }

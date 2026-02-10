@@ -37,10 +37,9 @@
                         </div>
                     @enderror
 
-                    <form action="{{ route('manageUser') }}" method="POST" enctype="multipart/form-data">
+                    <form id="updateProfileForm" action="{{ route('manageUser') }}" method="POST" enctype="multipart/form-data">
 
                         @csrf
-
 
                         <div class="form-row">
                             <div class="form-group">
@@ -71,7 +70,7 @@
                             <label for="bio">Bio</label>
                             <textarea id="bio" name="bio" rows="4" placeholder="Tell us about yourself...">{{ $user->bio }}</textarea>
                         </div>
-                     
+
                         <div class="form-group">
                             <label for="profile">Profile Picture</label>
                             <input type="file" id="profile" name="profile" accept="image/*" onchange="document.getElementById('previewImage').src = window.URL.createObjectURL(this.files[0]);document.getElementById('preview').style.display = 'block';"/>
@@ -105,7 +104,7 @@
                     @enderror
 
 
-                    <form action="{{ route('changePassword') }}" method="POST">
+                    <form id="updatePasswordForm" action="{{ route('changePassword') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="currentPassword">Current Password</label>

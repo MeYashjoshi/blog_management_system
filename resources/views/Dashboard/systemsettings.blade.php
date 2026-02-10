@@ -13,7 +13,7 @@
         </div>
     @endsession
 
-    <form action="{{ route('manageSystemSetting') }}" method="POST" enctype="multipart/form-data">
+    <form id="siteSettingForm" action="{{ route('manageSystemSetting') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="form-group">
