@@ -2,16 +2,22 @@
 
 namespace App\Models;
 
+use App\Traits\PreventsDeletion;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Category extends Model
 {
+    use SoftDeletes;
+    use PreventsDeletion;
+
     const STATUS_PENDING = '0';
     const STATUS_ACTIVE = '1';
     const STATUS_INACTIVE = '2';
 
+    protected array $blockDeleteIfHas = ['blogs'];
 
     protected $fillable = [
 
@@ -37,10 +43,10 @@ class Category extends Model
      }
 
 
-     public function scopeStatus(Builder $query, string $type): void
-    {
-        $query->where('status', $type);
-    }
+    //  public function scopeStatus(Builder $query, string $type): void
+    // {
+    //     $query->where('status', $type);
+    // }
 
     public function getCreatedDateAttribute(){
 
@@ -51,5 +57,9 @@ class Category extends Model
 
     }
 
+    public function isActive(): bool
+    {
+        return $this->status === self::STATUS_ACTIVE;
+    }
 
 }

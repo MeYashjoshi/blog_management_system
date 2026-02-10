@@ -151,18 +151,25 @@
                                                 <form action="{{ route('managecategories.page') }}" method="GET" class="me-2">
                                                     <input type="hidden" id="id" name="id"  value="{{ $data->id }}" />
                                                     @can('category-edit')
-                                                    <button class="btn-secondary-dashboard btn-sm">Edit</button>
+                                                    <button class="btn-primary-dashboard btn-sm"><i class="fa fa-edit"></i>Edit</button>
                                                     @endcan
                                                 </form>
 
-                                                <form action="{{ route('deleteCategory') }}" method="POST">
-                                                    @csrf
+                                                @if ($data->canBeDeleted())
+                                                    <form action="{{ route('deleteCategory') }}" method="POST">
+                                                        @csrf
 
-                                                    <input type="hidden" id="id" name="id"  value="{{ $data->id }}" />
-                                                     @can('category-delete')
-                                                    <button class="btn-secondary-dashboard btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                                                        <input type="hidden" id="id" name="id"  value="{{ $data->id }}" />
+                                                        @can('category-delete')
+
+                                                        <button class="btn-primary-dashboard btn-sm" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i>Delete</button>
+
                                                      @endcan
-                                                </form>
+                                                    </form>
+                                                @else
+                                                    <button type class="btn-primary-dashboard btn-sm" title="Category is assigned to blogs." > <i class="fa fa-lock"></i> Delete </button>
+
+                                                @endif
 
                                             </td>
                                         </tr>

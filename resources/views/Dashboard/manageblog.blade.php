@@ -62,14 +62,30 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="category_id">Category <span class="fs-5 text-danger">*</span></label>
-                                <select id="category_id" name="category_id" >
-                                    <option value="">Select a category</option>
+                                <select id="category_id" name="category_id">
+                                <option value="">Select a category</option>
 
-                                    @foreach ($categories as $category )
-                                        <option value="{{$category->id}}" {{ ($blog?->category_id??null) == $category->id ? "selected" :"" }} >{{$category->title}}</option>
-                                    @endforeach
+                                @foreach ($categories as $category)
 
-                                </select>
+                                    @php
+                                        $isEdit = isset($blog);
+                                        $isSelected = ($blog?->category_id ?? null) == $category->id;
+                                    @endphp
+
+                                    @if ($category->status == 1 || ($isEdit && $isSelected))
+                                        <option
+                                            value="{{ $category->id }}"
+                                            @selected($isSelected)
+                                            @disabled($category->status != 1)
+                                        >
+                                            {{ $category->title }}
+                                            {{ $category->status != 1 ? '(Inactive)' : '' }}
+                                        </option>
+                                    @endif
+
+                                @endforeach
+                            </select>
+
                             @if($errors->has('category_id'))
                                 <div class="text-danger">{{ $errors->first('category_id') }}</div>
                             @endif

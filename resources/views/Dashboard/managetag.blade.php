@@ -15,7 +15,8 @@
 
                 <div class="content-section">
 
-                    <form id="createCategoryForm">
+                    <form id="createCategoryForm" action="{{ route('manageTag') }}" method="POST">
+                        @csrf
 
 
                         <div class="form-row">
@@ -26,9 +27,9 @@
                             <div class="form-group">
                                 <label for="status">Status</label>
                                 <select id="status" name="status">
-                                    <option value="active">Active</option>
-                                    <option value="inactive">Inactive</option>
-                                    <option value="archive">Archive</option>
+                                    <option value="1">Active</option>
+                                    <option value="2">Inactive</option>
+                                    <option value="0">Archive</option>
                                 </select>
                             </div>
                         </div>
@@ -53,18 +54,3 @@
 @endsection
 
 
-@section('scripts')
-
-<script>
-		$( document ).ready( () => {
-
-			ClassicEditor
-				.create( document.querySelector('#content'), {
-					toolbar: [
-                         'undo', 'redo', 'bold', 'italic', 'fontColor', 'fontBackgroundColor', 'link', 'numberedList', 'bulletedList', 'blockQuote'
-					]
-				} )
-		} );
-	</script>
-
-@endsection
