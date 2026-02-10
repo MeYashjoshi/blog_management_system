@@ -46,6 +46,7 @@ $("#blogForm").validate({
             required: true,
             minlength: 5,
             maxlength: 50,
+            noSpecialChars: true
         },
         slug: {
             required: true,
@@ -90,6 +91,7 @@ $("#rejectBlogForm").validate({
             required: true,
             minlength: 10,
             maxlength: 150,
+            noSpecialChars: true
         },
     },
     messages: {
@@ -112,6 +114,7 @@ $("#unpublishBlogForm").validate({
             required: true,
             minlength: 10,
             maxlength: 150,
+            noSpecialChars: true
         },
     },
     messages: {
@@ -215,6 +218,7 @@ $("#siteSettingForm").validate({
             required: true,
             minlength: 3,
             maxlength: 8,
+            noSpecialChars: true
         },
         supportemail: {
             required: true,
