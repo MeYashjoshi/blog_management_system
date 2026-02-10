@@ -19,23 +19,46 @@ class StoreCategoryRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
-        return [
-            'id' => 'nullable',
-            'title' => 'required|string|max:10',
-            'description' => 'nullable|string',
-            'status' => 'required|integer',
-        ];
-    }
+  public function rules(): array
+{
+    return [
+        'id' => ['nullable'],
 
-    public function messages()
-    {
-        return [
-            'title.required' => 'The title field is required.',
-            'title.string' => 'The title field must be a string.',
-            'title.max' => 'The title field must not exceed 255 characters.',
-            'status.required' => 'The status field is required.',
-        ];
-    }
+        'title' => [
+            'required',
+            'string',
+            'min:5',
+            'max:50',
+            'regex:/^[a-zA-Z\s]+$/',
+        ],
+
+        'description' => [
+            'nullable',
+            'string',
+            'max:255',
+        ],
+
+        'status' => [
+            'required',
+            'integer',
+        ],
+    ];
+}
+
+public function messages(): array
+{
+    return [
+        'title.required' => 'Category name is required.',
+        'title.string'   => 'Category name must be a valid string.',
+        'title.min'      => 'Category name must be at least 5 characters.',
+        'title.max'      => 'Category name must not exceed 50 characters.',
+        'title.regex'    => 'Category name can contain only letters and spaces.',
+
+        'status.required' => 'Please select a status.',
+        'status.integer'  => 'Invalid status selected.',
+
+        'description.max' => 'Description must not exceed 255 characters.',
+    ];
+}
+
 }

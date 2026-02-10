@@ -23,7 +23,7 @@ class UpdateStatusRequest extends FormRequest
     {
         return [
             'status' => 'required|integer',
-            'rejection_reason' => 'required_if:'.$this->status.',4|max:1000',
+            'rejection_reason' => 'required_if:'.$this->status.',4|min:10|max:1000',
         ];
     }
 
@@ -32,6 +32,7 @@ class UpdateStatusRequest extends FormRequest
         return[
             'rejection_reason.required' => 'The rejection reason is required.',
             'rejection_reason.max' => 'The rejection reason must not exceed 1000 characters.',
+            'rejection_reason.min' => 'The rejection reason must be at least 10 characters.',
         ];
     }
 }

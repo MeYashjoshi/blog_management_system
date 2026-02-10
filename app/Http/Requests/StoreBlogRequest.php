@@ -23,13 +23,15 @@ class StoreBlogRequest extends FormRequest
     public function rules(): array
     {
 
+
         $blogId = $this->id??null;
 
         return [
             'id' => 'nullable|integer',
             'category_id' => 'required|integer',
             'featured_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'title' => 'required|string|max:50|unique:blogs,title,' . $blogId . ',id,author_id,' . Auth::id(),
+            'title' => 'required|string|max:50|unique:blogs,title,' . $blogId . ',id,author_id,' . Auth::id().'|regex:/^[a-zA-Z0-9\s\-\'"]+$/',
+            'slung' => 'nullable|string|max:255|unique:blogs,slung,' . $blogId . ',id |regex:/^[a-zA-Z0-9\s\-]+$/',
             'content' => 'required|max:3000',
             'tags' => 'nullable|string',
             'status' => 'required|integer',
@@ -51,6 +53,12 @@ class StoreBlogRequest extends FormRequest
             'title.string' => 'The title field must be a string.',
             'title.max' => 'The title field must not exceed 255 characters.',
             'title.unique' => 'The same title exist',
+            'title.regex' => 'The title field may only contain letters, numbers, spaces, hyphens, and quotes.',
+
+            'slung.string' => 'The slug field must be a string.',
+            'slung.max' => 'The slug field must not exceed 255 characters.',
+            'slung.unique' => 'The same slug exist',
+            'slung.regex' => 'The slug field may only contain letters, numbers, spaces, and hyphens.',
 
             'content.required' => 'The content field is required.',
             'content.string' => 'The content field must be a string.',
