@@ -26,9 +26,9 @@
 @endsection
 
 @section('dashboard-right-button')
- <a href="/managetag" class="btn-primary-dashboard">
-                        <i class="fa-solid fa-plus"></i> New Tag
-                    </a>
+    @can('tag-create')
+        <a href="/managetag" class="btn-primary-dashboard"><i class="fa-solid fa-plus"></i> New Tag </a>
+    @endcan
 @endsection
 
 @section('content')
@@ -42,7 +42,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-1">Total Tags</h6>
-                        <h3 class="fw-bold mb-0">120</h3>
+                        <h3 class="fw-bold mb-0">{{ $tagStatistics['total'] }}</h3>
                     </div>
                     <div class="icon-box fs-2">
                         <i class="fa-solid fa-list"></i>
@@ -57,7 +57,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-1">Active</h6>
-                        <h3 class="fw-bold mb-0">80</h3>
+                        <h3 class="fw-bold mb-0">{{ $tagStatistics['active'] }}</h3>
                     </div>
                     <div class="icon-box fs-2">
                         <i class="fa-solid fa-toggle-on"></i>
@@ -72,7 +72,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-1">Archive</h6>
-                        <h3 class="fw-bold mb-0">25</h3>
+                        <h3 class="fw-bold mb-0">{{ $tagStatistics['pending'] }}</h3>
                     </div>
                     <div class="icon-box fs-2">
                         <i class="fa-solid fa-box-archive"></i>
@@ -87,7 +87,7 @@
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
                         <h6 class="text-muted mb-1">Inactive</h6>
-                        <h3 class="fw-bold mb-0">15</h3>
+                        <h3 class="fw-bold mb-0">{{ $tagStatistics['inactive'] }}</h3>
                     </div>
                     <div class="icon-box fs-2">
                         <i class="fa-solid fa-toggle-off"></i>
@@ -109,43 +109,51 @@
                                     <th>Description</th>
                                     <th>Created Date</th>
                                     <th>Status</th>
-                                    <th>Action</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
 
-                                    <td><strong>Thechnology</strong></td>
-                                    <td>All Tech tend will use this tag</td>
-                                    <td>Jan 15, 2025</td>
-                                    <td>Active</td>
+                                @foreach ($tags as $tag)
+
+                                <tr>
+                                    <td><strong>{{$tag->title}}</strong></td>
+                                    <td>{{$tag->description}}</td>
+                                    <td>{{ $tag->created_at->format('d M Y') }}</td>
                                     <td>
-                                        <button class="btn-secondary-dashboard btn-sm">Edit</button>
-                                        <button class="btn-secondary-dashboard btn-sm">Delete</button>
+                                        @if($tag->status == 1)
+                                            <span class="badge bg-success">Active</span>
+                                        @elseif($tag->status == 2)
+                                            <span class="badge bg-warning">Inactive</span>
+                                        @else
+                                            <span class="badge bg-secondary">Archive</span>
+                                        @endif
+                                    </td>
+                                    <td class="d-flex gap-2">
+
+
+                                        @can('tag-edit')
+                                        <a href="{{ route('page.managetag', ['id' => $tag->id]) }}" class="btn-primary-dashboard btn-sm"><i class="fa fa-edit"></i>Edit  </a>
+                                        @endcan
+                                         @if ($tag->canBeDeleted())
+                                            <form action="{{ route('deleteTag') }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="hidden" name="id" value="{{ $tag->id }}">
+                                                @can('tag-delete')
+                                                <button class="btn-primary-dashboard btn-sm" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i>Delete</button>
+                                                @endcan
+                                            </form>
+                                        @else
+                                            <button class="btn-primary-dashboard btn-sm" disabled title="Cannot delete this tag"><i class="fa-solid fa-lock"></i>Delete</button>
+                                        @endif
                                     </td>
                                 </tr>
-                                <tr>
 
-                                    <td><strong>Thechnology</strong></td>
-                                    <td>All Tech tend will use this tag</td>
-                                    <td>Jan 15, 2025</td>
-                                    <td>Active</td>
-                                    <td>
-                                        <button class="btn-secondary-dashboard btn-sm">Edit</button>
-                                        <button class="btn-secondary-dashboard btn-sm">Delete</button>
-                                    </td>
-                                </tr>
-                                <tr>
 
-                                    <td><strong>Thechnology</strong></td>
-                                    <td>All Tech tend will use this tag</td>
-                                    <td>Jan 15, 2025</td>
-                                    <td>Active</td>
-                                    <td>
-                                        <button class="btn-secondary-dashboard btn-sm">Edit</button>
-                                        <button class="btn-secondary-dashboard btn-sm">Delete</button>
-                                    </td>
-                                </tr>
+
+
+                                @endforeach
 
                             </tbody>
                         </table>

@@ -4,8 +4,11 @@ namespace App\Interfaces;
 
 interface TagRepositoryInterface
 {
-   public function listTags($request);
-   public function getTagDetails($request);
-   public function manageTag($request);
-   public function deleteTag($request);
+    public function getTagDetails($request);
+    public function getTags($request);
+    public function manageTag($request);
+    public function statusTag($request);
+    public function tagStatistics($request);
+    public function deleteTag($request);
+    public function searchTags($query);
 }

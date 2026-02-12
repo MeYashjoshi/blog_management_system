@@ -2,13 +2,22 @@
 
 namespace App\Models;
 
+use App\Traits\deleteFile;
+use App\Traits\PreventsDeletion;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tag extends Model
 {
+    use SoftDeletes;
+    use PreventsDeletion;
+
+
     const STATUS_PENDING = '0';
     const STATUS_ACTIVE = '1';
     const STATUS_INACTIVE = '2';
+
+    protected array $blockDeleteIfHas = ['blogs'];
 
     protected $fillable = [
 
@@ -29,12 +38,8 @@ class Tag extends Model
         'deleted_at',
     ];
 
-
     public function blogs()
     {
-        return $this->belongsToMany(Blog::class,'tag_id');
+        return Blog::whereJsonContains('tag_ids', $this->id);
     }
-
-
-
 }
