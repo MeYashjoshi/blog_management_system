@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SystemSettingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TagController;
@@ -135,6 +136,15 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('tagStatistics', 'tagStatistics')->name('tagStatistics');
         Route::post('deleteTag', 'deleteTag')->name('deleteTag');
         Route::get('searchTags', 'searchTags')->name('searchTags');
+    });
+
+    Route::controller(RoleController::class)->group(function () {
+
+        Route::get('rolesandpermissions', 'showRolesAndPermissions')->name('page.rolesandpermissions');
+        Route::get('getModulesAndPermissions', 'getModulesAndPermissions')->name('getModulesAndPermissions');
+        Route::get('manageRolePermissions', 'showManageRolePermissions')->name('page.managerolepermissions');
+        Route::post('manageRole', 'manageRole')->name('manageRole');
+        Route::post('deleteRole', 'deleteRole')->name('deleteRole');
     });
 });
 

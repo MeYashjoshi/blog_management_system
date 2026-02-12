@@ -70,9 +70,6 @@ class CategoryRepository implements CategoryRepositoryInterface
         return $category;
     }
 
-
-
-
     public function deleteCategory($request)
     {
 
