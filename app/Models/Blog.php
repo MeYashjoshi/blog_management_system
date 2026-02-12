@@ -27,7 +27,7 @@ class Blog extends Model
         'featured_image',
         'title',
         'content',
-        'tags',
+        'tag_ids',
         'published_at',
         'status',
         'rejection_reason',
@@ -44,10 +44,9 @@ class Blog extends Model
         'deleted_at',
     ];
 
-    // protected $casts = [
-    //     'tags' => 'json',
-    // ];
-
+    protected $casts = [
+        'tag_ids' => 'array',
+    ];
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
@@ -56,6 +55,13 @@ class Blog extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+    public function tags()
+    {
+        return Tag::whereIn('id', $this->tag_ids ?? []);
+    }
+
+
     public function comments()
     {
         return $this->hasMany(Comment::class, 'blog_id');
@@ -73,19 +79,13 @@ class Blog extends Model
         if ($this->featured_image) {
             return asset('storage/' . self::FILE_PATH . $this->featured_image);
         }
-        return asset('storage/' . self::FILE_PATH . $this->featured_image.'default-featured-image.svg');
+        return asset('storage/' . self::FILE_PATH . $this->featured_image . 'default-featured-image.svg');
     }
 
 
-    public function getBlogTagsAttribute()
+    public function getTagsDetailsAttribute()
     {
-        return json_decode($this->tags);
+        $tagIds = $this->tag_ids ?? [];
+        return Tag::whereIn('id', $tagIds)->get();
     }
-
-
-
-
-
-
-
 }

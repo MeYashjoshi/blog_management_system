@@ -132,10 +132,33 @@
                                 <div class="text-danger">{{ $errors->first('content') }}</div>
                             @endif
                         </div>
-
                         <div class="form-group">
-                            <label for="tags">Tags (comma separated)</label>
-                            <input type="text" id="tags" name="tags" placeholder="e.g., marketing, SEO, branding" value="{{ $blog?->blog_tags }}" />
+                            <label for="tags">Tags</label>
+
+                        <select id="tags" class="js-example-basic-multiple" name="tags[]" multiple="multiple">
+                            @if($blog)
+                                @foreach($blog->tags_details as $tag)
+
+                                    @php
+                                        $isEdit = isset($blog);
+                                        $isSelected = $blog->tags_details->contains($tag);
+                                    @endphp
+
+                                     @if ($tag->status == 1 || ($isEdit && $isSelected))
+                                        <option
+                                            value="{{ $tag->id }}"
+                                            @selected($isSelected)
+                                            @disabled($tag->status != 1)
+                                        >
+                                            {{ $tag->title }}
+                                            {{ $tag->status != 1 ? '(Inactive)' : '' }}
+                                        </option>
+                                    @endif
+
+                                    {{-- <option value="{{ $tag->id }}" {{ $isSelected ? "selected" : "" }}>{{ $tag->title }}</option> --}}
+                                @endforeach
+                            @endif
+                        </select>
                             @if($errors->has('tags'))
                                 <div class="text-danger">{{ $errors->first('tags') }}</div>
                             @endif
@@ -227,6 +250,47 @@
             }
         });
 
+
+//         $(document).ready(function() {
+//     $('.js-example-basic-multiple').select2();
+// });
+
+$('#tags').select2({
+    placeholder: 'Select or create tags',
+    tags: true,
+    multiple: true,
+    minimumInputLength: 2,
+    ajax: {
+        url: "{{ route('searchTags') }}",
+        dataType: 'json',
+        delay: 250,
+        data: function (params) {
+            return {
+                q: params.term
+            };
+        },
+        processResults: function (data) {
+            return {
+                results: data.tags.map(function (tag) {
+
+                    return {
+                        id: tag.id,
+                        text: tag.title
+                    };
+                })
+
+            };
+        },
+
+    },
+    createTag: function (params) {
+        return {
+            id: params.term,
+            text: params.term,
+            newTag: true
+        };
+    }
+});
 
 
     </script>

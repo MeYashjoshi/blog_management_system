@@ -3,54 +3,66 @@
 @section('title', 'Manage Tag')
 
 @section('style')
-    <style>
-        .ck-editor__editable_inline {
-            min-height: 200px;
-        }
-    </style>
+<style>
+    .ck-editor__editable_inline {
+        min-height: 200px;
+    }
+</style>
 
 @endsection
 
 @section('content')
 
-                <div class="content-section">
+<div class="content-section">
 
-                    <form id="createCategoryForm" action="{{ route('manageTag') }}" method="POST">
-                        @csrf
+    @session('success')
+    <div class="alert alert-success" role="alert">
+        {{ session('success') }}
+    </div>
+    @endsession
+    @error('error')
+    <div class="alert alert-danger" role="alert">
+        {{ $message }}
+    </div>
+    @enderror
 
 
-                        <div class="form-row">
-<div class="form-group">
-                            <label for="categoryTitle">Tag Title</label>
-                            <input type="text" id="categoryTitle" name="title" placeholder="Technology" />
-                        </div>
-                            <div class="form-group">
-                                <label for="status">Status</label>
-                                <select id="status" name="status">
-                                    <option value="1">Active</option>
-                                    <option value="2">Inactive</option>
-                                    <option value="0">Archive</option>
-                                </select>
-                            </div>
-                        </div>
+    <form id="createTagForm" action="{{ route('manageTag') }}" method="POST">
+        @csrf
 
-                        <div class="form-group">
-                            <label for="description">Description</label>
-                            <input type="text" id="description" name="description" placeholder="All Tech blog will use this Category" />
-                        </div>
 
-                        <div class="button-group">
-                            <button type="submit" class="btn-primary-dashboard">
-                                <i class="fa-solid fa-plus"></i> Add
-                            </button>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="categoryTitle">Tag Title</label>
+                <input type="text" id="categoryTitle" name="title" placeholder="Technology" value="{{ old('title', $tag->title ?? '') }}" />
+                <input type="hidden" name="id" value="{{ $tag->id ?? '' }}">
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option value="1" {{ old('status', $tag->status ?? 1) == 1 ? 'selected' : '' }}>Active</option>
+                    <option value="2" {{ old('status', $tag->status ?? 1) == 2 ? 'selected' : '' }}>Inactive</option>
+                    <option value="0" {{ old('status', $tag->status ?? 1) == 0 ? 'selected' : '' }}>Archive</option>
+                </select>
+            </div>
+        </div>
 
-                            <button type="button" class="btn-secondary-dashboard" onclick="window.history.back();">
-                                <i class="fa-solid fa-times"></i> Cancel
-                            </button>
-                        </div>
-                    </form>
-                </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" id="description" name="description" placeholder="All Tech blog will use this Category" value="{{ old('description', $tag->description ?? '') }}" />
+        </div>
+
+        <div class="button-group">
+
+            <button type="submit" class="btn-primary-dashboard">
+                <i class="fa-solid fa-floppy-disk"></i> {{ isset($tag) ? 'Update' : 'Create' }}
+            </button>
+
+            <button type="button" class="btn-secondary-dashboard" onclick="window.history.back();">
+                <i class="fa-solid fa-times"></i> Cancel
+            </button>
+        </div>
+    </form>
+</div>
 
 @endsection
-
-

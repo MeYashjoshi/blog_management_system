@@ -78,10 +78,20 @@
                           </textarea>
         </div>
 
-        <div class="form-group">
+        {{-- <div class="form-group">
             <label for="tags">Tags (comma separated)</label>
             <input type="text" id="tags" name="tags" value="{{$requestedBlog->blog_tags}}" readonly />
+        </div> --}}
+        <div class="form-group">
+            <label for="tags">Tags (comma separated)</label>
+                   <select id="tags" name="tags[]" multiple="multiple">
+                    @foreach($requestedBlog->tags_details as $tag)
+                        <option value="{{ $tag->id }}" selected>{{ $tag->title }}</option>
+                    @endforeach
+                     </select>
         </div>
+
+
 
         @if ($requestedBlog->status == 4 || $requestedBlog->status == 2)
 
@@ -211,7 +221,16 @@
                 isReadOnly: true,
 
             })
-    });
+
+    $('#tags').select2(
+        {
+            allowClear: false,
+            disabled: true,
+        }
+    );
+
+        });
+
 
 </script>
 

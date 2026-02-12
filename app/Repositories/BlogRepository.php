@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\BlogRepositoryInterface;
 use App\Models\Blog;
+use App\Models\Tag;
 use App\Traits\deleteFile;
 use App\Traits\imageUpload;
 use Exception;
@@ -25,7 +26,8 @@ class BlogRepository implements BlogRepositoryInterface
     {
         try {
 
-            $blog = $this->blogModel->where('slung', $request['slug'])->first();
+
+            $blog = $this->blogModel->where('slung', $request->slug)->first();
 
             return $blog;
         } catch (\Throwable $e) {
@@ -45,7 +47,7 @@ class BlogRepository implements BlogRepositoryInterface
     {
 
         try {
-            $requestedBlogs = $this->blogModel->whereIn('status', [Blog::STATUS_PENDING,Blog::STATUS_REJECTED,Blog::STATUS_ACTIVE,Blog::STATUS_UNPUBLISHED])->get();
+            $requestedBlogs = $this->blogModel->whereIn('status', [Blog::STATUS_PENDING, Blog::STATUS_REJECTED, Blog::STATUS_ACTIVE, Blog::STATUS_UNPUBLISHED])->get();
 
             return $requestedBlogs;
         } catch (\Throwable $e) {
@@ -53,8 +55,6 @@ class BlogRepository implements BlogRepositoryInterface
                 'error' => $e->getMessage(),
             ]);
         }
-
-
     }
 
     public function getRequestedBlog($request)
@@ -63,7 +63,6 @@ class BlogRepository implements BlogRepositoryInterface
             $RequestedBlog = $this->blogModel->where('slung', $request->slug)->first();
 
             return $RequestedBlog;
-
         } catch (\Throwable $e) {
             return back()->withErrors([
                 "errors" => $e->getMessage(),
@@ -76,6 +75,25 @@ class BlogRepository implements BlogRepositoryInterface
 
         try {
 
+
+            if (!empty($request['tags'])) {
+                $tags = $request['tags'];
+                $tagIds = [];
+                foreach ($tags as $tag) {
+                    $tag = trim($tag);
+                    if (!is_numeric($tag)) {
+                        $tag = Str::title($tag);
+                        $newTag = Tag::create(['title' => $tag, 'status' => Tag::STATUS_ACTIVE, 'description' => "This tag is associated with " . $tag]);
+                        $tagIds[] = $newTag->id;
+                    } else {
+                        $existingTag = Tag::where('id', $tag)->first();
+                        $tagIds[] = $existingTag->id;
+                    }
+                    $request['tag_ids'] = $tagIds;
+                }
+            }
+
+
             $blog = $this->blogModel->where('id', $request['id'])->first();
 
 
@@ -87,14 +105,13 @@ class BlogRepository implements BlogRepositoryInterface
 
                 $filename = $file ? $this->uploadImage($file) : ($request['featured_image'] ?? null);
 
-                if($filename && $blog?->featured_image && $filename != $blog->featured_image) {
+                if ($filename && $blog?->featured_image && $filename != $blog->featured_image) {
                     $this->deleteFile($this->blogModel::FILE_PATH . $blog->featured_image);
                 }
 
                 $file->storeAs($this->blogModel::FILE_PATH, $filename);
-                }
-                // dd($filename);
-
+            }
+            // dd($filename);
 
             $blog = $this->blogModel->updateOrCreate([
                 'id' => $request['id']
@@ -105,7 +122,7 @@ class BlogRepository implements BlogRepositoryInterface
                 'featured_image' =>  $filename,
                 'title' =>  $request['title'],
                 'content' =>  $request['content'],
-                'tags' =>  $request['tags'],
+                'tag_ids' =>  $request['tag_ids'],
                 'published_at' =>  now(),
                 'status' =>  $request['status'],
                 'rejection_reason' => 'N/A'
@@ -123,9 +140,11 @@ class BlogRepository implements BlogRepositoryInterface
             ]);
         }
     }
+
     public function statusBlog($request) {}
 
-    public function blogStatistics() {
+    public function blogStatistics()
+    {
         $blog['total'] = $this->blogModel->count();
         $blog['published'] = $this->blogModel->where('status', Blog::STATUS_ACTIVE)->count();
         $blog['draft'] = $this->blogModel->where('status', Blog::STATUS_DRAFT)->count();
@@ -133,7 +152,6 @@ class BlogRepository implements BlogRepositoryInterface
         $blog['Requested'] = $this->blogModel->where('status', Blog::STATUS_PENDING)->count();
 
         return $blog;
-
     }
     public function RecentBlogs($request) {}
     public function trendingBlogs($request) {}
@@ -162,20 +180,18 @@ class BlogRepository implements BlogRepositoryInterface
 
 
 
-            if ($request->status==1) {
+            if ($request->status == 1) {
 
                 $request->rejection_reason = "N/A";
-
             }
 
 
             $blog = $this->blogModel->where('id', $request->id)->first();
 
-            if ($request->status == Blog::STATUS_REJECTED && $blog->status == Blog::STATUS_REJECTED ) {
-                 throw new Exception("The blog is already rejected.");
-            }
-            elseif ($request->status == Blog::STATUS_ACTIVE && $blog->status == Blog::STATUS_ACTIVE ) {
-                 throw new Exception("The blog is already approved.");
+            if ($request->status == Blog::STATUS_REJECTED && $blog->status == Blog::STATUS_REJECTED) {
+                throw new Exception("The blog is already rejected.");
+            } elseif ($request->status == Blog::STATUS_ACTIVE && $blog->status == Blog::STATUS_ACTIVE) {
+                throw new Exception("The blog is already approved.");
             }
 
 
@@ -184,10 +200,20 @@ class BlogRepository implements BlogRepositoryInterface
             $blog->rejection_reason = $request->rejection_reason;
             $blog->save();
             return 200;
-
         } catch (Exception $e) {
 
             throw new Exception("Failed to update blog status: " . $e->getMessage());
         }
+    }
+
+    public function blogHasTag(int $blogId, int $tagId): bool
+    {
+        $blog = Blog::find($blogId);
+
+        if (!$blog) {
+            return false;
+        }
+
+        return in_array($tagId, $blog->tag_ids ?? []);
     }
 }
