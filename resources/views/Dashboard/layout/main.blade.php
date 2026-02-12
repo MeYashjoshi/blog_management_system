@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/fontawesome.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/select2.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" />
 
 
@@ -91,6 +92,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
     <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script src="{{ asset('assets/js/select2.min.js') }}"></script>
     <script src="{{ asset('assets/js/pages/custom.js') }}"></script>
 
      @yield('scripts')
