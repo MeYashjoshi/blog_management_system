@@ -24,20 +24,19 @@ class StoreBlogRequest extends FormRequest
     {
 
 
-        $blogId = $this->id??null;
+        $blogId = $this->id ?? null;
 
         return [
             'id' => 'nullable|integer',
             'category_id' => 'required|integer',
             'featured_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-            'title' => 'required|string|max:50|unique:blogs,title,' . $blogId . ',id,author_id,' . Auth::id().'|regex:/^[a-zA-Z0-9\s\-\'"]+$/',
+            'title' => 'required|string|max:50|unique:blogs,title,' . $blogId . ',id,author_id,' . Auth::id() . '|regex:/^[a-zA-Z0-9\s\-\'"]+$/',
             'slung' => 'nullable|string|max:255|unique:blogs,slung,' . $blogId . ',id |regex:/^[a-zA-Z0-9\s\-]+$/',
             'content' => 'required|max:3000',
-            'tags' => 'nullable|string',
+            'tags' => 'nullable',
             'status' => 'required|integer',
 
         ];
-
     }
 
     public function messages()
@@ -65,7 +64,6 @@ class StoreBlogRequest extends FormRequest
             'content.max' => 'The content field must not exceed 3000 characters.',
 
             'tags.required' => 'The tags field is required.',
-            'tags.string' => 'The tags field must be a string.',
 
             'status.required' => 'The status field is required.',
         ];
