@@ -10,29 +10,28 @@ class CategoryRepository implements CategoryRepositoryInterface
 {
     protected Category $categoryModel;
 
-    public function __construct(Category $categoryModel) {
+    public function __construct(Category $categoryModel)
+    {
         $this->categoryModel = $categoryModel;
     }
 
-    public function getCategoryDetails($request){
+    public function getCategoryDetails($request)
+    {
 
-        $category = $this->categoryModel->where('id',$request)->first();
+        $category = $this->categoryModel->where('id', $request)->first();
 
 
 
         return $category;
-
-
     }
-    public function getCategories($request){
+    public function getCategories($request)
+    {
 
         $categories = $this->categoryModel->all();
         return $categories;
-
     }
-    public function manageCategory($request){
-
-
+    public function manageCategory($request)
+    {
         try {
             $category = $this->categoryModel->updateOrCreate(
                 [
@@ -53,13 +52,10 @@ class CategoryRepository implements CategoryRepositoryInterface
         } catch (Exception $e) {
             throw new Exception("Failed to manage category: " . $e->getMessage());
         }
-
-
     }
-    public function statusCategory($request){
-
-    }
-    public function categoryStatistics($request){
+    public function statusCategory($request) {}
+    public function categoryStatistics($request)
+    {
 
 
         $category['total'] = $this->categoryModel->count();
@@ -77,19 +73,18 @@ class CategoryRepository implements CategoryRepositoryInterface
 
 
 
-    public function deleteCategory($request){
+    public function deleteCategory($request)
+    {
 
         try {
-            $category = $this->categoryModel->where('id',$request)->first();
+            $category = $this->categoryModel->where('id', $request)->first();
 
             $category->deleteOrFail();
 
             return 204;
-
         } catch (Exception $e) {
             dd($e);
             throw new Exception("Failed to delete category: " . $e->getMessage());
         }
     }
-
 }
