@@ -70,7 +70,6 @@ Route::middleware(['auth:web'])->group(function () {
         Route::get('trendingBlogs', 'trendingBlogs')->name('trendingBlogs');
         Route::post('deleteBlog', 'deleteBlog')->name('deleteBlog');
         Route::post('updateBlogStatus', 'updateBlogStatus')->name('updateBlogStatus');
-
     });
 
     Route::controller(CategoryController::class)->group(function () {
@@ -135,6 +134,7 @@ Route::middleware(['auth:web'])->group(function () {
         Route::post('statusTag', 'statusTag')->name('statusTag');
         Route::get('tagStatistics', 'tagStatistics')->name('tagStatistics');
         Route::post('deleteTag', 'deleteTag')->name('deleteTag');
+        Route::get('searchTags', 'searchTags')->name('searchTags');
     });
 });
 
