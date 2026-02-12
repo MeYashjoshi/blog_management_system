@@ -46,7 +46,7 @@ $("#blogForm").validate({
             required: true,
             minlength: 5,
             maxlength: 50,
-            noSpecialChars: true
+            noSpecialChars: true,
         },
         slug: {
             required: true,
@@ -91,7 +91,7 @@ $("#rejectBlogForm").validate({
             required: true,
             minlength: 10,
             maxlength: 150,
-            noSpecialChars: true
+            noSpecialChars: true,
         },
     },
     messages: {
@@ -114,7 +114,7 @@ $("#unpublishBlogForm").validate({
             required: true,
             minlength: 10,
             maxlength: 150,
-            noSpecialChars: true
+            noSpecialChars: true,
         },
     },
     messages: {
@@ -218,7 +218,7 @@ $("#siteSettingForm").validate({
             required: true,
             minlength: 3,
             maxlength: 8,
-            noSpecialChars: true
+            noSpecialChars: true,
         },
         supportemail: {
             required: true,
@@ -280,6 +280,36 @@ $("#updatePasswordForm").validate({
         confirmpassword: {
             required: "Please confirm your new password.",
             equalTo: "Confirm password does not match the new password.",
+        },
+    },
+    errorClass: "text-danger",
+    errorElement: "small",
+});
+
+// js Validation for Create Tag Form
+
+$("#createTagForm").validate({
+    rules: {
+        title: {
+            required: true,
+            minlength: 3,
+            maxlength: 20,
+            noSpecialChars: true,
+        },
+        description: {
+            required: true,
+            maxlength: 150,
+        },
+    },
+    messages: {
+        title: {
+            required: "Tag name is required.",
+            minlength: "Tag name must be at least 3 characters.",
+            maxlength: "Tag name must not exceed 20 characters.",
+        },
+        description: {
+            required: "Description is required.",
+            maxlength: "Description must not exceed 150 characters.",
         },
     },
     errorClass: "text-danger",
