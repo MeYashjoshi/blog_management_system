@@ -10,7 +10,7 @@
 
                 <div class="navbar-right">
 
-                    <a href="{{ url('/') }}" target="_blank" class="btn btn-primary">
+                    <a href="{{ url('/') }}" target="_blank" class="btn btn-primary-dashboard">
                         <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> View Site
                     </a>
 

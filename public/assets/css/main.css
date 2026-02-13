@@ -12008,6 +12008,19 @@ li.has-dropdown1 span {
             border-color: #f97316;
         }
 
+        .btn-primary-dashboard:hover {
+           background: #6366f1c2;
+           color: white;
+        }
+        .bg-primary-dashboard {
+           background: #6366f1;
+        }
+        .form-check-input:checked{
+            background-color: #6366f1;
+            border-color: #6366f1;
+        }
+
+
 
 
 /*# sourceMappingURL=main.css.map */
