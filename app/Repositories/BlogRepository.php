@@ -122,7 +122,7 @@ class BlogRepository implements BlogRepositoryInterface
                 'featured_image' =>  $filename,
                 'title' =>  $request['title'],
                 'content' =>  $request['content'],
-                'tag_ids' =>  $request['tag_ids'],
+                'tag_ids' =>  $request['tag_ids'] ?? [],
                 'published_at' =>  now(),
                 'status' =>  $request['status'],
                 'rejection_reason' => 'N/A'
