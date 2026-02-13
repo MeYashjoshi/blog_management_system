@@ -21,9 +21,9 @@ class RoleController extends BaseController
         try {
             $RolesAndPermissions = $this->roleRepository->getRolesAndPermissions();
 
-            $ModulesAndPermission = $this->roleRepository->getModulesAndPermissions();
+            // $ModulesAndPermission = $this->roleRepository->getModulesAndPermissions();
 
-            return view('dashboard.rolesandpermissions', compact('RolesAndPermissions', 'ModulesAndPermission'));
+            return view('dashboard.rolesandpermissions', compact('RolesAndPermissions'));
         } catch (Exception $e) {
             return back()->withErrors([
                 'error' => $e->getMessage(),
@@ -34,8 +34,8 @@ class RoleController extends BaseController
     public function getModulesAndPermissions()
     {
         try {
-            $modules = $this->roleRepository->getModulesAndPermissions();
-            return $modules;
+            $ModulesAndPermissions = $this->roleRepository->getModulesAndPermissions();
+            return response()->json($ModulesAndPermissions);
         } catch (\Throwable $e) {
             return back()->withErrors([
                 'error' => $e->getMessage(),
@@ -62,7 +62,7 @@ class RoleController extends BaseController
 
         try {
             $roledetails = $this->roleRepository->getRoleDetails($request);
-            return $roledetails;
+            return response()->json($roledetails);
         } catch (\Throwable $e) {
             return back()->withErrors([
                 'error' => $e->getMessage(),

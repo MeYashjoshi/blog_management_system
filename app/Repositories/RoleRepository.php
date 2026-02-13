@@ -52,28 +52,32 @@ class RoleRepository implements RoleRepositoryInterface
     public function getModulesAndPermissions()
     {
         try {
-
             $permissions = $this->permissionModel->all();
-            $modules = $permissions->groupBy(function ($permission) {
-                $modulename = explode('-', $permission->name)[0];
-                return Str::headline($modulename);
-            })
+
+            $modules = $permissions
+                ->groupBy(function ($permission) {
+                    return Str::headline(explode('-', $permission->name)[0]);
+                })
                 ->map(function ($group) {
                     return $group->map(function ($permission) {
                         return [
-                            'name' => str::headline(explode('-', $permission->name)[1]),
+                            'name' => Str::headline(explode('-', $permission->name)[1]),
                             'id' => $permission->id,
+                            'assigned' => false // important
                         ];
                     })->values()->toArray();
                 })
-
                 ->toArray();
 
-            return $modules;
+            return [
+                'role_name' => null,
+                'modules' => $modules,
+            ];
         } catch (Exception $e) {
             throw new Exception("Failed to get modules: " . $e->getMessage());
         }
     }
+
 
     public function getRoleDetails($request)
     {
@@ -82,31 +86,35 @@ class RoleRepository implements RoleRepositoryInterface
                 ->with('permissions')
                 ->findOrFail($request->role_id);
 
-            $roleDetails = [
-                Str::headline($role->name) =>
-                $role->permissions
-                    ->groupBy(function ($permission) {
-                        return Str::headline(
-                            explode('-', $permission->name)[0]
-                        );
-                    })
-                    ->map(function ($group) {
-                        return $group->map(function ($permission) {
-                            return [
-                                'name' => str::headline(explode('-', $permission->name)[1]),
-                                'id' => $permission->id,
-                            ];
-                        })->values()->toArray();
-                    })
-                    ->toArray()
-            ];
+            $allPermissions = $this->permissionModel->all();
 
-            return $roleDetails;
+            $assignedPermissionIds = $role->permissions->pluck('id')->toArray();
+
+            $modules = $allPermissions
+                ->groupBy(function ($permission) {
+                    return Str::headline(explode('-', $permission->name)[0]);
+                })
+                ->map(function ($group) use ($assignedPermissionIds) {
+                    return $group->map(function ($permission) use ($assignedPermissionIds) {
+                        return [
+                            'name' => Str::headline(explode('-', $permission->name)[1]),
+                            'id' => $permission->id,
+                            'assigned' => in_array($permission->id, $assignedPermissionIds),
+                        ];
+                    })->values()->toArray();
+                })
+                ->toArray();
+
+            return [
+                'role_name' => Str::headline($role->name),
+                'modules'   => $modules,
+            ];
         } catch (Exception $e) {
-            dd($e->getMessage());
             throw new Exception("Failed to get role details: " . $e->getMessage());
         }
     }
+
+
 
     public function manageRole($request) {}
 
