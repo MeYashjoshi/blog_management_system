@@ -141,7 +141,29 @@ class BlogRepository implements BlogRepositoryInterface
         }
     }
 
-    public function statusBlog($request) {}
+    public function statusBlog($request)
+    {
+        try {
+            $blog = $this->blogModel->where('id', $request['id'])->first();
+
+
+            if ($blog->status == Blog::STATUS_ACTIVE) {
+                $blog->status = Blog::STATUS_INACTIVE;
+            } else {
+                $blog->status = Blog::STATUS_ACTIVE;
+            }
+
+            $blog->save();
+
+
+            return 200;
+        } catch (\Throwable $e) {
+            dd($e);
+            return back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
 
     public function blogStatistics()
     {

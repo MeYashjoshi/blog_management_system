@@ -23,11 +23,12 @@
 
                 <div class="content-section">
 
-                    @session('success')
-                        <div class="alert alert-success" role="alert">
-                            {{ session('success') }}
-                        </div>
-                    @endsession
+
+                    @if(session('success'))
+                    <script>
+                        toastr.success("{{ session('success') }}");
+                    </script>
+                    @endif
 
                     @error('error')
                         <div class="alert alert-danger" role="alert">
@@ -155,7 +156,6 @@
                                         </option>
                                     @endif
 
-                                    {{-- <option value="{{ $tag->id }}" {{ $isSelected ? "selected" : "" }}>{{ $tag->title }}</option> --}}
                                 @endforeach
                             @endif
                         </select>
@@ -164,19 +164,22 @@
                             @endif
                         </div>
 
-                        <div class="form-group">
-                            <label for="tags">Active</label>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input pe-4" type="checkbox" id="status" {{ ($blog?->is_active ?? false) ? "checked" :"" }} >
+                        @if ($blog?->status == 1)
+                            <div class="form-group">
+                                <label for="tags">Active</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input pe-4" type="checkbox" id="status22" {{ ($blog?->is_active ?? false) ? "checked" :"" }} >
+                                </div>
+                                @if($errors->has('is_active'))
+                                    <div class="text-danger">{{ $errors->first('is_active') }}</div>
+                                @endif
                             </div>
-                            @if($errors->has('is_active'))
-                                <div class="text-danger">{{ $errors->first('is_active') }}</div>
-                            @endif
-                        </div>
+                        @endif
+
 
                         <div class="button-group">
 
-                            @if($blog?->status == 0 || $blog?->status == 4 || $blog?->status == 2 || $blog?->status == 3)
+                            @if(!$blog?->status == 0 || $blog?->status == 4 || $blog?->status == 2 || $blog?->status == 3)
 
                             @can('blog-create')
                             <button type="submit" class="btn-primary-dashboard" name="status" value="0">
@@ -251,47 +254,66 @@
         });
 
 
-//         $(document).ready(function() {
-//     $('.js-example-basic-multiple').select2();
-// });
-
-$('#tags').select2({
-    placeholder: 'Select or create tags',
-    tags: true,
-    multiple: true,
-    minimumInputLength: 2,
-    ajax: {
-        url: "{{ route('searchTags') }}",
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            return {
-                q: params.term
-            };
-        },
-        processResults: function (data) {
-            return {
-                results: data.tags.map(function (tag) {
-
+        $('#tags').select2({
+            placeholder: 'Select or create tags',
+            tags: true,
+            multiple: true,
+            minimumInputLength: 2,
+            ajax: {
+                url: "{{ route('searchTags') }}",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
                     return {
-                        id: tag.id,
-                        text: tag.title
+                        q: params.term
                     };
-                })
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.tags.map(function (tag) {
 
-            };
-        },
+                            return {
+                                id: tag.id,
+                                text: tag.title
+                            };
+                        })
 
-    },
-    createTag: function (params) {
-        return {
-            id: params.term,
-            text: params.term,
-            newTag: true
-        };
-    }
-});
+                    };
+                },
 
+            },
+            createTag: function (params) {
+                return {
+                    id: params.term,
+                    text: params.term,
+                    newTag: true
+                };
+            }
+        });
+
+
+        $('#status22').change(function() {
+           $.ajax({
+                url: "{{ route('statusBlog') }}",
+                method: 'POST',
+                data: {
+                    id: $('#id').val(),
+                    is_active: $(this).is(':checked') ? 1 : 2,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    console.log(response);
+                    if (response.success) {
+                        toastr.success(response.message);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+                error: function() {
+                    toastr.error('An error occurred while updating blog active status.');
+                }
+            });
+        });
 
     </script>
 @endsection

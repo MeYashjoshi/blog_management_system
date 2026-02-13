@@ -6,6 +6,7 @@ use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateStatusRequest;
 use App\Interfaces\BlogRepositoryInterface;
 use App\Interfaces\CategoryRepositoryInterface;
+use Exception;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
 
@@ -132,7 +133,21 @@ class BlogController extends BaseController
         }
     }
 
-    public function statusBlog() {}
+    public function statusBlog(request $request)
+    {
+        try {
+            $this->blogRepository->statusBlog($request);
+            return response()->json([
+                'success' => true,
+                'message' => 'Blog status updated successfully.',
+            ]);
+        } catch (Exception $e) {
+            dd($e->getMessage());
+            return back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
 
     public function blogStatistics()
     {

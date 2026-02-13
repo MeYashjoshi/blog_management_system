@@ -41,6 +41,7 @@ $.validator.addMethod(
 
 // js Validation for Blog Form
 $("#blogForm").validate({
+    ignore: [],
     rules: {
         title: {
             required: true,
@@ -315,3 +316,10 @@ $("#createTagForm").validate({
     errorClass: "text-danger",
     errorElement: "small",
 });
+
+toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    positionClass: "toast-top-center",
+    timeOut: "3000",
+};
