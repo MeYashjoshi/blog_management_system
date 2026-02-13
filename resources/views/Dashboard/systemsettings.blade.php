@@ -13,11 +13,17 @@
 {{-- system settings content goes here --}}
 <div class="content-section">
 
-    @session('success')
-        <div class="alert alert-success" role="alert">
-            {{ session('success') }}
-        </div>
-    @endsession
+    @if(session('success'))
+    <script>
+        toastr.success("{{ session('success') }}");
+    </script>
+    @endif
+
+    @error('error')
+    <script>
+        toastr.error("{{ $message }}");
+    </script>
+    @enderror
 
     <form id="siteSettingForm" action="{{ route('manageSystemSetting') }}" method="POST" enctype="multipart/form-data">
         @csrf

@@ -24,17 +24,17 @@
                 <div class="content-section">
 
 
-                    @if(session('success'))
-                    <script>
-                        toastr.success("{{ session('success') }}");
-                    </script>
-                    @endif
+    @if(session('success'))
+    <script>
+        toastr.success("{{ session('success') }}");
+    </script>
+    @endif
 
-                    @error('error')
-                        <div class="alert alert-danger" role="alert">
-                        {{ $message }}
-                        </div>
-                    @enderror
+    @error('error')
+    <script>
+        toastr.error("{{ $message }}");
+    </script>
+    @enderror
 
                     <form id="blogForm" action="{{ route('manageBlog') }}" method="POST" enctype="multipart/form-data">
                         @csrf

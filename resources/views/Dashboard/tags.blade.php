@@ -40,6 +40,18 @@
 
 @section('content')
 
+    @if(session('success'))
+    <script>
+        toastr.success("{{ session('success') }}");
+    </script>
+    @endif
+
+    @error('error')
+    <script>
+        toastr.error("{{ $message }}");
+    </script>
+    @enderror
+
 <div class="content-section-box">
     <div class="row g-3">
 

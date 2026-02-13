@@ -93,15 +93,16 @@
 
 <div class="content-section">
 
-    @session('success')
-    <div class="alert alert-success" role="alert">
-        {{ session('success') }}
-    </div>
-    @endsession
+    @if(session('success'))
+    <script>
+        toastr.success("{{ session('success') }}");
+    </script>
+    @endif
+
     @error('error')
-    <div class="alert alert-danger" role="alert">
-        {{ $message }}
-    </div>
+    <script>
+        toastr.error("{{ $message }}");
+    </script>
     @enderror
 
     <div class="table-responsive">

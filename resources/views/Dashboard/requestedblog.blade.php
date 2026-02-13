@@ -24,17 +24,16 @@
 
 <div class="content-section">
 
-    @session('success')
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endsession
-    @error('error')
-    <div class="alert alert-danger">{{ $message }}</div>
-    @enderror
+    @if(session('success'))
+    <script>
+        toastr.success("{{ session('success') }}");
+    </script>
+    @endif
 
-    @error('rejection_reason')
-    <div class="alert alert-danger">{{ $message }}</div>
+    @error('error')
+    <script>
+        toastr.error("{{ $message }}");
+    </script>
     @enderror
 
 

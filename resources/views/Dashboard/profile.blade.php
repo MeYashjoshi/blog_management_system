@@ -26,16 +26,17 @@
                     </h2>
 
 
-                    @session('success')
-                        <div class="alert alert-success" role="alert">
-                            {{ session('success') }}
-                        </div>
-                    @endsession
-                     @error('error')
-                        <div class="alert alert-danger" role="alert">
-                        {{ $message }}
-                        </div>
-                    @enderror
+    @if(session('success'))
+    <script>
+        toastr.success("{{ session('success') }}");
+    </script>
+    @endif
+
+    @error('error')
+    <script>
+        toastr.error("{{ $message }}");
+    </script>
+    @enderror
 
                     <form id="updateProfileForm" action="{{ route('manageUser') }}" method="POST" enctype="multipart/form-data">
 
