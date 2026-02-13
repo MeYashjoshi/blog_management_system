@@ -2,6 +2,12 @@
 
 @section('title', 'System Settings')
 
+@section('breadcrumb')
+    <a href="dashboard">Home</a>
+    <span>/</span>
+    <span>System Settings</span>
+@endsection
+
 @section('content')
 
 {{-- system settings content goes here --}}
@@ -48,7 +54,7 @@
             <textarea id="address" name="address">{{ $settings->address }}</textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">Save Settings</button>
+        <button type="submit" class="btn btn-primary-dashboard">Save Settings</button>
     </form>
 </div>
 

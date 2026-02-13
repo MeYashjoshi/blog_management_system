@@ -1,6 +1,6 @@
 @extends('dashboard.layout.main')
 
-@section('title', 'Manage Tag')
+@section('title',  $tag?->id ? "Update Tag" : "Add Tag")
 
 @section('style')
 <style>
@@ -9,6 +9,14 @@
     }
 </style>
 
+@endsection
+
+@section('breadcrumb')
+    <a href="dashboard">Home</a>
+    <span>/</span>
+    <a href="{{ route('page.tags') }}">Tags</a>
+    <span>/</span>
+    <span>Manage Tag</span>
 @endsection
 
 @section('content')

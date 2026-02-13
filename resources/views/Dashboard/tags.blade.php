@@ -25,6 +25,13 @@
     </style>
 @endsection
 
+@section('breadcrumb')
+    <a href="dashboard">Home</a>
+    <span>/</span>
+    <span>Tags</span>
+@endsection
+
+
 @section('dashboard-right-button')
     @can('tag-create')
         <a href="/managetag" class="btn-primary-dashboard"><i class="fa-solid fa-plus"></i> New Tag </a>

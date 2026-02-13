@@ -1,6 +1,6 @@
 @extends('dashboard.layout.main')
 
-@section('title', 'Create Blog')
+@section('title',  $blog?->id ? "Update Blog" : "Add Blog")
 
 @section('style')
     <style>
