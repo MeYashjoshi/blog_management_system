@@ -15,13 +15,10 @@ class RoleController extends BaseController
         $this->roleRepository = $roleRepository;
     }
 
-
     public function showRolesAndPermissions()
     {
         try {
             $RolesAndPermissions = $this->roleRepository->getRolesAndPermissions();
-
-            // $ModulesAndPermission = $this->roleRepository->getModulesAndPermissions();
 
             return view('dashboard.rolesandpermissions', compact('RolesAndPermissions'));
         } catch (Exception $e) {
@@ -43,13 +40,11 @@ class RoleController extends BaseController
         }
     }
 
-    public function showManageRole(Request $request)
+    public function showManageRolePermissions(Request $request)
     {
-        dd($request->all());
-        $this->checkPermission("role-create");
-
         try {
-            return view('dashboard.managerole');
+            $roledetails = $this->roleRepository->getRoleDetails($request);
+            return response()->json($roledetails);
         } catch (\Throwable $e) {
             return back()->withErrors([
                 'error' => $e->getMessage(),
@@ -57,13 +52,28 @@ class RoleController extends BaseController
         }
     }
 
-    public function showManageRolePermissions(Request $request)
+    public function manageRole(Request $request)
     {
-
         try {
-            $roledetails = $this->roleRepository->getRoleDetails($request);
-            return response()->json($roledetails);
+            $res = $this->roleRepository->manageRole($request);
+            if ($res === 200) {
+                return back()->with('success', 'Role updated successfully');
+            } else if ($res === 201) {
+                return back()->with('success', 'Role created successfully');
+            }
         } catch (\Throwable $e) {
+            return back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function deleteRole(Request $request)
+    {
+        try {
+            $res = $this->roleRepository->deleteRole($request);
+            return back()->with('success', 'Role deleted successfully');
+        } catch (Exception $e) {
             return back()->withErrors([
                 'error' => $e->getMessage(),
             ]);

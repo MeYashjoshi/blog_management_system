@@ -20,8 +20,6 @@ class RoleRepository implements RoleRepositoryInterface
         $this->permissionModel = $permissionModel;
     }
 
-    public function getRoles() {}
-
     public function getRolesAndPermissions()
     {
         try {
@@ -78,13 +76,10 @@ class RoleRepository implements RoleRepositoryInterface
         }
     }
 
-
     public function getRoleDetails($request)
     {
         try {
-            $role = $this->roleModel
-                ->with('permissions')
-                ->findOrFail($request->role_id);
+            $role = $this->roleModel->with('permissions')->findOrFail($request->role_id);
 
             $allPermissions = $this->permissionModel->all();
 
@@ -107,6 +102,7 @@ class RoleRepository implements RoleRepositoryInterface
 
             return [
                 'role_name' => Str::headline($role->name),
+                'role_id' => $role->id,
                 'modules'   => $modules,
             ];
         } catch (Exception $e) {
@@ -114,9 +110,38 @@ class RoleRepository implements RoleRepositoryInterface
         }
     }
 
+    public function manageRole($request)
+    {
+        // dd($request);
+        try {
+            $role = $this->roleModel->updateOrCreate(
+                ['id' => $request->role_id],
+                ['name' => Str::slug($request->role_name)]
+            );
 
+            $role->syncPermissions(
+                Permission::whereIn('id', $request->permissions)->pluck('name')
+            );
 
-    public function manageRole($request) {}
+            if ($role->wasRecentlyCreated) {
+                return 201;
+            }
 
-    public function deleteRole($request) {}
+            return 200;
+        } catch (Exception $e) {
+            dd($e->getMessage());
+            throw new Exception("Failed to manage role: " . $e->getMessage());
+        }
+    }
+
+    public function deleteRole($request)
+    {
+        try {
+            $role = $this->roleModel->findOrFail($request->role_id);
+            $role->delete();
+            return true;
+        } catch (Exception $e) {
+            throw new Exception("Failed to delete role: " . $e->getMessage());
+        }
+    }
 }
