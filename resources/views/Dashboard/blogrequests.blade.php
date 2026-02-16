@@ -111,7 +111,7 @@
                 <tr>
                     <th>Banner</th>
                     <th>Title</th>
-                    <th>Rejection Reason</th>
+                    <th>Uploaded By</th>
                     <th>Uploaded Date</th>
                     <th>Status</th>
                     <th>Action</th>
@@ -128,7 +128,7 @@
                         </div>
                     </td>
                     <td><strong>{{$requestedBlog->title}}</strong></td>
-                    <td>{{ $requestedBlog->rejection_reason }}</td>
+                    <td>{{$requestedBlog->author_name }}</td>
                     <td>{{$requestedBlog->created_at}}</td>
                     <td>{{
                         $requestedBlog->status == 0 ? 'Pending' :

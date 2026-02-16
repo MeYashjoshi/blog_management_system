@@ -51,7 +51,6 @@ class BlogController extends BaseController
             $requestedBlogs = $this->blogRepository->getRequestedBlogs();
             $blogStatistics = $this->blogStatistics();
 
-
             return view('dashboard.blogrequests', compact('requestedBlogs', 'blogStatistics'));
         } catch (\Throwable $e) {
             return back()->withErrors([

@@ -45,7 +45,7 @@ class Blog extends Model
     ];
 
     protected $casts = [
-        'tag_ids' => 'array',
+        'tag_ids' => 'array'
     ];
     public function author()
     {
@@ -87,5 +87,10 @@ class Blog extends Model
     {
         $tagIds = $this->tag_ids ?? [];
         return Tag::whereIn('id', $tagIds)->get();
+    }
+
+    public function getAuthorNameAttribute()
+    {
+        return $this->author->firstname . ' ' . $this->author->lastname;
     }
 }

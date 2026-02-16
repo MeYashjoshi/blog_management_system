@@ -47,8 +47,9 @@ class BlogRepository implements BlogRepositoryInterface
     {
 
         try {
-            $requestedBlogs = $this->blogModel->whereIn('status', [Blog::STATUS_PENDING, Blog::STATUS_REJECTED, Blog::STATUS_ACTIVE, Blog::STATUS_UNPUBLISHED])->get();
+            $requestedBlogs = $this->blogModel->whereIn('status', [Blog::STATUS_PENDING, Blog::STATUS_REJECTED, Blog::STATUS_ACTIVE, Blog::STATUS_UNPUBLISHED])->with('author')->get();
 
+            // dd($requestedBlogs);
             return $requestedBlogs;
         } catch (\Throwable $e) {
             return back()->withErrors([

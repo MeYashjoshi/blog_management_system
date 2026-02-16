@@ -15,17 +15,17 @@
 
                 <div class="content-section">
 
-                    @if(session('success'))
-                    <script>
-                        toastr.success("{{ session('success') }}");
-                    </script>
-                    @endif
+    @if(session('success'))
+    <script>
+        toastr.success("{{ session('success') }}");
+    </script>
+    @endif
 
-                    @error('error')
-                    <script>
-                        toastr.error("{{ $message }}");
-                    </script>
-                    @enderror
+    @error('error')
+    <script>
+        toastr.error("{{ $message }}");
+    </script>
+    @enderror
 
                     <form id="createCategoryForm" action="{{ route('manageCategory') }}" method="POST">
                         @csrf

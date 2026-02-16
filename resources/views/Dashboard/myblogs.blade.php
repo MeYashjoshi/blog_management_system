@@ -3,38 +3,41 @@
 @section('title', 'My Blogs')
 
 @section('style')
-    <style>
-        .table-img img {
-            width: 80px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-        .custom-card{
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
-    border: 1px solid #e2e8f0 !important;
-    margin-bottom: 30px;
+<style>
+    .table-img img {
+        width: 80px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
 
-        }
-        .content-section-box h3,.icon-box {
-    color: #6366f1;
-}
-    </style>
+    .custom-card {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
+        border: 1px solid #e2e8f0 !important;
+        margin-bottom: 30px;
+
+    }
+
+    .content-section-box h3,
+    .icon-box {
+        color: #6366f1;
+    }
+</style>
 @endsection
 
 @section('breadcrumb')
-    <a href="dashboard">Home</a>
-    <span>/</span>
-     <span>My Blogs</span>
+<a href="dashboard">Home</a>
+<span>/</span>
+<span>My Blogs</span>
 @endsection
 
 @section('dashboard-right-button')
- <a href="/manageblog" class="btn-primary-dashboard">
-                        <i class="fa-solid fa-plus"></i> New Blog
-                    </a>
+<a href="/manageblog" class="btn-primary-dashboard">
+    <i class="fa-solid fa-plus"></i> New Blog
+</a>
 @endsection
 
 @section('content')
@@ -106,7 +109,7 @@
 </div>
 
 
-   <div class="content-section">
+<div class="content-section">
 
     @if(session('success'))
     <script>
@@ -120,60 +123,60 @@
     </script>
     @enderror
 
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Banner</th>
-                                    <th>Title</th>
-                                    <th>Rejection Reason</th>
-                                    <th>Uploaded Date</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Banner</th>
+                    <th>Title</th>
+                    <th>Rejection Reason</th>
+                    <th>Uploaded Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
 
-                                @foreach ($blogs as $blog )
-                                <tr>
-                                    <td>
-                                        <div class="table-img">
-                                            <img src="{{$blog->getFeaturedImageUrlAttribute()}}" alt="Blog Banner" />
-                                        </div>
-                                    </td>
-                                    <td><strong>{{$blog->title}}</strong></td>
-                                    <td>N/A</td>
-                                    <td>{{ $blog->published_at }}</td>
-                                    {{-- <td>{{ $blog->status == 0 ? "Requested" : $blog->status == 1 ? "Published" : $blog->status == 2 ? "Inactive" : $blog->status == 3 ? "Draft" : $blog->status == 4 ? "Rejected" }}</td> --}}
-                                    <td>{{ $blog->status == 0 ? "Requested" : ($blog->status == 1 ? "Published" : ($blog->status == 2 ? "Inactive" : ($blog->status == 3 ? "Draft" : ($blog->status == 4 ? "Rejected" : "Unpublished")))) }}</td>
-                                    <td>
-                                                <form action="{{ route('manageblog.page') }}" method="GET" class="float-start me-2" >
-
-
-                                                    <input type="hidden" id="slug" name="slug"  value="{{ $blog->slung }}" />
-                                                    @can('category-edit')
-                                                    <button class="btn-secondary-dashboard btn-sm">Edit</button>
-                                                    @endcan
-                                                </form>
-
-                                                <form action="{{ route('deleteBlog') }}" method="POST" class="float-start">
-                                                    @csrf
-
-                                                    <input type="hidden" id="id" name="id"  value="{{ $blog->id }}" />
-                                                     @can('category-delete')
-                                                    <button class="btn-secondary-dashboard btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
-                                                     @endcan
-                                                </form>
-
-                                            </td>
-                                </tr>
-                                @endforeach
+                @foreach ($blogs as $blog )
+                <tr>
+                    <td>
+                        <div class="table-img">
+                            <img src="{{$blog->getFeaturedImageUrlAttribute()}}" alt="Blog Banner" />
+                        </div>
+                    </td>
+                    <td><strong>{{$blog->title}}</strong></td>
+                    <td>N/A</td>
+                    <td>{{ $blog->published_at }}</td>
+                    {{-- <td>{{ $blog->status == 0 ? "Requested" : $blog->status == 1 ? "Published" : $blog->status == 2 ? "Inactive" : $blog->status == 3 ? "Draft" : $blog->status == 4 ? "Rejected" }}</td> --}}
+                    <td>{{ $blog->status == 0 ? "Requested" : ($blog->status == 1 ? "Published" : ($blog->status == 2 ? "Inactive" : ($blog->status == 3 ? "Draft" : ($blog->status == 4 ? "Rejected" : "Unpublished")))) }}</td>
+                    <td>
+                        <form action="{{ route('manageblog.page') }}" method="GET" class="float-start me-2">
 
 
+                            <input type="hidden" id="slug" name="slug" value="{{ $blog->slung }}" />
+                            @can('category-edit')
+                            <button class="btn-secondary-dashboard btn-sm">Edit</button>
+                            @endcan
+                        </form>
 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                        <form action="{{ route('deleteBlog') }}" method="POST" class="float-start">
+                            @csrf
+
+                            <input type="hidden" id="id" name="id" value="{{ $blog->id }}" />
+                            @can('category-delete')
+                            <button class="btn-secondary-dashboard btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                            @endcan
+                        </form>
+
+                    </td>
+                </tr>
+                @endforeach
+
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
 
 @endsection

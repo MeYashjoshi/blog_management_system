@@ -73,74 +73,74 @@
         <div class="form-group">
             <label for="content">Content</label>
             <textarea id="content" name="content" rows="10" placeholder="" readonly>
-                            {{$requestedBlog->content}}
-                          </textarea>
+            {{$requestedBlog->content}}
+            </textarea>
         </div>
 
         {{-- <div class="form-group">
             <label for="tags">Tags (comma separated)</label>
             <input type="text" id="tags" name="tags" value="{{$requestedBlog->blog_tags}}" readonly />
-        </div> --}}
-        <div class="form-group">
-            <label for="tags">Tags (comma separated)</label>
-                   <select id="tags" name="tags[]" multiple="multiple">
-                    @foreach($requestedBlog->tags_details as $tag)
-                        <option value="{{ $tag->id }}" selected>{{ $tag->title }}</option>
-                    @endforeach
-                     </select>
-        </div>
+</div> --}}
+<div class="form-group">
+    <label for="tags">Tags (comma separated)</label>
+    <select id="tags" name="tags[]" multiple="multiple">
+        @foreach($requestedBlog->tags_details as $tag)
+        <option value="{{ $tag->id }}" selected>{{ $tag->title }}</option>
+        @endforeach
+    </select>
+</div>
 
 
 
-        @if ($requestedBlog->status == 4 || $requestedBlog->status == 2)
+@if ($requestedBlog->status == 4 || $requestedBlog->status == 2)
 
-        <div class="form-group">
-            <label for="tags">Rejection Reason</label>
-            <input type="text" id="tags" name="tags" value="{{$requestedBlog->rejection_reason}}" readonly />
-        </div>
+<div class="form-group">
+    <label for="tags">Rejection Reason</label>
+    <input type="text" id="tags" name="tags" value="{{$requestedBlog->rejection_reason}}" readonly />
+</div>
 
-        @endif
-
-
-        <div class="button-group">
-
-            @if ($requestedBlog->status == 0 || $requestedBlog->status == 4 || $requestedBlog->status == 2)
-            @can('blog-approve')
-                <button type="submit" class="btn-primary-dashboard" name="status" value="1">
-                    <i class="fa-solid fa-check"></i> Approve
-                </button>
-            @endcan
+@endif
 
 
-            @endif
+<div class="button-group">
 
-            @if ($requestedBlog->status == 0  || $requestedBlog->status == 2)
-
-            @can('blog-reject')
-                <button type="button" class="btn-secondary-dashboard" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                data-bs-whatever="@mdo">
-                <i class="fa-solid fa-times"></i>
-                Reject
-                </button>
-            @endcan
-
-            @endif
+    @if ($requestedBlog->status == 0 || $requestedBlog->status == 2)
+    @can('blog-approve')
+    <button type="submit" class="btn-primary-dashboard" name="status" value="1">
+        <i class="fa-solid fa-check"></i> Approve
+    </button>
+    @endcan
 
 
-            @if ($requestedBlog->status == 1 || $requestedBlog->status == 0)
+    @endif
 
-             <button type="button" class="btn-secondary-dashboard" data-bs-toggle="modal" data-bs-target="#unpublishModal"
-                data-bs-whatever="@mdo">
-                <i class="fa-solid fa-times"></i>
-                Unpublish
-            </button>
-            @endif
+    @if ($requestedBlog->status == 0 || $requestedBlog->status == 2)
 
-            <button type="button" class="btn-secondary-dashboard" onclick="window.history.back();">
-                <i class="fa-solid fa-times"></i> Cancel
-            </button>
-        </div>
-    </form>
+    @can('blog-reject')
+    <button type="button" class="btn-secondary-dashboard" data-bs-toggle="modal" data-bs-target="#exampleModal"
+        data-bs-whatever="@mdo">
+        <i class="fa-solid fa-times"></i>
+        Reject
+    </button>
+    @endcan
+
+    @endif
+
+
+    @if ($requestedBlog->status == 1)
+
+    <button type="button" class="btn-secondary-dashboard" data-bs-toggle="modal" data-bs-target="#unpublishModal"
+        data-bs-whatever="@mdo">
+        <i class="fa-solid fa-times"></i>
+        Unpublish
+    </button>
+    @endif
+
+    <button type="button" class="btn-secondary-dashboard" onclick="window.history.back();">
+        <i class="fa-solid fa-times"></i> Cancel
+    </button>
+</div>
+</form>
 </div>
 
 
@@ -221,16 +221,12 @@
 
             })
 
-    $('#tags').select2(
-        {
+        $('#tags').select2({
             allowClear: false,
             disabled: true,
-        }
-    );
-
         });
 
-
+    });
 </script>
 
 @endsection
