@@ -90,6 +90,77 @@
     </div>
 </div>
 
+<div class="content-section">
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+
+            <form action="{{ route('blogrequests.page') }}" method="GET">
+
+                <div class="row g-3 align-items-end">
+
+                    <div class="col-md-3">
+                        <label for="status" class="form-label fw-semibold">
+                            Status
+                        </label>
+                        <select name="status" id="status" class="form-select">
+                            <option value="">All Status</option>
+                            <option value="0" @selected(request('status')==='0' )>Pending</option>
+                            <option value="1" @selected(request('status')==='1' )>Approved</option>
+                            <option value="2" @selected(request('status')==='2' )>Inactive</option>
+                            <option value="3" @selected(request('status')==='3' )>Unpublished</option>
+                            <option value="4" @selected(request('status')==='4' )>Rejected</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="category" class="form-label fw-semibold">
+                            Category
+                        </label>
+                        <select name="category" id="category" class="form-select">
+                            <option value="">All Categories</option>
+
+                            @foreach ($categories as $category)
+                            <option value="{{ $category->id }}"
+                                @selected(request('category')==$category->id)>
+                                {{ $category->title }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="search" class="form-label fw-semibold">
+                            Search Title
+                        </label>
+                        <input type="text"
+                            name="search"
+                            id="search"
+                            class="form-control"
+                            placeholder="Search"
+                            value="{{ request('search') }}">
+                    </div>
+
+                    <div class="col-md-2 d-flex gap-2">
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-search"></i> Filter
+                        </button>
+
+                        <a href="{{ route('blogrequests.page') }}"
+                            class="btn btn-outline-secondary w-100">
+                            Reset
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
 
 <div class="content-section">
 
@@ -151,7 +222,14 @@
                 @endforeach
             </tbody>
         </table>
+
+        <div class="mt-4">
+            {{ $requestedBlogs->links() }}
+        </div>
     </div>
+
+
+
 </div>
 
 @endsection

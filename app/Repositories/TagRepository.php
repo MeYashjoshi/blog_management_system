@@ -38,8 +38,16 @@ class TagRepository implements TagRepositoryInterface
     {
 
         try {
-            $tags = $this->tagModel->all();
-            return $tags;
+            $tags = $this->tagModel->query();
+
+            if ($request->filled('status')) {
+                $tags->where('status', $request->status);
+            }
+            if ($request->filled('search')) {
+                $tags->where('title', 'like', '%' . $request->search . '%');
+            }
+
+            return $tags->paginate(10)->withQueryString();
         } catch (\Throwable $e) {
             return back()->withErrors([
                 'errors' => $e->getMessage(),

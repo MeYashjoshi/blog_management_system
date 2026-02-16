@@ -3,42 +3,45 @@
 @section('title', 'Categories')
 
 @section('style')
-    <style>
-        .table-img img {
-            width: 80px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-        .custom-card{
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
-    border: 1px solid #e2e8f0 !important;
-    margin-bottom: 30px;
+<style>
+    .table-img img {
+        width: 80px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
 
-        }
-        .content-section-box h3,.icon-box {
-    color: #6366f1;
-}
-    </style>
+    .custom-card {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05) !important;
+        border: 1px solid #e2e8f0 !important;
+        margin-bottom: 30px;
+
+    }
+
+    .content-section-box h3,
+    .icon-box {
+        color: #6366f1;
+    }
+</style>
 @endsection
 
 @section('dashboard-right-button')
- @can('category-create')
-    <a href="/managecategory" class="btn-primary-dashboard">
-        <i class="fa-solid fa-plus"></i> New Category
-    </a>
+@can('category-create')
+<a href="/managecategory" class="btn-primary-dashboard">
+    <i class="fa-solid fa-plus"></i> New Category
+</a>
 
 @endcan
 
 @endsection
 
 @section('breadcrumb')
-    <a href="dashboard">Home</a>
-    <span>/</span>
-    <span>Category</span>
+<a href="dashboard">Home</a>
+<span>/</span>
+<span>Category</span>
 @endsection
 
 @section('content')
@@ -109,8 +112,60 @@
     </div>
 </div>
 
+<div class="content-section">
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
 
-   <div class="content-section">
+            <form action="{{ route('categories.page') }}" method="GET">
+
+                <div class="row g-3 align-items-end">
+
+                    <div class="col-md-3">
+                        <label for="status" class="form-label fw-semibold">
+                            Status
+                        </label>
+                        <select name="status" id="status" class="form-select">
+                            <option value="">All Status</option>
+                            <option value="0" @selected(request('status')==='0' )>Archive</option>
+                            <option value="1" @selected(request('status')==='1' )>Active</option>
+                            <option value="2" @selected(request('status')==='2' )>Inactive</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="search" class="form-label fw-semibold">
+                            Search Title
+                        </label>
+                        <input type="text"
+                            name="search"
+                            id="search"
+                            class="form-control"
+                            placeholder="Search"
+                            value="{{ request('search') }}">
+                    </div>
+
+                    <div class="col-md-2 d-flex gap-2">
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-search"></i> Filter
+                        </button>
+
+                        <a href="{{ route('blogrequests.page') }}"
+                            class="btn btn-outline-secondary w-100">
+                            Reset
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<div class="content-section">
 
     @if(session('success'))
     <script>
@@ -124,75 +179,78 @@
     </script>
     @enderror
 
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Category Name</th>
-                                    <th>Description</th>
-                                    <th>Created Date</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Category Name</th>
+                    <th>Description</th>
+                    <th>Created Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
 
 
-                            @if ($res!=null)
+                @if ($res!=null)
 
-                                @foreach ($res as $data )
+                @foreach ($res as $data )
 
-                                        <tr>
+                <tr>
 
-                                            <td><strong>{{$data->title}}</strong></td>
-                                            <td>{{ $data->description }}</td>
-                                            <td>{{ $data->CreatedDate }}</td>
-                                            <td>{{ $data->status == 0 ? "Archive" : ($data->status == 1 ? "Active" : "Inactive") }}</td>
-                                            <td class="d-flex">
-                                                <form action="{{ route('managecategories.page') }}" method="GET" class="me-2">
-                                                    <input type="hidden" id="id" name="id"  value="{{ $data->id }}" />
-                                                    @can('category-edit')
-                                                    <button class="btn-primary-dashboard btn-sm"><i class="fa fa-edit"></i>Edit</button>
-                                                    @endcan
-                                                </form>
+                    <td><strong>{{$data->title}}</strong></td>
+                    <td>{{ $data->description }}</td>
+                    <td>{{ $data->CreatedDate }}</td>
+                    <td>{{ $data->status == 0 ? "Archive" : ($data->status == 1 ? "Active" : "Inactive") }}</td>
+                    <td class="d-flex">
+                        <form action="{{ route('managecategories.page') }}" method="GET" class="me-2">
+                            <input type="hidden" id="id" name="id" value="{{ $data->id }}" />
+                            @can('category-edit')
+                            <button class="btn-primary-dashboard btn-sm"><i class="fa fa-edit"></i>Edit</button>
+                            @endcan
+                        </form>
 
-                                                @if ($data->canBeDeleted())
-                                                    <form action="{{ route('deleteCategory') }}" method="POST">
-                                                        @csrf
+                        @if ($data->canBeDeleted())
+                        <form action="{{ route('deleteCategory') }}" method="POST">
+                            @csrf
 
-                                                        <input type="hidden" id="id" name="id"  value="{{ $data->id }}" />
-                                                        @can('category-delete')
+                            <input type="hidden" id="id" name="id" value="{{ $data->id }}" />
+                            @can('category-delete')
 
-                                                        <button class="btn-primary-dashboard btn-sm" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i>Delete</button>
+                            <button class="btn-primary-dashboard btn-sm" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i>Delete</button>
 
-                                                     @endcan
-                                                    </form>
-                                                @else
-                                                    <button type class="btn-primary-dashboard btn-sm" title="Category is assigned to blogs." > <i class="fa fa-lock"></i> Delete </button>
+                            @endcan
+                        </form>
+                        @else
+                        <button type class="btn-primary-dashboard btn-sm" title="Category is assigned to blogs."> <i class="fa fa-lock"></i> Delete </button>
 
-                                                @endif
+                        @endif
 
-                                            </td>
-                                        </tr>
-
-
-                                @endforeach
-
-                                @else
-                                        <tr>
-                                            <td colspan="5" class="text-center">No categories avilable</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                @endif
+                    </td>
+                </tr>
 
 
+                @endforeach
 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                @else
+                <tr>
+                    <td colspan="5" class="text-center">No categories avilable</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                @endif
+
+
+
+            </tbody>
+        </table>
+        <div class="mt-4">
+            {{ $res->links() }}
+        </div>
+    </div>
+</div>
 
 @endsection

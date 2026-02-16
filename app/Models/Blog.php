@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Blog extends Model
 {
@@ -92,5 +93,10 @@ class Blog extends Model
     public function getAuthorNameAttribute()
     {
         return $this->author->firstname . ' ' . $this->author->lastname;
+    }
+
+    public function getTrimedTitleAttribute()
+    {
+        return Str::words($this->title, 3, '...');
     }
 }

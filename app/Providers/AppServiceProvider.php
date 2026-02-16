@@ -17,6 +17,7 @@ use App\Repositories\RoleRepository;
 use App\Repositories\TagRepository;
 use App\Repositories\SystemSettingRepository;
 use App\Repositories\UserRepository;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -72,5 +73,7 @@ class AppServiceProvider extends ServiceProvider
             $settings = SystemSetting::first(); // Assuming you have only one row
             $view->with('siteSettings', $settings);
         });
+
+        Paginator::useBootstrapFive();
     }
 }

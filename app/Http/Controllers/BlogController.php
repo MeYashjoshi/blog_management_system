@@ -29,29 +29,32 @@ class BlogController extends BaseController
 
     public function showBlog(Request $request)
     {
-        $blog = $this->blogRepository->getBlogs();
+        $blog = $this->blogRepository->getBlogs(null);
         return view('frontend.blogsingle', compact('blog'));
     }
 
-    public function showMyBlogs()
+    public function showMyBlogs(Request $request)
     {
-        $blogs = $this->blogRepository->getBlogs();
-
+        $blogs = $this->blogRepository->getBlogs($request);
+        $categories = $this->categoryRepository->getCategories(null);
         $blogStatistics = $this->blogStatistics();
 
-        return view('dashboard.myblogs', compact('blogs', 'blogStatistics'));
+        return view('dashboard.myblogs', compact('blogs', 'blogStatistics', 'categories'));
     }
 
-    public function getRequestedBlogs()
+    public function getRequestedBlogs(Request $request)
     {
+
         $this->checkPermission('blog-request');
         $this->checkRole('admin');
 
         try {
-            $requestedBlogs = $this->blogRepository->getRequestedBlogs();
+            $requestedBlogs = $this->blogRepository->getRequestedBlogs($request);
+            $categories = $this->categoryRepository->getCategories(null);
             $blogStatistics = $this->blogStatistics();
 
-            return view('dashboard.blogrequests', compact('requestedBlogs', 'blogStatistics'));
+
+            return view('dashboard.blogrequests', compact('requestedBlogs', 'blogStatistics', 'categories'));
         } catch (\Throwable $e) {
             return back()->withErrors([
                 'error' => $e->getMessage(),
@@ -107,7 +110,7 @@ class BlogController extends BaseController
     public function getBlogs()
     {
 
-        $blogs = $this->blogRepository->getBlogs();
+        $blogs = $this->blogRepository->getBlogs(null);
         return $blogs;
     }
 

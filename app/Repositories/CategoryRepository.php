@@ -27,8 +27,17 @@ class CategoryRepository implements CategoryRepositoryInterface
     public function getCategories($request)
     {
 
-        $categories = $this->categoryModel->all();
-        return $categories;
+        $categories = $this->categoryModel->query();
+
+        if ($request?->filled('status')) {
+            $categories->where('status', $request->status);
+        }
+        if ($request?->filled('search')) {
+            $categories->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        return $categories->paginate(10)
+            ->withQueryString();
     }
     public function manageCategory($request)
     {

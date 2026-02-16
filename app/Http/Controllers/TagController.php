@@ -16,12 +16,12 @@ class TagController extends BaseController
         $this->tagRepository = $tagRepository;
     }
 
-    public function showTags()
+    public function showTags(Request $request)
     {
         try {
             $this->checkPermission('tag-view');
 
-            $tags = $this->tagRepository->getTags(null);
+            $tags = $this->tagRepository->getTags($request);
             $tagStatistics = $this->tagStatistics();
 
             return view('dashboard.tags', compact('tags', 'tagStatistics'));

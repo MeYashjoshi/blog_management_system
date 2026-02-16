@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\BlogRepositoryInterface;
 use App\Models\Blog;
+use App\Models\Category;
 use App\Models\Tag;
 use App\Traits\deleteFile;
 use App\Traits\imageUpload;
@@ -37,20 +38,43 @@ class BlogRepository implements BlogRepositoryInterface
         }
     }
 
-    public function getBlogs()
+    public function getBlogs($request)
     {
-        $blogs = $this->blogModel->all();
-        return $blogs;
+        $blogs = $this->blogModel->with('category');
+
+        if ($request->filled('status')) {
+            $blogs->where('status', $request->status);
+        }
+
+        if ($request->filled('category')) {
+            $blogs->where('category_id', $request->category);
+        }
+
+        if ($request->filled('search')) {
+            $blogs->where('title', 'like', '%' . $request->search . '%');
+        }
+
+        return $blogs->paginate(10)->withQueryString();
     }
 
-    public function getRequestedBlogs()
+    public function getRequestedBlogs($request)
     {
-
         try {
-            $requestedBlogs = $this->blogModel->whereIn('status', [Blog::STATUS_PENDING, Blog::STATUS_REJECTED, Blog::STATUS_ACTIVE, Blog::STATUS_UNPUBLISHED])->with('author')->get();
+            $requestedBlogs = $this->blogModel->whereIn('status', [Blog::STATUS_PENDING, Blog::STATUS_REJECTED, Blog::STATUS_ACTIVE, Blog::STATUS_UNPUBLISHED])->with('author', 'category');
 
-            // dd($requestedBlogs);
-            return $requestedBlogs;
+            if ($request->filled('status')) {
+                $requestedBlogs->where('status', $request->status);
+            }
+
+            if ($request->filled('category')) {
+                $requestedBlogs->where('category_id', $request->category);
+            }
+
+            if ($request->filled('search')) {
+                $requestedBlogs->where('title', 'like', '%' . $request->search . '%');
+            }
+
+            return $requestedBlogs->paginate(10)->withQueryString();
         } catch (\Throwable $e) {
             return back()->withErrors([
                 'error' => $e->getMessage(),

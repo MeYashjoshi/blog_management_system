@@ -17,13 +17,14 @@ class CategoryController extends BaseController
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function showCategories()
+    public function showCategories(Request $request)
     {
+
         $this->checkPermission("category-view");
 
         try {
 
-            $res = $this->categoryRepository->getCategories(null);
+            $res = $this->categoryRepository->getCategories($request);
 
             $categoryStatistics = $this->categoryStatistics();
 
