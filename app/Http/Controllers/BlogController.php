@@ -61,7 +61,7 @@ class BlogController extends BaseController
 
             return view(
                 'dashboard.myblogs',
-                compact('blogs', 'categories', 'blogStatistics')
+                compact('categories', 'blogStatistics')
             );
         } catch (\Throwable $e) {
 
