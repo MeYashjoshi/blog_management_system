@@ -112,7 +112,7 @@
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-body">
 
-            <form action="{{ route('blogrequests.page') }}" method="GET">
+            <form action="{{ route('myblogs.page') }}" method="GET">
 
                 <div class="row g-3 align-items-end">
 
@@ -122,11 +122,11 @@
                         </label>
                         <select name="status" id="status" class="form-select">
                             <option value="">All Status</option>
-                            <option value="0" @selected(request('status')==='0' )>Pending</option>
-                            <option value="1" @selected(request('status')==='1' )>Approved</option>
-                            <option value="2" @selected(request('status')==='2' )>Inactive</option>
-                            <option value="3" @selected(request('status')==='3' )>Unpublished</option>
-                            <option value="4" @selected(request('status')==='4' )>Rejected</option>
+                            <option value="0" @selected(request('status')=='0' )>Requested</option>
+                            <option value="1" @selected(request('status')=='1' )>Published</option>
+                            <option value="2" @selected(request('status')=='2' )>Inactive</option>
+                            <option value="3" @selected(request('status')=='3' )>Draft</option>
+                            <option value="4" @selected(request('status')=='4' )>Rejected</option>
                         </select>
                     </div>
 
@@ -193,64 +193,69 @@
     </script>
     @enderror
 
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Banner</th>
-                    <th>Title</th>
-                    <th>Rejection Reason</th>
-                    <th>Uploaded Date</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-
-                @foreach ($blogs as $blog )
-                <tr>
-                    <td>
-                        <div class="table-img">
-                            <img src="{{$blog->getFeaturedImageUrlAttribute()}}" alt="Blog Banner" />
-                        </div>
-                    </td>
-                    <td><strong>{{$blog->trimed_title}}</strong></td>
-                    <td>N/A</td>
-                    <td>{{ $blog->published_at }}</td>
-                    {{-- <td>{{ $blog->status == 0 ? "Requested" : $blog->status == 1 ? "Published" : $blog->status == 2 ? "Inactive" : $blog->status == 3 ? "Draft" : $blog->status == 4 ? "Rejected" }}</td> --}}
-                    <td>{{ $blog->status == 0 ? "Requested" : ($blog->status == 1 ? "Published" : ($blog->status == 2 ? "Inactive" : ($blog->status == 3 ? "Draft" : ($blog->status == 4 ? "Rejected" : "Unpublished")))) }}</td>
-                    <td>
-                        <form action="{{ route('manageblog.page') }}" method="GET" class="float-start me-2">
+    <div class="table_data">
 
 
-                            <input type="hidden" id="slug" name="slug" value="{{ $blog->slung }}" />
-                            @can('category-edit')
-                            <button class="btn-secondary-dashboard btn-sm">Edit</button>
-                            @endcan
-                        </form>
-
-                        <form action="{{ route('deleteBlog') }}" method="POST" class="float-start">
-                            @csrf
-
-                            <input type="hidden" id="id" name="id" value="{{ $blog->id }}" />
-                            @can('category-delete')
-                            <button class="btn-secondary-dashboard btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
-                            @endcan
-                        </form>
-
-                    </td>
-                </tr>
-                @endforeach
-
-
-
-            </tbody>
-        </table>
-
-        <div class="mt-4">
-            {{ $blogs->links() }}
-        </div>
     </div>
 </div>
+
+@endsection
+
+@section('scripts')
+
+<script>
+    $(document).ready(function() {
+
+
+
+        function get_data(page = 1) {
+            console.log('Fetching data for page:');
+            let status = $('#status').val() || 'all';
+            let category = $('#category').val() || 'all';
+            let search = $('#search').val() || '';
+            let itemPerPage = $('#itemPerPage').val() || 10;
+
+            console.log(status);
+
+
+            $.ajax({
+                url: "{{ route('myblogs.page') }}",
+                type: "GET",
+                data: {
+                    status: status,
+                    category: category,
+                    search: search,
+                    page: page,
+                    itemPerPage: itemPerPage
+                },
+                success: function(data) {
+                    $('.table_data').html(data);
+                }
+            });
+        }
+
+        get_data(1);
+
+        $(document).on('click', '.pagination a', function(event) {
+            event.preventDefault();
+            let page = new URL($(this).attr('href')).searchParams.get('page');
+            get_data(page);
+        });
+
+        $('#status, #category').on('change', function() {
+            get_data(1);
+        });
+
+        $('#search').on('keyup', function() {
+            get_data(1);
+        });
+
+        $(document).on('change', '#itemPerPage', function() {
+            console.log("hello");
+            get_data(1);
+        });
+
+    });
+</script>
 
 @endsection

@@ -46,7 +46,8 @@ class Blog extends Model
     ];
 
     protected $casts = [
-        'tag_ids' => 'array'
+        'tag_ids' => 'array',
+        'published_at' => 'datetime',
     ];
     public function author()
     {
@@ -98,5 +99,10 @@ class Blog extends Model
     public function getTrimedTitleAttribute()
     {
         return Str::words($this->title, 3, '...');
+    }
+
+    public function getPublishedAtFormattedAttribute()
+    {
+        return optional($this->published_at)->format('d M Y') ?? '-';
     }
 }

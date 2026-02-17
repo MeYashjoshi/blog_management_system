@@ -38,23 +38,28 @@ class BlogRepository implements BlogRepositoryInterface
         }
     }
 
-    public function getBlogs($request)
+    public function getBlogs($filters)
     {
         $blogs = $this->blogModel->with('category');
 
-        if ($request->filled('status')) {
-            $blogs->where('status', $request->status);
+        if ($filters['status'] != '' && $filters['status'] != 'all') {
+            $blogs->where('status', $filters['status']);
         }
 
-        if ($request->filled('category')) {
-            $blogs->where('category_id', $request->category);
+        if ($filters['category'] != '' && $filters['category'] !== 'all') {
+            $blogs->where('category_id', $filters['category']);
         }
 
-        if ($request->filled('search')) {
-            $blogs->where('title', 'like', '%' . $request->search . '%');
+        if ($filters['search'] != '') {
+            $blogs->where('title', 'like', '%' . $filters['search'] . '%');
         }
 
-        return $blogs->paginate(10)->withQueryString();
+        return $blogs->paginate(
+            $filters['itemPerPage'],
+            ['*'],
+            'page',
+            $filters['page'] ?? 1
+        )->withQueryString();
     }
 
     public function getRequestedBlogs($filters)

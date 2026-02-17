@@ -36,11 +36,45 @@ class BlogController extends BaseController
     public function showMyBlogs(Request $request)
     {
 
-        $blogs = $this->blogRepository->getBlogs($request);
-        $categories = $this->categoryRepository->getCategories(null);
-        $blogStatistics = $this->blogStatistics();
-        // dd($categories);
-        return view('dashboard.myblogs', compact('blogs', 'blogStatistics', 'categories'));
+        $filters = [
+            'status'   => $request->get('status', 'all'),
+            'category' => $request->get('category', 'all'),
+            'search'   => $request->get('search', ''),
+            'page'     => $request->get('page', 1),
+            'itemPerPage' => $request->get('itemPerPage', 10),
+        ];
+
+
+        try {
+
+            $blogs = $this->blogRepository->getBlogs($filters);
+
+            if ($request->ajax()) {
+                return view(
+                    'dashboard.partials.my-blogs-table',
+                    compact('blogs')
+                )->render();
+            }
+
+            $categories = $this->categoryRepository->getCategories(null);
+            $blogStatistics = $this->blogStatistics();
+
+            return view(
+                'dashboard.myblogs',
+                compact('blogs', 'categories', 'blogStatistics')
+            );
+        } catch (\Throwable $e) {
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+
+            return back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
     public function getRequestedBlogs(Request $request)
