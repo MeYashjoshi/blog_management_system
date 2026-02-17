@@ -176,67 +176,78 @@
 
 
 <div class="content-section">
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Tag Name</th>
-                    <th>Description</th>
-                    <th>Created Date</th>
-                    <th>Status</th>
-                    <th class="text-center">Action</th>
-                </tr>
-            </thead>
-            <tbody>
 
-                @foreach ($tags as $tag)
+    @if(session('success'))
+    <script>
+        toastr.success("{{ session('success') }}");
+    </script>
+    @endif
 
-                <tr>
-                    <td><strong>{{$tag->title}}</strong></td>
-                    <td>{{$tag->description}}</td>
-                    <td>{{ $tag->created_at->format('d M Y') }}</td>
-                    <td>
-                        @if($tag->status == 1)
-                        <span class="badge bg-success">Active</span>
-                        @elseif($tag->status == 2)
-                        <span class="badge bg-warning">Inactive</span>
-                        @else
-                        <span class="badge bg-secondary">Archive</span>
-                        @endif
-                    </td>
-                    <td class="d-flex gap-2">
+    @error('error')
+    <script>
+        toastr.error("{{ $message }}");
+    </script>
+    @enderror
+    <div class="table_data">
 
 
-                        @can('tag-edit')
-                        <a href="{{ route('page.managetag', ['id' => $tag->id]) }}" class="btn-primary-dashboard btn-sm"><i class="fa fa-edit"></i>Edit </a>
-                        @endcan
-                        @if ($tag->canBeDeleted())
-                        <form action="{{ route('deleteTag') }}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <input type="hidden" name="id" value="{{ $tag->id }}">
-                            @can('tag-delete')
-                            <button class="btn-primary-dashboard btn-sm" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i>Delete</button>
-                            @endcan
-                        </form>
-                        @else
-                        <button class="btn-primary-dashboard btn-sm" disabled title="Cannot delete this tag"><i class="fa-solid fa-lock"></i>Delete</button>
-                        @endif
-                    </td>
-                </tr>
-
-
-
-
-                @endforeach
-
-            </tbody>
-        </table>
-
-        <div class="mt-4">
-            {{ $tags->links() }}
-        </div>
     </div>
+
 </div>
+
+@endsection
+
+@section('scripts')
+
+<script>
+    $(document).ready(function() {
+
+        function get_data(page = 1) {
+            console.log('Fetching data for page:');
+            let status = $('#status').val() || 'all';
+            let search = $('#search').val() || '';
+            let itemPerPage = $('#itemPerPage').val() || 10;
+
+            console.log(status);
+
+
+            $.ajax({
+                url: "{{ route('page.tags') }}",
+                type: "GET",
+                data: {
+                    status: status,
+                    search: search,
+                    page: page,
+                    itemPerPage: itemPerPage
+                },
+                success: function(data) {
+                    $('.table_data').html(data);
+                }
+            });
+        }
+
+        get_data(1);
+
+        $(document).on('click', '.pagination a', function(event) {
+            event.preventDefault();
+            let page = new URL($(this).attr('href')).searchParams.get('page');
+            get_data(page);
+        });
+
+        $('#status').on('change', function() {
+            get_data(1);
+        });
+
+        $('#search').on('keyup', function() {
+            get_data(1);
+        });
+
+        $(document).on('change', '#itemPerPage', function() {
+            console.log("hello");
+            get_data(1);
+        });
+
+    });
+</script>
 
 @endsection

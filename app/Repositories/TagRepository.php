@@ -34,20 +34,24 @@ class TagRepository implements TagRepositoryInterface
         return $tag;
     }
 
-    public function getTags($request)
+    public function getTags($filters)
     {
 
         try {
             $tags = $this->tagModel->query();
 
-            if ($request->filled('status')) {
-                $tags->where('status', $request->status);
+            if ($filters['status'] !== 'all') {
+                $tags->where('status', $filters['status']);
             }
-            if ($request->filled('search')) {
-                $tags->where('title', 'like', '%' . $request->search . '%');
+            if ($filters['search']) {
+                $tags->where('title', 'like', '%' . $filters['search'] . '%');
             }
-
-            return $tags->paginate(10)->withQueryString();
+            return $tags->paginate(
+                $filters['itemPerPage'],
+                ['*'],
+                'page',
+                $filters['page'] ?? 1
+            )->withQueryString();
         } catch (\Throwable $e) {
             return back()->withErrors([
                 'errors' => $e->getMessage(),

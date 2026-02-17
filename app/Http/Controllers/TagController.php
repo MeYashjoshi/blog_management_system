@@ -18,13 +18,27 @@ class TagController extends BaseController
 
     public function showTags(Request $request)
     {
+        $this->checkPermission('tag-view');
+
+        $filters = [
+            'status'   => $request->get('status', 'all'),
+            'search'   => $request->get('search', ''),
+            'page'     => $request->get('page', 1),
+            'itemPerPage' => $request->get('itemPerPage', 10),
+        ];
         try {
-            $this->checkPermission('tag-view');
+
 
             $tags = $this->tagRepository->getTags($request);
+            if ($request->ajax()) {
+                return view(
+                    'dashboard.partials.tags-table',
+                    compact('tags')
+                )->render();
+            }
             $tagStatistics = $this->tagStatistics();
 
-            return view('dashboard.tags', compact('tags', 'tagStatistics'));
+            return view('dashboard.tags', compact('tagStatistics'));
         } catch (\Throwable $e) {
             return back()->withErrors([
                 'error' => $e->getMessage(),
