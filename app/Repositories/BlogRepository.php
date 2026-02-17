@@ -57,30 +57,39 @@ class BlogRepository implements BlogRepositoryInterface
         return $blogs->paginate(10)->withQueryString();
     }
 
-    public function getRequestedBlogs($request)
+    public function getRequestedBlogs($filters)
     {
-        try {
-            $requestedBlogs = $this->blogModel->whereIn('status', [Blog::STATUS_PENDING, Blog::STATUS_REJECTED, Blog::STATUS_ACTIVE, Blog::STATUS_UNPUBLISHED])->with('author', 'category');
+        $blogs = $this->blogModel
+            ->whereIn('status', [
+                Blog::STATUS_PENDING,
+                Blog::STATUS_REJECTED,
+                Blog::STATUS_ACTIVE,
+                Blog::STATUS_UNPUBLISHED
+            ])
+            ->with(['author', 'category']);
 
-            if ($request->filled('status')) {
-                $requestedBlogs->where('status', $request->status);
-            }
-
-            if ($request->filled('category')) {
-                $requestedBlogs->where('category_id', $request->category);
-            }
-
-            if ($request->filled('search')) {
-                $requestedBlogs->where('title', 'like', '%' . $request->search . '%');
-            }
-
-            return $requestedBlogs->paginate(10)->withQueryString();
-        } catch (\Throwable $e) {
-            return back()->withErrors([
-                'error' => $e->getMessage(),
-            ]);
+        if ($filters['status'] != '' && $filters['status'] != 'all') {
+            $blogs->where('status', $filters['status']);
         }
+
+        if ($filters['category'] != '' && $filters['category'] !== 'all') {
+            $blogs->where('category_id', $filters['category']);
+        }
+
+        if ($filters['search'] != '') {
+            $blogs->where('title', 'like', '%' . $filters['search'] . '%');
+        }
+
+        return $blogs->paginate(
+            $filters['itemPerPage'],
+            ['*'],
+            'page',
+            $filters['page'] ?? 1
+        )->withQueryString();
+
+        // return $blogs->paginate($filters['page'])->withQueryString();
     }
+
 
     public function getRequestedBlog($request)
     {

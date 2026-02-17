@@ -176,60 +176,74 @@
     </script>
     @enderror
 
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Banner</th>
-                    <th>Title</th>
-                    <th>Uploaded By</th>
-                    <th>Uploaded Date</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
+    <div class="table_data">
 
-                @foreach ($requestedBlogs as $requestedBlog)
 
-                <tr>
-                    <td>
-                        <div class="table-img">
-                            <img src="{{$requestedBlog->featured_image_url}}" alt="Blog Banner" />
-                        </div>
-                    </td>
-                    <td><strong>{{$requestedBlog->title}}</strong></td>
-                    <td>{{$requestedBlog->author_name }}</td>
-                    <td>{{$requestedBlog->created_at}}</td>
-                    <td>{{
-                        $requestedBlog->status == 0 ? 'Pending' :
-                        ($requestedBlog->status == 1 ? 'Approved' :
-                        ($requestedBlog->status == 2 ? 'Inactive' :
-                        ($requestedBlog->status == 4 ? 'Rejected' : 'Unpublished')
-                        ))
-                    }}</td>
-                    </td>
-                    <td>
-                        <form action="{{ route('requestedblog.page') }}" method="GET">
-
-                            <input type="hidden" id="slug" name="slug" value="{{ $requestedBlog->slung }}" />
-                            @can('blog-approve')
-                            <button type="submit" class="btn-secondary-dashboard btn-sm">View Blog</button>
-                            @endcan
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        <div class="mt-4">
-            {{ $requestedBlogs->links() }}
-        </div>
     </div>
 
 
 
+
 </div>
+
+@endsection
+
+
+@section('scripts')
+
+<script>
+    $(document).ready(function() {
+
+
+
+        function get_data(page = 1) {
+            console.log('Fetching data for page:');
+            let status = $('#status').val() || 'all';
+            let category = $('#category').val() || 'all';
+            let search = $('#search').val() || '';
+            let itemPerPage = $('#itemPerPage').val() || 10;
+
+            console.log(status);
+
+
+            $.ajax({
+                url: "{{ route('blogrequests.page') }}",
+                type: "GET",
+                data: {
+                    status: status,
+                    category: category,
+                    search: search,
+                    page: page,
+                    itemPerPage: itemPerPage
+                },
+                success: function(data) {
+                    $('.table_data').html(data);
+                }
+            });
+        }
+
+        get_data(1);
+
+        $(document).on('click', '.pagination a', function(event) {
+            event.preventDefault();
+            let page = new URL($(this).attr('href')).searchParams.get('page');
+            get_data(page);
+        });
+
+        $('#status, #category').on('change', function() {
+            get_data(1);
+        });
+
+        $('#search').on('keyup', function() {
+            get_data(1);
+        });
+
+        $(document).on('change', '#itemPerPage', function() {
+            console.log("hello");
+            get_data(1);
+        });
+
+    });
+</script>
 
 @endsection

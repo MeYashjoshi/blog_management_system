@@ -35,10 +35,11 @@ class BlogController extends BaseController
 
     public function showMyBlogs(Request $request)
     {
+
         $blogs = $this->blogRepository->getBlogs($request);
         $categories = $this->categoryRepository->getCategories(null);
         $blogStatistics = $this->blogStatistics();
-
+        // dd($categories);
         return view('dashboard.myblogs', compact('blogs', 'blogStatistics', 'categories'));
     }
 
@@ -48,19 +49,47 @@ class BlogController extends BaseController
         $this->checkPermission('blog-request');
         $this->checkRole('admin');
 
+        $filters = [
+            'status'   => $request->get('status', 'all'),
+            'category' => $request->get('category', 'all'),
+            'search'   => $request->get('search', ''),
+            'page'     => $request->get('page', 1),
+            'itemPerPage' => $request->get('itemPerPage', 10),
+        ];
+
         try {
-            $requestedBlogs = $this->blogRepository->getRequestedBlogs($request);
+
+            $requestedBlogs = $this->blogRepository->getRequestedBlogs($filters);
+
+
+            if ($request->ajax()) {
+                return view(
+                    'dashboard.partials.requested-blogs-table',
+                    compact('requestedBlogs')
+                )->render();
+            }
+
             $categories = $this->categoryRepository->getCategories(null);
             $blogStatistics = $this->blogStatistics();
 
-
-            return view('dashboard.blogrequests', compact('requestedBlogs', 'blogStatistics', 'categories'));
+            return view(
+                'dashboard.blogrequests',
+                compact('categories', 'blogStatistics')
+            );
         } catch (\Throwable $e) {
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+
             return back()->withErrors([
                 'error' => $e->getMessage(),
             ]);
         }
     }
+
 
     public function showRequestedBlog(Request $request)
     {
