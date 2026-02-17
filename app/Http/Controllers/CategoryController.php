@@ -22,13 +22,24 @@ class CategoryController extends BaseController
 
         $this->checkPermission("category-view");
 
+        $filters = [
+            'status'   => $request->get('status', 'all'),
+            'search'   => $request->get('search', ''),
+            'page'     => $request->get('page', 1),
+            'itemPerPage' => $request->get('itemPerPage', 10),
+        ];
         try {
 
-            $res = $this->categoryRepository->getCategories($request);
-
+            $res = $this->categoryRepository->getCategories($filters);
+            if ($request->ajax()) {
+                return view(
+                    'dashboard.partials.categories-table',
+                    compact('res')
+                )->render();
+            }
             $categoryStatistics = $this->categoryStatistics();
 
-            return view('dashboard.categories', compact('res', 'categoryStatistics'));
+            return view('dashboard.categories', compact('categoryStatistics'));
         } catch (\Throwable $e) {
             return back()->withErrors([
                 'error' => $e->getMessage(),

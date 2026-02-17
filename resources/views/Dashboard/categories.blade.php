@@ -178,79 +178,68 @@
         toastr.error("{{ $message }}");
     </script>
     @enderror
-
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Category Name</th>
-                    <th>Description</th>
-                    <th>Created Date</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
+    <div class="table_data">
 
 
-                @if ($res!=null)
-
-                @foreach ($res as $data )
-
-                <tr>
-
-                    <td><strong>{{$data->title}}</strong></td>
-                    <td>{{ $data->description }}</td>
-                    <td>{{ $data->CreatedDate }}</td>
-                    <td>{{ $data->status == 0 ? "Archive" : ($data->status == 1 ? "Active" : "Inactive") }}</td>
-                    <td class="d-flex">
-                        <form action="{{ route('managecategories.page') }}" method="GET" class="me-2">
-                            <input type="hidden" id="id" name="id" value="{{ $data->id }}" />
-                            @can('category-edit')
-                            <button class="btn-primary-dashboard btn-sm"><i class="fa fa-edit"></i>Edit</button>
-                            @endcan
-                        </form>
-
-                        @if ($data->canBeDeleted())
-                        <form action="{{ route('deleteCategory') }}" method="POST">
-                            @csrf
-
-                            <input type="hidden" id="id" name="id" value="{{ $data->id }}" />
-                            @can('category-delete')
-
-                            <button class="btn-primary-dashboard btn-sm" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i>Delete</button>
-
-                            @endcan
-                        </form>
-                        @else
-                        <button type class="btn-primary-dashboard btn-sm" title="Category is assigned to blogs."> <i class="fa fa-lock"></i> Delete </button>
-
-                        @endif
-
-                    </td>
-                </tr>
-
-
-                @endforeach
-
-                @else
-                <tr>
-                    <td colspan="5" class="text-center">No categories avilable</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                @endif
-
-
-
-            </tbody>
-        </table>
-        <div class="mt-4">
-            {{ $res->links() }}
-        </div>
     </div>
+
 </div>
+
+@endsection
+
+@section('scripts')
+
+<script>
+    $(document).ready(function() {
+
+
+
+        function get_data(page = 1) {
+            console.log('Fetching data for page:');
+            let status = $('#status').val() || 'all';
+            let search = $('#search').val() || '';
+            let itemPerPage = $('#itemPerPage').val() || 10;
+
+            console.log(status);
+
+
+            $.ajax({
+                url: "{{ route('categories.page') }}",
+                type: "GET",
+                data: {
+                    status: status,
+                    search: search,
+                    page: page,
+                    itemPerPage: itemPerPage
+                },
+                success: function(data) {
+                    $('.table_data').html(data);
+                }
+            });
+        }
+
+        get_data(1);
+
+        $(document).on('click', '.pagination a', function(event) {
+            event.preventDefault();
+            let page = new URL($(this).attr('href')).searchParams.get('page');
+            get_data(page);
+        });
+
+        $('#status').on('change', function() {
+            get_data(1);
+        });
+
+        $('#search').on('keyup', function() {
+            get_data(1);
+        });
+
+        $(document).on('change', '#itemPerPage', function() {
+            console.log("hello");
+            get_data(1);
+        });
+
+    });
+</script>
 
 @endsection

@@ -24,20 +24,24 @@ class CategoryRepository implements CategoryRepositoryInterface
 
         return $category;
     }
-    public function getCategories($request)
+    public function getCategories($filters)
     {
-
         $categories = $this->categoryModel->query();
 
-        if ($request?->filled('status')) {
-            $categories->where('status', $request->status);
-        }
-        if ($request?->filled('search')) {
-            $categories->where('title', 'like', '%' . $request->search . '%');
+        if ($filters['status'] != '' && $filters['status'] != 'all') {
+            $categories->where('status', $filters['status']);
         }
 
-        return $categories->paginate(10)
-            ->withQueryString();
+        if ($filters['search'] != '') {
+            $categories->where('title', 'like', '%' . $filters['search'] . '%');
+        }
+
+        return $categories->paginate(
+            $filters['itemPerPage'],
+            ['*'],
+            'page',
+            $filters['page'] ?? 1
+        )->withQueryString();
     }
     public function manageCategory($request)
     {
