@@ -14,12 +14,24 @@ $.validator.addMethod(
     "Special characters are not allowed.",
 );
 
+//only characters
+$.validator.addMethod(
+    "onlyCharacters",
+    function (value, element) {
+        return this.optional(element) || /^[a-zA-Z]+$/.test(value);
+    },
+    "Only characters are allowed.",
+);
+
 $.validator.addMethod(
     "validEmail",
     function (value, element) {
+        value = value.trim();
+
         var regex =
-            /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-        return regex.test(email);
+            /^([a-zA-Z0-9_.+-])+@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+        return this.optional(element) || regex.test(value);
     },
     "Please enter a valid email address",
 );
@@ -29,11 +41,9 @@ $.validator.addMethod(
     function (value, element) {
         return (
             this.optional(element) ||
-            (/[A-Z]/.test(value) &&
-                /[a-z]/.test(value) &&
-                /\d/.test(value) &&
-                /[!@#$%^&*(),.?":{}|<>]/.test(value) &&
-                value.length >= 8)
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/.test(
+                value,
+            )
         );
     },
     "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.",
@@ -317,9 +327,99 @@ $("#createTagForm").validate({
     errorElement: "small",
 });
 
+$("#signupForm").validate({
+    rules: {
+        firstname: {
+            required: true,
+            minlength: 2,
+            maxlength: 20,
+            onlyCharacters: true,
+        },
+        lastname: {
+            required: true,
+            minlength: 2,
+            maxlength: 20,
+            onlyCharacters: true,
+        },
+        email: {
+            required: true,
+            validEmail: true,
+        },
+        password: {
+            required: true,
+            maxlength: 150,
+            strongPassword: true,
+        },
+        confirm_password: {
+            required: true,
+            equalTo: "#password",
+        },
+        // checkbox should be checked
+        checkbox1: {
+            required: true,
+
+        }
+    },
+    messages: {
+        firstname: {
+            required: "Firstname is required.",
+            minlength: "Firstname must be at least 2 characters.",
+            maxlength: "Firstname must not exceed 50 characters.",
+            regex: "Only letters, numbers, spaces, and hyphens are allowed.",
+        },
+        lastname: {
+            required: "Lastname is required.",
+            minlength: "Lastname must be at least 2 characters.",
+            maxlength: "Lastname must not exceed 50 characters.",
+            regex: "Only letters, numbers, spaces, and hyphens are allowed.",
+        },
+        email: {
+            required: "Email is required",
+        },
+        password: {
+            required: "Password is required.",
+            minlength: "Password must be at least 8 characters.",
+            maxlength: "Password must not exceed 20 characters.",
+        },
+        confirm_password: {
+            required: "Confirm password is required.",
+            equalTo: "Passwords do not match.",
+        },
+        checkbox1: {
+            required: "You must accept the terms and conditions.",
+        },
+    },
+    errorClass: "text-danger",
+    errorElement: "small",
+});
+
+
+$("#loginForm").validate({
+    rules: {
+        email: {
+            required: true,
+            validEmail: true,
+        },
+        password: {
+            required: true,
+        },
+    },
+    messages: {
+        email: {
+            required: "Email is required",
+        },
+        password: {
+            required: "Password is required.",
+        },
+    },
+    errorClass: "text-danger",
+    errorElement: "small",
+
+});
+
 toastr.options = {
     closeButton: true,
     progressBar: true,
-    positionClass: "toast-top-center",
-    timeOut: "3000",
+    positionClass: "toast-top-right",
+    timeOut: "5000",
 };

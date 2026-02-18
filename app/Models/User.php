@@ -28,7 +28,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'firstname',
-        'latsname',
+        'lastname',
         'email',
         'password',
         'profile',
@@ -69,8 +69,7 @@ class User extends Authenticatable
         if ($this->profile) {
             return asset('storage/' . self::FILE_PATH . $this->profile);
         } else {
-            return asset('storage/' . self::FILE_PATH . $this->profile.'default-profile-image.png');
+            return asset('storage/' . self::FILE_PATH . $this->profile . 'default-profile-image.png');
         }
     }
-
 }

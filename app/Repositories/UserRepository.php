@@ -26,40 +26,60 @@ class UserRepository implements UserRepositoryInterface
 
         return $this->userModel->where("id", $request->id)->first();
     }
-    public function getUsers($request) {}
+    public function getUsers($request)
+    {
+    }
 
 
     public function manageUser($request)
     {
+        dd($request->all());
         try {
 
-            // $user = $this->userModel->where('id', Auth::id())->first();
 
+            $filename = null;
 
-            // $filename = $user->profile; //old file
+            if ($request->hasFile('profile')) {
+                $file = $request->file('profile');
+                $filename = $this->uploadImage($file);
+                $file->storeAs($this->userModel::FILE_PATH, $filename);
+            }
 
-            // if (isset($request['profile'])) {
+            if (Auth::check()) {
 
-            //     $file = $request['profile'];
-            //     $filename = $file ? $this->uploadImage($file) : ($request['profile'] ?? null);
+                // UPDATE (Profile Edit)
+                $user = $this->userModel->findOrFail(Auth::id());
 
-            //     $file->storeAs($this->userModel::FILE_PATH, $filename);
-            // }
+                $user->update([
+                    'firstname' => $request['firstname'],
+                    'lastname' => $request['lastname'],
+                    'email' => $request['email'],
+                    'profile' => $filename ?? $user->profile,
+                    'bio' => $request['bio'],
+                ]);
 
-            // $user->firstname = $request['firstname'];
-            // $user->lastname  = $request['lastname'];
-            // $user->email     = $request['email'];
-            // $user->profile   = $filename;
-            // $user->bio       = $request['bio'];
-
-
-            // $user->save();
-
-
-
+            } else {
+                $user = $this->userModel->where('email', $request['email'])->first();
+                if ($user) {
+                    return 409;
+                }
+                $user = $this->userModel->create([
+                    'firstname' => $request['firstname'],
+                    'lastname' => $request['lastname'],
+                    'email' => $request['email'],
+                    'password' => Hash::make($request['password']),
+                    'profile' => $filename,
+                    'bio' => $request['bio'] ?? null,
+                ]);
+            }
+            if ($user->wasRecentlyCreated) {
+                return 201;
+            }
 
             return 200;
+
         } catch (Exception $e) {
+            dd($e);
             throw new Exception("Failed to manage profile: " . $e->getMessage());
         }
     }
@@ -90,7 +110,13 @@ class UserRepository implements UserRepositoryInterface
 
 
 
-    public function statusUser($request) {}
-    public function userStatistics($request) {}
-    public function deleteUser($request) {}
+    public function statusUser($request)
+    {
+    }
+    public function userStatistics($request)
+    {
+    }
+    public function deleteUser($request)
+    {
+    }
 }

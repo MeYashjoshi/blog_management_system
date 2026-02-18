@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Http\Request;
 use App\Interfaces\AuthRepositoryInterface;
+use App\Interfaces\UserRepositoryInterface;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends BaseController
 {
-    // public function __construct(
-    //     private AuthRepositoryInterface $AuthRepository
-    // ) {}
+    protected UserRepositoryInterface $userRepository;
+
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
 
     public function showLoginForm()
     {
@@ -51,8 +56,11 @@ class AuthController extends BaseController
 
             $user = User::where('email', $credentials['email'])->first();
 
+
+
             if ($user) {
                 if ($user->status === User::STATUS_INACTIVE) {
+
                     return back()->withErrors([
                         'error' => 'Your account is inactive.',
                     ]);
@@ -86,12 +94,40 @@ class AuthController extends BaseController
         }
     }
 
-    public function signup(Request $request) {}
-    public function sendPasswordResetLink() {}
-    public function resetPassword() {}
+    public function signup(StoreUserRequest $request)
+    {
 
-    public function getUserStatus() {}
-    public function getUserRole() {}
+        try {
+            $user = $this->userRepository->manageUser($request);
+
+            if ($user == 201) {
+                return redirect()->route('login')->with('success', 'Account created successfully');
+            } elseif ($user == 409) {
+                return redirect()->route('login')->with('error', 'Account already exists');
+            } else {
+                return redirect()->route('login')->with('error', 'Account creation failed');
+            }
+
+        } catch (\Throwable $e) {
+            dd($e);
+            return back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+    public function sendPasswordResetLink()
+    {
+    }
+    public function resetPassword()
+    {
+    }
+
+    public function getUserStatus()
+    {
+    }
+    public function getUserRole()
+    {
+    }
 
     public function logout(Request $request)
     {

@@ -8,12 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="content-type" content="text/html;charset=utf-8" />
     @if(View::hasSection('title'))
-    <title>Vexon || @yield('title')</title>
+        <title>Vexon || @yield('title')</title>
     @else
-    <title>{{ config('app.name') }}</title>
+        <title>{{ config('app.name') }}</title>
     @endif
     <!--=====FAB ICON=======-->
-    <link rel="shortcut icon" href="{{ asset('storage/uploads/system_settings/'.$siteSettings->favicon) }}" type="image/x-icon" />
+    <link rel="shortcut icon" href="{{ asset('storage/uploads/system_settings/' . $siteSettings->favicon) }}"
+        type="image/x-icon" />
 
     <!--=====CSS=======-->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
@@ -25,6 +26,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/aos.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/mobile-menu.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/utility.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" />
 
     @yield('style')
@@ -72,14 +74,18 @@
                         <div class="search__top d-flex justify-content-between align-items-center">
                             <div class="search__logo">
                                 <a href="index.html">
-                                    <img src="{{ asset('storage/uploads/system_settings/'.$siteSettings->sitelogo) }}" alt="vexon" />
+                                    <img src="{{ asset('storage/uploads/system_settings/' . $siteSettings->sitelogo) }}"
+                                        alt="vexon" />
                                 </a>
                             </div>
                             <div class="search__close">
                                 <button type="button" class="search__close-btn search-close-btn">
-                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M17 1L1 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M1 1L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M17 1L1 17" stroke="currentColor" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M1 1L17 17" stroke="currentColor" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
                                     </svg>
                                 </button>
                             </div>
@@ -87,12 +93,18 @@
                         <div class="search__form">
                             <form action="#">
                                 <div class="search__input">
-                                    <input class="search-input-field" type="text" placeholder="Type here to search..." />
+                                    <input class="search-input-field" type="text"
+                                        placeholder="Type here to search..." />
                                     <span class="search-focus-border"></span>
                                     <button type="submit">
-                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9.55 18.1C14.272 18.1 18.1 14.272 18.1 9.55C18.1 4.82797 14.272 1 9.55 1C4.82797 1 1 4.82797 1 9.55C1 14.272 4.82797 18.1 9.55 18.1Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            <path d="M19.0002 19.0002L17.2002 17.2002" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M9.55 18.1C14.272 18.1 18.1 14.272 18.1 9.55C18.1 4.82797 14.272 1 9.55 1C4.82797 1 1 4.82797 1 9.55C1 14.272 4.82797 18.1 9.55 18.1Z"
+                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                            <path d="M19.0002 19.0002L17.2002 17.2002" stroke="currentColor"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                         </svg>
                                     </button>
                                 </div>
@@ -137,42 +149,45 @@
                                     </li>
 
                                     {{-- <li class="dropdown-menu-parrent">
-										<a href="#" class="main1">Account <i class="fa-solid fa-angle-down"></i></a>
-										<ul>
-											<li><a href="login">Login</a></li>
-											<li><a href="sigup">Sign Up</a></li>
-											<li><a href="forgot">Forgot</a></li>
-											<li><a href="reset">Reset Password</a></li>
-											<li><a href="verify">Verify</a></li>
-										</ul>
-									</li> --}}
+                                        <a href="#" class="main1">Account <i class="fa-solid fa-angle-down"></i></a>
+                                        <ul>
+                                            <li><a href="login">Login</a></li>
+                                            <li><a href="sigup">Sign Up</a></li>
+                                            <li><a href="forgot">Forgot</a></li>
+                                            <li><a href="reset">Reset Password</a></li>
+                                            <li><a href="verify">Verify</a></li>
+                                        </ul>
+                                    </li> --}}
                                 </ul>
                             </div>
 
                             <div class="header1-buttons">
 
                                 @if(Auth::check())
-                                <div class="dropdown">
-                                    <img src="{{ asset(Auth::user()->profile_url) }}" alt="Profile" class="profile-img dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="width:40px; height:40px; border-radius:50%; cursor:pointer;">
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="/myblogs">My Blogs</a></li>
-                                        <li>
-                                            <form action="{{ route('logout') }}" method="post">
-                                                @csrf
-                                                <button type="submit" class="dropdown-item">Logout</button>
-                                            </form>
-                                        </li>
-                                        </li>
-                                    </ul>
-                                </div>
+                                    <div class="dropdown">
+                                        <img src="{{ asset(Auth::user()->profile_url) }}" alt="Profile"
+                                            class="profile-img dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                            data-bs-toggle="dropdown" aria-expanded="false"
+                                            style="width:40px; height:40px; border-radius:50%; cursor:pointer;">
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li><a class="dropdown-item" href="/myblogs">My Blogs</a></li>
+                                            <li>
+                                                <form action="{{ route('logout') }}" method="post">
+                                                    @csrf
+                                                    <button type="submit" class="dropdown-item">Logout</button>
+                                                </form>
+                                            </li>
+                                            </li>
+                                        </ul>
+                                    </div>
 
 
                                 @else
-                                @if(request()->is('login'))
-                                <a class="theme-btn1" href="/signup">Sign Up </a>
-                                @else
-                                <a class="theme-btn1" href="/login">Login</a>
-                                @endif
+                                    @if(request()->is('login'))
+                                        <a class="theme-btn1" href="/signup">Sign Up </a>
+                                    @else
+                                        <a class="theme-btn1" href="/login">Login</a>
+                                    @endif
 
                                 @endif
 
@@ -320,6 +335,7 @@
     <script src="{{ asset('assets/js/animation.js') }}"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{{ asset('assets/js/pages/custom.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
 
