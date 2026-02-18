@@ -26,27 +26,38 @@ class CategoryRepository implements CategoryRepositoryInterface
     }
     public function getCategories($filters = [])
     {
-        $filters = $filters ?? [];
 
-        $categories = $this->categoryModel->query();
+        try {
+            $filters = $filters ?? [];
 
-        if (!empty($filters['status']) && $filters['status'] != 'all') {
-            $categories->where('status', $filters['status']);
+            $categories = $this->categoryModel->query();
+
+            if (!empty($filters['status']) && $filters['status'] != 'all') {
+                $categories->where('status', $filters['status']);
+            }
+
+            if (!empty($filters['search'])) {
+                $categories->where('title', 'like', '%' . $filters['search'] . '%');
+            }
+
+            $perPage = $filters['itemPerPage'] ?? 10;
+            $page    = $filters['page'] ?? 1;
+
+            if ($perPage === 'All') {
+                $total = $categories->count();
+                return $categories->paginate($total);
+            }
+
+            return $categories->paginate(
+                $perPage,
+                ['*'],
+                'page',
+                $page
+            )->withQueryString();
+        } catch (Exception $e) {
+            dd($e);
+            throw new Exception("Failed to get categories: " . $e->getMessage());
         }
-
-        if (!empty($filters['search'])) {
-            $categories->where('title', 'like', '%' . $filters['search'] . '%');
-        }
-
-        $perPage = $filters['itemPerPage'] ?? 10;
-        $page    = $filters['page'] ?? 1;
-
-        return $categories->paginate(
-            $perPage,
-            ['*'],
-            'page',
-            $page
-        )->withQueryString();
     }
 
     public function manageCategory($request)

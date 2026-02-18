@@ -20,7 +20,7 @@
 
             <select id="itemPerPage"
                 class="form-select form-select-sm w-auto shadow-sm">
-                @foreach([10, 25, 50, 100] as $size)
+                @foreach([10, 25, 50, 100, 'All'] as $size)
                 <option value="{{ $size }}"
                     {{ request('itemPerPage', 10) == $size ? 'selected' : '' }}>
                     {{ $size }}

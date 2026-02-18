@@ -40,26 +40,33 @@ class BlogRepository implements BlogRepositoryInterface
 
     public function getBlogs($filters)
     {
-        $blogs = $this->blogModel->with('category');
+        try {
+            $blogs = $this->blogModel->with('category');
 
-        if ($filters['status'] != '' && $filters['status'] != 'all') {
-            $blogs->where('status', $filters['status']);
+            if ($filters['status'] != '' && $filters['status'] != 'all') {
+                $blogs->where('status', $filters['status']);
+            }
+
+            if ($filters['category'] != '' && $filters['category'] !== 'all') {
+                $blogs->where('category_id', $filters['category']);
+            }
+
+            if ($filters['search'] != '') {
+                $blogs->where('title', 'like', '%' . $filters['search'] . '%');
+            }
+            if ($filters['itemPerPage'] == 'All') {
+                $total = $blogs->count();
+                return $blogs->paginate($total);
+            }
+            return $blogs->paginate(
+                $filters['itemPerPage'],
+                ['*'],
+                'page',
+                $filters['page'] ?? 1
+            )->withQueryString();
+        } catch (Exception $e) {
+            throw new Exception("Failed to get blogs: " . $e->getMessage());
         }
-
-        if ($filters['category'] != '' && $filters['category'] !== 'all') {
-            $blogs->where('category_id', $filters['category']);
-        }
-
-        if ($filters['search'] != '') {
-            $blogs->where('title', 'like', '%' . $filters['search'] . '%');
-        }
-
-        return $blogs->paginate(
-            $filters['itemPerPage'],
-            ['*'],
-            'page',
-            $filters['page'] ?? 1
-        )->withQueryString();
     }
 
     public function getRequestedBlogs($filters)
@@ -83,6 +90,10 @@ class BlogRepository implements BlogRepositoryInterface
 
         if ($filters['search'] != '') {
             $blogs->where('title', 'like', '%' . $filters['search'] . '%');
+        }
+        if ($filters['itemPerPage'] == 'All') {
+            $total = $blogs->count();
+            return $blogs->paginate($total);
         }
 
         return $blogs->paginate(

@@ -46,13 +46,19 @@ class TagRepository implements TagRepositoryInterface
             if ($filters['search']) {
                 $tags->where('title', 'like', '%' . $filters['search'] . '%');
             }
+
+            if ($filters['itemPerPage'] === 'All') {
+                $total = $tags->count();
+                return $tags->paginate($total);
+            }
+
             return $tags->paginate(
                 $filters['itemPerPage'],
                 ['*'],
                 'page',
                 $filters['page'] ?? 1
             )->withQueryString();
-        } catch (\Throwable $e) {
+        } catch (Exception $e) {
             return back()->withErrors([
                 'errors' => $e->getMessage(),
             ]);
