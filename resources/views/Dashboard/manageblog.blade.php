@@ -24,18 +24,6 @@
 <div class="content-section">
 
 
-    @if(session('success'))
-    <script>
-        toastr.success("{{ session('success') }}");
-    </script>
-    @endif
-
-    @error('error')
-    <script>
-        toastr.error("{{ $message }}");
-    </script>
-    @enderror
-
     <form id="blogForm" action="{{ route('manageBlog') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
@@ -216,6 +204,18 @@
 
 
 @section('scripts')
+
+@if(session('success'))
+<script>
+    toastr.success("{{ session('success') }}");
+</script>
+@endif
+
+@error('error')
+<script>
+    toastr.error("{{ $message }}");
+</script>
+@enderror
 
 <script>
     $(document).ready(() => {

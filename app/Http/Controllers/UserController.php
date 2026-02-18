@@ -40,18 +40,16 @@ class UserController extends BaseController
         $this->checkPermission("system-profile");
 
         try {
-             $resp = $this->userRepository->manageUser($request->validated());
+            $resp = $this->userRepository->manageUser($request->validated());
 
             if ($resp == 200) {
-                return back()->with('success','Profile updated successfully.');
+                return back()->with('success', 'Profile updated successfully.');
             }
-
         } catch (\Throwable $e) {
             return back()->withErrors([
                 'error' => $e->getMessage(),
             ]);
         }
-
     }
 
     public function changePassword(UpdatePasswordRequest $request)
@@ -61,7 +59,7 @@ class UserController extends BaseController
         $this->checkPermission("system-profile");
 
         try {
-           $resp =  $this->userRepository->changePassword($request->validated());
+            $resp =  $this->userRepository->changePassword($request->validated());
             //  dd($resp);
 
             if ($resp == 1) {
@@ -74,17 +72,13 @@ class UserController extends BaseController
                 ]);
             }
 
-            return back()->with('password_success','Password changed successfully.');
-
-
+            return back()->with('password_success', 'Password changed successfully.');
         } catch (\Exception $e) {
 
             return back()->withErrors([
                 'password_error' => $e->getMessage(),
             ]);
         }
-
-
     }
 
     public function statusUser() {}

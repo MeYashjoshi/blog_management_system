@@ -189,7 +189,7 @@ class BlogController extends BaseController
             if ($resp == 201) {
                 return redirect()->route('myblogs.page')->with('success', 'blog created successfully.');
             } elseif ($resp == 200) {
-                return back()->with('success', 'blog updated successfully.');
+                return redirect()->route('myblogs.page')->with('success', 'blog updated successfully.');
             }
         } catch (\Throwable $e) {
             return back()->withErrors([

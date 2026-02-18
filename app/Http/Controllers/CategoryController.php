@@ -82,7 +82,7 @@ class CategoryController extends BaseController
             if ($resp == 201) {
                 return redirect()->route('categories.page')->with('success', 'category created successfully.');
             } elseif ($resp == 200) {
-                return back()->with('success', 'category updated successfully.');
+                return redirect()->route('categories.page')->with('success', 'category updated successfully.');
             }
         } catch (\Throwable $e) {
             return back()->withErrors([

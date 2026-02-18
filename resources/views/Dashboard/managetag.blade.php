@@ -1,6 +1,6 @@
 @extends('dashboard.layout.main')
 
-@section('title',  $tag?->id ? "Update Tag" : "Add Tag")
+@section('title', $tag?->id ? "Update Tag" : "Add Tag")
 
 @section('style')
 <style>
@@ -12,29 +12,16 @@
 @endsection
 
 @section('breadcrumb')
-    <a href="dashboard">Home</a>
-    <span>/</span>
-    <a href="{{ route('page.tags') }}">Tags</a>
-    <span>/</span>
-    <span>Manage Tag</span>
+<a href="dashboard">Home</a>
+<span>/</span>
+<a href="{{ route('page.tags') }}">Tags</a>
+<span>/</span>
+<span>Manage Tag</span>
 @endsection
 
 @section('content')
 
 <div class="content-section">
-
-    @if(session('success'))
-    <script>
-        toastr.success("{{ session('success') }}");
-    </script>
-    @endif
-
-    @error('error')
-    <script>
-        toastr.error("{{ $message }}");
-    </script>
-    @enderror
-
 
     <form id="createTagForm" action="{{ route('manageTag') }}" method="POST">
         @csrf
@@ -73,5 +60,21 @@
         </div>
     </form>
 </div>
+
+@endsection
+
+@section('scripts')
+@if(session('success'))
+<script>
+    toastr.success("{{ session('success') }}");
+</script>
+@endif
+
+@error('error')
+<script>
+    toastr.error("{{ $message }}");
+</script>
+@enderror
+@ends
 
 @endsection

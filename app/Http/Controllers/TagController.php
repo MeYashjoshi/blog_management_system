@@ -101,10 +101,9 @@ class TagController extends BaseController
 
             $tags = $this->tagRepository->manageTag($request);
             if ($tags == 201) {
-                return back()->with('success', 'Tag created successfully.');
+                return redirect()->route('page.tags')->with('success', 'Tag created successfully.');
             }
-
-            return back()->with('success', 'Tag updated successfully.');
+            return redirect()->route('page.tags')->with('success', 'Tag updated successfully.');
         } catch (Exception $e) {
             return back()->withErrors([
                 'error' => $e->getMessage(),

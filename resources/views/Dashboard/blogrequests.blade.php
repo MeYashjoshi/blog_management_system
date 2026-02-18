@@ -164,32 +164,31 @@
 
 <div class="content-section">
 
-    @if(session('success'))
-    <script>
-        toastr.success("{{ session('success') }}");
-    </script>
-    @endif
-
-    @error('error')
-    <script>
-        toastr.error("{{ $message }}");
-    </script>
-    @enderror
 
     <div class="table_data">
 
-
     </div>
-
-
-
-
 </div>
 
 @endsection
 
 
 @section('scripts')
+
+
+
+@if(session('success'))
+<script>
+    toastr.success("{{ session('success') }}");
+</script>
+@endif
+
+@error('error')
+<script>
+    toastr.error("{{ $message }}");
+</script>
+@enderror
+
 
 <script>
     $(document).ready(function() {
