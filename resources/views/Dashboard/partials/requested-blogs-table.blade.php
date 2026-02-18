@@ -36,6 +36,7 @@
             <tr>
                 <th>Banner</th>
                 <th>Title</th>
+                <th>Category</th>
                 <th>Uploaded By</th>
                 <th>Uploaded Date</th>
                 <th>Status</th>
@@ -52,6 +53,9 @@
                     </div>
                 </td>
                 <td><strong>{{ $requestedBlog->title }}</strong></td>
+                <td>
+                    {{ $requestedBlog->category->title }}
+                </td>
                 <td>{{ $requestedBlog->author_name }}</td>
                 <td>{{ $requestedBlog->created_at->format('d M Y') }}</td>
                 <td>

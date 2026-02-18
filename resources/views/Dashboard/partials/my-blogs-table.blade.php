@@ -40,6 +40,7 @@
             <tr>
                 <th>Banner</th>
                 <th>Title</th>
+                <th>Category</th>
                 <th>Rejection Reason</th>
                 <th>Uploaded Date</th>
                 <th>Status</th>
@@ -63,6 +64,11 @@
                 {{-- Title --}}
                 <td>
                     <strong>{{ $blog->trimed_title }}</strong>
+                </td>
+
+                {{-- Category --}}
+                <td>
+                    {{ $blog->category->title }}
                 </td>
 
                 {{-- Rejection --}}
