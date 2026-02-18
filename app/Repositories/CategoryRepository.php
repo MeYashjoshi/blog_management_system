@@ -36,7 +36,7 @@ class CategoryRepository implements CategoryRepositoryInterface
                 $categories->where('status', $filters['status']);
             }
 
-            if (!empty($filters['search'])) {
+            if (!empty($filters['search']) && strlen($filters['search']) >= 3) {
                 $categories->where('title', 'like', '%' . $filters['search'] . '%');
             }
 

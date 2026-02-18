@@ -51,7 +51,7 @@ class BlogRepository implements BlogRepositoryInterface
                 $blogs->where('category_id', $filters['category']);
             }
 
-            if ($filters['search'] != '') {
+            if ($filters['search'] != '' && strlen($filters['search']) >= 3) {
                 $blogs->where('title', 'like', '%' . $filters['search'] . '%');
             }
             if ($filters['itemPerPage'] == 'All') {
@@ -88,7 +88,7 @@ class BlogRepository implements BlogRepositoryInterface
             $blogs->where('category_id', $filters['category']);
         }
 
-        if ($filters['search'] != '') {
+        if ($filters['search'] != '' && strlen($filters['search']) >= 3) {
             $blogs->where('title', 'like', '%' . $filters['search'] . '%');
         }
         if ($filters['itemPerPage'] == 'All') {
@@ -102,8 +102,6 @@ class BlogRepository implements BlogRepositoryInterface
             'page',
             $filters['page'] ?? 1
         )->withQueryString();
-
-        // return $blogs->paginate($filters['page'])->withQueryString();
     }
 
 

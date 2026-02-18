@@ -226,8 +226,11 @@
             get_data(page);
         });
 
-        $('#status').on('change', function() {
-            get_data(1);
+        $('#search').on('keyup', function() {
+            let search = $(this).val().trim();
+            if (search.length > 3) {
+                get_data(1);
+            }
         });
 
         $('#search').on('keyup', function() {

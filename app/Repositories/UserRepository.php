@@ -33,33 +33,35 @@ class UserRepository implements UserRepositoryInterface
     {
         try {
 
-            $user = $this->userModel->where('id', Auth::id())->first();
+            // $user = $this->userModel->where('id', Auth::id())->first();
 
 
-            $filename = $user->profile; //old file
+            // $filename = $user->profile; //old file
 
-            if (isset($request['profile'])) {
+            // if (isset($request['profile'])) {
 
-                $file = $request['profile'];
-                $filename = $file ? $this->uploadImage($file) : ($request['profile'] ?? null);
+            //     $file = $request['profile'];
+            //     $filename = $file ? $this->uploadImage($file) : ($request['profile'] ?? null);
 
-                $file->storeAs($this->userModel::FILE_PATH, $filename);
-            }
+            //     $file->storeAs($this->userModel::FILE_PATH, $filename);
+            // }
 
-            $user->firstname = $request['firstname'];
-            $user->lastname  = $request['lastname'];
-            $user->email     = $request['email'];
-            $user->profile   = $filename;
-            $user->bio       = $request['bio'];
+            // $user->firstname = $request['firstname'];
+            // $user->lastname  = $request['lastname'];
+            // $user->email     = $request['email'];
+            // $user->profile   = $filename;
+            // $user->bio       = $request['bio'];
 
 
-            $user->save();
+            // $user->save();
+
+
+
+
             return 200;
-        }catch (Exception $e) {
+        } catch (Exception $e) {
             throw new Exception("Failed to manage profile: " . $e->getMessage());
         }
-
-
     }
 
     public function changePassword($request)

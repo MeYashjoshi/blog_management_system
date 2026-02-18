@@ -247,7 +247,10 @@
         });
 
         $('#search').on('keyup', function() {
-            get_data(1);
+            let search = $(this).val().trim();
+            if (search.length > 3) {
+                get_data(1);
+            }
         });
 
         $(document).on('change', '#itemPerPage', function() {

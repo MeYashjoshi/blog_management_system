@@ -43,7 +43,7 @@ class TagRepository implements TagRepositoryInterface
             if ($filters['status'] !== 'all') {
                 $tags->where('status', $filters['status']);
             }
-            if ($filters['search']) {
+            if ($filters['search'] && strlen($filters['search']) >= 3) {
                 $tags->where('title', 'like', '%' . $filters['search'] . '%');
             }
 
