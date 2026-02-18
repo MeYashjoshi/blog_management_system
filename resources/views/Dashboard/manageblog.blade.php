@@ -176,27 +176,64 @@
 
         <div class="button-group">
 
-            @if(!$blog?->status == 0 || $blog?->status == 4 || $blog?->status == 2 || $blog?->status == 3)
-
             @can('blog-create')
+
+            {{-- 1️⃣ First Time Create --}}
+            @if(!$blog?->id)
             <button type="submit" class="btn-primary-dashboard" name="status" value="0">
-                <i class="fa-solid fa-paper-plane"></i> {{ $blog?->id ? "Update Blog" : "Submit Blog" }}
+                <i class="fa-solid fa-paper-plane"></i> Submit Blog
             </button>
 
-            @endcan
-            @endif
+            <button type="submit" class="btn-primary-dashboard" name="status" value="3">
+                <i class="fa-solid fa-archive"></i> Save Draft
+            </button>
 
-            @if($blog?->status == 0 || $blog?->status == 1 || $blog?->status == 4)
+            {{-- 2️⃣ Draft --}}
+            @elseif($blog->status == 3)
+            <button type="submit" class="btn-primary-dashboard" name="status" value="0">
+                <i class="fa-solid fa-paper-plane"></i> Submit Blog
+            </button>
+
+            <button type="submit" class="btn-primary-dashboard" name="status" value="3">
+                <i class="fa-solid fa-archive"></i> Save Draft
+            </button>
+
+            {{-- 3️⃣ Active (Published) --}}
+            @elseif($blog->status == 1)
+            <button type="submit" class="btn-primary-dashboard" name="status" value="1">
+                <i class="fa-solid fa-pen"></i> Update Blog
+            </button>
+
+            <button type="submit" class="btn-danger-dashboard" name="status" value="5">
+                <i class="fa-solid fa-ban"></i> Unpublish
+            </button>
+
+            {{-- 4️⃣ Pending --}}
+            @elseif($blog->status == 0)
+            <button type="submit" class="btn-primary-dashboard" name="status" value="0">
+                <i class="fa-solid fa-pen"></i> Update Blog
+            </button>
+
+            {{-- 5️⃣ Rejected --}}
+            @elseif($blog->status == 4)
+            <button type="submit" class="btn-primary-dashboard" name="status" value="0">
+                <i class="fa-solid fa-pen"></i> Update Blog
+            </button>
+
             <button type="submit" class="btn-primary-dashboard" name="status" value="3">
                 <i class="fa-solid fa-archive"></i> Save Draft
             </button>
             @endif
 
+            @endcan
 
+            {{-- Cancel Always Visible --}}
             <button type="button" class="btn-secondary-dashboard" onclick="window.history.back();">
                 <i class="fa-solid fa-times"></i> Cancel
             </button>
+
         </div>
+
     </form>
 </div>
 
