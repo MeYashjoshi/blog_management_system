@@ -33,7 +33,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function manageUser($request)
     {
-        dd($request->all());
+        // dd($request->all());
         try {
 
 
@@ -73,7 +73,7 @@ class UserRepository implements UserRepositoryInterface
                 ]);
             }
             if ($user->wasRecentlyCreated) {
-                return 201;
+                return $user;
             }
 
             return 200;

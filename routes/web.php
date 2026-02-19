@@ -46,9 +46,14 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('getUserStatus', 'getUserStatus')->name('getUserStatus');
     Route::get('getUserRole', 'getUserRole')->name('getUserRole');
     Route::post('logout', 'logout')->name('logout');
+
+    // Email Verification Routes
+    Route::get('/email/verify', 'showVerificationNotice')->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', 'verifyEmail')->middleware(['signed'])->name('verification.verify');
+    Route::post('/email/verification-notification', 'resendVerificationEmail')->middleware(['throttle:6,1'])->name('verification.send');
 });
 
-Route::middleware(['auth:web'])->group(function () {
+Route::middleware(['auth:web', 'verified'])->group(function () {
 
     Route::controller(BlogController::class)->group(function () {
 

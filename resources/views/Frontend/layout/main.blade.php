@@ -163,7 +163,7 @@
 
                             <div class="header1-buttons">
 
-                                @if(Auth::check())
+                                @if(Auth::check() && Auth::user()->hasVerifiedEmail())
                                     <div class="dropdown">
                                         <img src="{{ asset(Auth::user()->profile_url) }}" alt="Profile"
                                             class="profile-img dropdown-toggle" type="button" id="dropdownMenuButton1"
@@ -176,7 +176,6 @@
                                                     @csrf
                                                     <button type="submit" class="dropdown-item">Logout</button>
                                                 </form>
-                                            </li>
                                             </li>
                                         </ul>
                                     </div>
@@ -338,6 +337,18 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{{ asset('assets/js/pages/custom.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    <script>
+        @if (session('success'))
+            toastr.success('{{ session('success') }}');
+        @endif
+        @if (session('error'))
+            toastr.error('{{ session('error') }}');
+        @endif
+        @if (session('warning'))
+            toastr.warning('{{ session('warning') }}');
+        @endif
+    </script>
 
     @yield('scripts')
 

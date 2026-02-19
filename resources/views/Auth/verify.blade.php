@@ -25,7 +25,8 @@
 								<img src="assets/img/icons/verify.svg" alt="vexon" />
 							</div>
 							<h3 class="mt-20">Verify Your Email!</h3>
-							<p>We sent you a verification link via email. Please click it to verify your email address if you don’t see it, please wait up to 5 mins or check your SPAM folder.</p>
+							<p>We sent you a verification link via email. Please click it to verify your email address if
+								you don’t see it, please wait up to 5 mins or check your SPAM folder.</p>
 						</div>
 						<form action="#">
 							<div class="button mt-30">
