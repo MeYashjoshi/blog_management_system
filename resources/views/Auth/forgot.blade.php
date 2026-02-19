@@ -29,18 +29,20 @@
 								<img src="assets/img/icons/forgot-icon.svg" alt="vexon" />
 							</div>
 							<h3 class="mt-20">Forgot Your Password?</h3>
-							<p>If you forgot your password, please enter your email below and we will send you a recovery link.</p>
+							<p>If you forgot your password, please enter your email below and we will send you a recovery
+								link.</p>
 						</div>
-						<form action="#">
+						<form action="{{ route('sendpasswordresetlink') }}" method="POST">
+							@csrf
 							<div class="single-input">
 								<label>Email Address</label>
-								<input type="email" placeholder="Email Address" />
+								<input type="email" name="email" placeholder="Email Address" required />
 							</div>
 							<div class="button mt-30">
 								<button type="submit" class="theme-btn1">Send Recovery Link</button>
 							</div>
 							<div class="text-center">
-								<p class="text"><label> Remember your password </label><a href="/login">Login</a></p>
+								<p class="text"><label> Remember your password? </label><a href="/login">Login</a></p>
 							</div>
 						</form>
 					</div>

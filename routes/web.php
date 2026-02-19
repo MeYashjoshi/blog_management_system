@@ -36,7 +36,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('login', 'showLoginForm')->name('login.page');
     Route::get('signup', 'showSignupForm')->name('signup.page');
     Route::get('forgot-password', 'showForgotPasswordForm')->name('forgot-password.page');
-    Route::get('reset-password', 'showResetPasswordForm')->name('reset-password.page');
+    Route::get('reset-password/{token}/{email?}', 'showResetPasswordForm')->name('reset-password.page');
 
     //Script Routes (Process form submissions)
     Route::post('login', 'login')->name('login');
