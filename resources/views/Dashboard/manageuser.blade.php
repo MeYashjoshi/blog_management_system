@@ -56,40 +56,45 @@
                         Member since {{ $user->created_at->format('M Y') }}
                     </p>
 
-                    @if($user->email_verified_at)
-                        <form action="{{ route('changeRole') }}" method="POST" class="mb-4">
+                    @if ($user->hasRole('admin'))
+
+
+
+                        @if($user->email_verified_at)
+                            <form action="{{ route('changeRole') }}" method="POST" class="mb-4">
+                                @csrf
+                                <input type="hidden" name="id" value="{{ $user->id }}">
+                                <div class="input-group">
+                                    <select name="role" class="form-select form-select-sm" aria-label="Role Select">
+                                        <option value="user" @selected($user->hasRole('user'))>User</option>
+                                        <option value="editor" @selected($user->hasRole('editor'))>Editor</option>
+                                        <option value="admin" @selected($user->hasRole('admin'))>Admin</option>
+                                    </select>
+                                    <button class="btn btn-outline-primary btn-sm" type="submit">Change</button>
+                                </div>
+                            </form>
+                        @endif
+
+
+                        <form action="{{ route('statusUser') }}" method="POST">
                             @csrf
                             <input type="hidden" name="id" value="{{ $user->id }}">
-                            <div class="input-group">
-                                <select name="role" class="form-select form-select-sm" aria-label="Role Select">
-                                    <option value="user" @selected($user->hasRole('user'))>User</option>
-                                    <option value="editor" @selected($user->hasRole('editor'))>Editor</option>
-                                    <option value="admin" @selected($user->hasRole('admin'))>Admin</option>
-                                </select>
-                                <button class="btn btn-outline-primary btn-sm" type="submit">Change</button>
-                            </div>
+
+                            @if($user->status == '1')
+                                <input type="hidden" name="status" value="2">
+                                <button type="submit" class="btn btn-outline-danger w-100"
+                                    onclick="return confirm('Are you sure you want to suspend this user?')">
+                                    <i class="fa-solid fa-ban me-2"></i>Suspend User
+                                </button>
+                            @else
+                                <input type="hidden" name="status" value="1">
+                                <button type="submit" class="btn btn-outline-success w-100"
+                                    onclick="return confirm('Are you sure you want to activate this user?')">
+                                    <i class="fa-solid fa-check me-2"></i>Activate User
+                                </button>
+                            @endif
                         </form>
                     @endif
-
-                    <form action="{{ route('statusUser') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="id" value="{{ $user->id }}">
-
-                        @if($user->status == '1')
-                            <input type="hidden" name="status" value="2">
-                            <button type="submit" class="btn btn-outline-danger w-100"
-                                onclick="return confirm('Are you sure you want to suspend this user?')">
-                                <i class="fa-solid fa-ban me-2"></i>Suspend User
-                            </button>
-                        @else
-                            <input type="hidden" name="status" value="1">
-                            <button type="submit" class="btn btn-outline-success w-100"
-                                onclick="return confirm('Are you sure you want to activate this user?')">
-                                <i class="fa-solid fa-check me-2"></i>Activate User
-                            </button>
-                        @endif
-                    </form>
-
                 </div>
             </div>
 
