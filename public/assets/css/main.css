@@ -12025,3 +12025,30 @@ li.has-dropdown1 span {
 
 /*# sourceMappingURL=main.css.map */
 
+
+/* Sidebar Submenu */
+.sidebar-submenu {
+    padding-left: 20px;
+    display: none;
+    background: rgba(0, 0, 0, 0.05);
+}
+.sidebar-submenu li a {
+    padding: 10px 15px;
+    display: block;
+    font-size: 14px;
+    color: #6c757d;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+.sidebar-submenu li a:hover,
+.sidebar-submenu li a.active {
+    color: #0d6efd;
+    background: rgba(13, 110, 253, 0.1);
+}
+.sidebar-dropdown > a .fa-angle-right {
+    transition: transform 0.3s ease;
+}
+.sidebar-dropdown.active > a .fa-angle-right {
+    transform: rotate(90deg);
+}
+

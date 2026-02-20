@@ -423,3 +423,10 @@ toastr.options = {
     positionClass: "toast-top-right",
     timeOut: "5000",
 };
+
+// Sidebar Dropdown Toggle
+$('.sidebar-dropdown > a').on('click', function () {
+    $(this).parent().toggleClass('active');
+    $(this).next('.sidebar-submenu').slideToggle(200);
+});
+
