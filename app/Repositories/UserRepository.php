@@ -67,7 +67,10 @@ class UserRepository implements UserRepositoryInterface
             }
 
             if ($filters['search'] && strlen($filters['search']) >= 3) {
-                $users->whereRaw("concat(firstname, ' ', lastname) LIKE ?", ["%" . $filters['search'] . "%"]);
+                $users->where(function ($q) use ($filters) {
+                    $q->whereRaw("concat(firstname, ' ', lastname) LIKE ?", ["%" . $filters['search'] . "%"])
+                        ->orWhere('email', 'LIKE', "%" . $filters['search'] . "%");
+                });
             }
 
             if ($filters['itemPerPage'] === 'All') {

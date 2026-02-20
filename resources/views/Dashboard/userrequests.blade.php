@@ -141,7 +141,7 @@
 
                         <div class="col-md-4">
                             <label for="search" class="form-label fw-semibold">
-                                Search Title
+                                Search Name or Email
                             </label>
                             <input type="text" name="search" id="search" class="form-control" placeholder="Search"
                                 value="{{ request('search') }}">
