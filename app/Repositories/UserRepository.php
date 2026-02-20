@@ -41,6 +41,12 @@ class UserRepository implements UserRepositoryInterface
                                 ->whereNull('email_verified_at');
                         });
                 });
+
+                // Apply status filter if provided in requested mode
+                if (isset($filters['status']) && $filters['status'] !== 'all') {
+                    $users->where('status', $filters['status']);
+                }
+
             } else {
                 $users = $this->userModel->query();
 
@@ -56,6 +62,15 @@ class UserRepository implements UserRepositoryInterface
                 // Filter by specific status if provided and not in 'requested' mode
                 if ($filters['status'] !== 'all' && !isset($filters['requested'])) {
                     $users->where('status', $filters['status']);
+                }
+            }
+
+            // Filter for Email Verification Status (Verified / Unverified)
+            if (isset($filters['is_verified']) && $filters['is_verified'] !== 'all') {
+                if ($filters['is_verified'] === '1') {
+                    $users->whereNotNull('email_verified_at');
+                } elseif ($filters['is_verified'] === '0') {
+                    $users->whereNull('email_verified_at');
                 }
             }
 

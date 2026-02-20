@@ -67,6 +67,7 @@ class UserController extends BaseController
             'search' => $request->get('search', ''),
             'page' => $request->get('page', 1),
             'itemPerPage' => $request->get('itemPerPage', 10),
+            'is_verified' => $request->get('is_verified', 'all'),
             'requested' => true,
         ];
 
@@ -82,6 +83,7 @@ class UserController extends BaseController
             }
             return view('dashboard.userrequests', compact('userStatistics'));
         } catch (Exception $e) {
+            dd($e);
             return back()->withErrors([
                 'error' => $e->getMessage(),
             ]);

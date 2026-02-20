@@ -124,7 +124,18 @@
                             <select name="status" id="status" class="form-select">
                                 <option value="">All Status</option>
                                 <option value="0" @selected(request('status') === '0')>Pending</option>
-                                <option value="2" @selected(request('status') === '2')>Inactive</option>
+                                <option value="1" @selected(request('status') === '1')>Approved</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="is_verified" class="form-label fw-semibold">
+                                Email Verified
+                            </label>
+                            <select name="is_verified" id="is_verified" class="form-select">
+                                <option value="all">All</option>
+                                <option value="1" @selected(request('is_verified') === '1')>Verified</option>
+                                <option value="0" @selected(request('is_verified') === '0')>Unverified</option>
                             </select>
                         </div>
 
@@ -135,6 +146,8 @@
                             <input type="text" name="search" id="search" class="form-control" placeholder="Search"
                                 value="{{ request('search') }}">
                         </div>
+
+
 
 
 
@@ -166,17 +179,18 @@
             function get_data(page = 1) {
                 console.log('Fetching data for page:');
                 let status = $('#status').val() || 'all';
+                let is_verified = $('#is_verified').val() || 'all';
                 let search = $('#search').val() || '';
                 let itemPerPage = $('#itemPerPage').val() || 10;
 
-                console.log(status);
-
+                console.log(status, is_verified);
 
                 $.ajax({
                     url: "{{ route('userrequests.page') }}",
                     type: "GET",
                     data: {
                         status: status,
+                        is_verified: is_verified,
                         search: search,
                         page: page,
                         itemPerPage: itemPerPage
@@ -195,7 +209,7 @@
                 get_data(page);
             });
 
-            $('#status').on('change', function () {
+            $('#status, #is_verified').on('change', function () {
                 get_data(1);
             });
 
