@@ -175,20 +175,6 @@
 
 @section('scripts')
 
-
-    @if(session('success'))
-        <script>
-            toastr.success("{{ session('success') }}");
-        </script>
-    @endif
-
-    @error('error')
-        <script>
-            toastr.error("{{ $message }}");
-        </script>
-    @enderror
-
-
     <script>
         $(document).ready(function () {
 
