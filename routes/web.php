@@ -106,6 +106,8 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
     Route::controller(UserController::class)->group(function () {
 
         Route::get('profile', 'showProfile')->name('profile.page');
+        Route::get('users', 'showUsers')->name('users.page');
+        Route::get('userrequests', 'showUserRequests')->name('userrequests.page');
 
         Route::get('getUserDetails', 'getUserDetails')->name('getUserDetails');
         Route::get('getUsers', 'getUsers')->name('getUsers');

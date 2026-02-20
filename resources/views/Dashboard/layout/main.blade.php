@@ -43,7 +43,7 @@
                         @elseif(request()->is('blogrequests'))
                         <span>Blog Requests</span>
                         @elseif(request()->is('requestedblog'))
-                         <a href="/blogrequests">Blog Requests</a>
+                        <a href="/blogrequests">Blog Requests</a>
                         <span>/</span>
                         <span>Requested Blog</span>
                         @elseif(request()->is('profile'))
@@ -56,13 +56,13 @@
                         <span>Categories</span>
                         @elseif(request()->is('managecategory'))
                         <a href="categories">Category</a>
-                         <span>/</span>
+                        <span>/</span>
                         <span>Manage Category</span>
-                         @elseif(request()->is('tags'))
+                        @elseif(request()->is('tags'))
                         <span>Tags</span>
                         @elseif(request()->is('managetag'))
                         <a href="tags">Tags</a>
-                         <span>/</span>
+                        <span>/</span>
                         <span>Manage Tag</span>
                         @elseif(request()->is('systemsettings'))
                         <span>System Settings</span>
@@ -96,6 +96,19 @@
     <script src="{{ asset('assets/js/select2.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{{ asset('assets/js/pages/custom.js') }}"></script>
+
+    @if(session('success'))
+        <script>
+            toastr.success("{{ session('success') }}");
+        </script>
+    @endif
+
+    @error('error')
+        <script>
+            toastr.error("{{ $message }}");
+        </script>
+    @enderror
+    @ends
 
     @yield('scripts')
 
