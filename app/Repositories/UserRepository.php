@@ -23,11 +23,62 @@ class UserRepository implements UserRepositoryInterface
 
     public function getUserDetails($request)
     {
-
-        return $this->userModel->where("id", $request->id)->first();
+        try {
+            return $this->userModel->where("id", $request->id)->first();
+        } catch (Exception $e) {
+            throw new Exception("Failed to get user details: " . $e->getMessage());
+        }
     }
-    public function getUsers($request)
+    public function getUsers($filters)
     {
+        try {
+            if (isset($filters['requested']) && $filters['requested']) {
+                // Show users who are Pending OR (Active but Unverified)
+                $users = $this->userModel->where(function ($query) {
+                    $query->where('status', User::STATUS_PENDING)
+                        ->orWhere(function ($q) {
+                            $q->where('status', User::STATUS_ACTIVE)
+                                ->whereNull('email_verified_at');
+                        });
+                });
+            } else {
+                $users = $this->userModel->query();
+
+                // Start with a base filter that EXCLUDES "Requests" types
+                // We want: NOT (Status == Pending) AND NOT (Status == Active AND Unverified)
+                // Equivalent to: Status != Pending AND (Status != Active OR Verified)
+                $users->where('status', '!=', User::STATUS_PENDING)
+                    ->where(function ($q) {
+                        $q->where('status', '!=', User::STATUS_ACTIVE)
+                            ->orWhereNotNull('email_verified_at');
+                    });
+
+                // Filter by specific status if provided and not in 'requested' mode
+                if ($filters['status'] !== 'all' && !isset($filters['requested'])) {
+                    $users->where('status', $filters['status']);
+                }
+            }
+
+            if ($filters['search'] && strlen($filters['search']) >= 3) {
+                $users->whereRaw("concat(firstname, ' ', lastname) LIKE ?", ["%" . $filters['search'] . "%"]);
+            }
+
+            if ($filters['itemPerPage'] === 'All') {
+                $total = $users->count();
+                return $users->paginate($total);
+            }
+
+            return $users->paginate(
+                $filters['itemPerPage'],
+                ['*'],
+                'page',
+                $filters['page'] ?? 1
+            )->withQueryString();
+        } catch (Exception $e) {
+            return back()->withErrors([
+                'errors' => $e->getMessage(),
+            ]);
+        }
     }
 
 
@@ -107,14 +158,43 @@ class UserRepository implements UserRepositoryInterface
         }
     }
 
-
-
-
     public function statusUser($request)
     {
+        try {
+
+            $user = $this->userModel->where('id', $request['id'])->first();
+            $user->status = $request['status'];
+            $user->save();
+            return $user;
+
+        } catch (Exception $e) {
+            throw new Exception("Failed to change user status: " . $e->getMessage());
+        }
     }
-    public function userStatistics($request)
+    public function userStatistics()
     {
+        try {
+            $user['total'] = $this->userModel->count();
+
+            // Active users must be ACTIVE and VERIFIED
+            $user['active'] = $this->userModel->where('status', User::STATUS_ACTIVE)
+                ->whereNotNull('email_verified_at')
+                ->count();
+
+            $user['inactive'] = $this->userModel->where('status', User::STATUS_INACTIVE)->count();
+
+            // Pending users are PENDING OR (ACTIVE but UNVERIFIED)
+            $user['pending'] = $this->userModel->where('status', User::STATUS_PENDING)
+                ->orWhere(function ($q) {
+                    $q->where('status', User::STATUS_ACTIVE)
+                        ->whereNull('email_verified_at');
+                })
+                ->count();
+
+            return $user;
+        } catch (Exception $e) {
+            throw new Exception("Failed to get user statistics: " . $e->getMessage());
+        }
     }
     public function deleteUser($request)
     {

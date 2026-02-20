@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Interfaces\UserRepositoryInterface;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,9 +30,80 @@ class UserController extends BaseController
         return view('dashboard.profile', compact('user'));
     }
 
-    public function getUserDetails() {}
+    public function showUsers(Request $request)
+    {
+        $this->checkPermission("system-profile");
 
-    public function getUsers() {}
+        $filters = [
+            'status' => $request->get('status', 'all'),
+            'search' => $request->get('search', ''),
+            'page' => $request->get('page', 1),
+            'itemPerPage' => $request->get('itemPerPage', 10),
+        ];
+
+        try {
+            $users = $this->userRepository->getUsers($filters);
+            $userStatistics = $this->userStatistics();
+            if ($request->ajax()) {
+                return view(
+                    'dashboard.partials.users-table',
+                    compact('users')
+                )->render();
+            }
+            return view('dashboard.users', compact('userStatistics'));
+        } catch (Exception $e) {
+            dd($e);
+            return back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function showUserRequests(Request $request)
+    {
+
+        $filters = [
+            'status' => $request->get('status', 'all'),
+            'search' => $request->get('search', ''),
+            'page' => $request->get('page', 1),
+            'itemPerPage' => $request->get('itemPerPage', 10),
+            'requested' => true,
+        ];
+
+        try {
+            $users = $this->userRepository->getUsers($filters);
+
+            $userStatistics = $this->userStatistics();
+            if ($request->ajax()) {
+                return view(
+                    'dashboard.partials.users-table',
+                    compact('users')
+                )->render();
+            }
+            return view('dashboard.userrequests', compact('userStatistics'));
+        } catch (Exception $e) {
+            return back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+    }
+
+    public function getUserDetails(Request $request)
+    {
+        try {
+            $user = $this->userRepository->getUserDetails($request);
+            return view('dashboard.manageuser', compact('user'));
+        } catch (\Throwable $th) {
+            return back()->withErrors([
+                'error' => $th->getMessage(),
+            ]);
+        }
+    }
+
+    public function getUsers()
+    {
+    }
 
     public function manageUser(UpdateProfileRequest $request)
     {
@@ -59,7 +131,7 @@ class UserController extends BaseController
         $this->checkPermission("system-profile");
 
         try {
-            $resp =  $this->userRepository->changePassword($request->validated());
+            $resp = $this->userRepository->changePassword($request->validated());
             //  dd($resp);
 
             if ($resp == 1) {
@@ -81,11 +153,36 @@ class UserController extends BaseController
         }
     }
 
-    public function statusUser() {}
+    public function statusUser(Request $request)
+    {
+        try {
+            $resp = $this->userRepository->statusUser($request);
 
-    public function userStatistics() {}
+            return back()->with('success', 'User status changed successfully.');
+        } catch (Exception $e) {
+            return back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
 
-    public function BlogsByAuthor() {}
+    public function userStatistics()
+    {
+        try {
+            $userStatistics = $this->userRepository->userStatistics();
+            return $userStatistics;
+        } catch (\Throwable $th) {
+            return back()->withErrors([
+                'error' => $th->getMessage(),
+            ]);
+        }
+    }
 
-    public function deleteUser() {}
+    public function BlogsByAuthor()
+    {
+    }
+
+    public function deleteUser()
+    {
+    }
 }

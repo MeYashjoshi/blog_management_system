@@ -9,6 +9,6 @@ interface UserRepositoryInterface
     public function manageUser($request);
     public function changePassword($request);
     public function statusUser($request);
-    public function userStatistics($request);
+    public function userStatistics();
     public function deleteUser($request);
 }
