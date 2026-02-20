@@ -52,7 +52,7 @@
                     <div class="card-body d-flex align-items-center justify-content-between">
                         <div>
                             <h6 class="text-muted mb-1">Total Users Requests</h6>
-                            <h3 class="fw-bold mb-0">{{ $userStatistics['total'] }}</h3>
+                            <h3 class="fw-bold mb-0">{{ $userStatistics['pending'] }}</h3>
                         </div>
                         <div class="icon-box fs-2">
                             <i class="fa-solid fa-list"></i>
@@ -66,8 +66,8 @@
                 <div class="custom-card shadow-sm border-0">
                     <div class="card-body d-flex align-items-center justify-content-between">
                         <div>
-                            <h6 class="text-muted mb-1">Active</h6>
-                            <h3 class="fw-bold mb-0">{{ $userStatistics['active'] }}</h3>
+                            <h6 class="text-muted mb-1">Approved</h6>
+                            <h3 class="fw-bold mb-0">{{ $userStatistics['approved_requests'] }}</h3>
                         </div>
                         <div class="icon-box fs-2">
                             <i class="fa-solid fa-toggle-on"></i>
@@ -81,8 +81,8 @@
                 <div class="custom-card shadow-sm border-0">
                     <div class="card-body d-flex align-items-center justify-content-between">
                         <div>
-                            <h6 class="text-muted mb-1">Archive</h6>
-                            <h3 class="fw-bold mb-0">{{ $userStatistics['pending'] }}</h3>
+                            <h6 class="text-muted mb-1">Email Verified</h6>
+                            <h3 class="fw-bold mb-0">{{ $userStatistics['verified_requests'] }}</h3>
                         </div>
                         <div class="icon-box fs-2">
                             <i class="fa-solid fa-box-archive"></i>
@@ -96,8 +96,8 @@
                 <div class="custom-card shadow-sm border-0">
                     <div class="card-body d-flex align-items-center justify-content-between">
                         <div>
-                            <h6 class="text-muted mb-1">Inactive</h6>
-                            <h3 class="fw-bold mb-0">{{ $userStatistics['inactive'] }}</h3>
+                            <h6 class="text-muted mb-1">Pending</h6>
+                            <h3 class="fw-bold mb-0">{{ $userStatistics['pending_strict'] }}</h3>
                         </div>
                         <div class="icon-box fs-2">
                             <i class="fa-solid fa-toggle-off"></i>

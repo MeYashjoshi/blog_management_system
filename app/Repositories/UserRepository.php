@@ -33,7 +33,6 @@ class UserRepository implements UserRepositoryInterface
     {
         try {
             if (isset($filters['requested']) && $filters['requested']) {
-                // Show users who are Pending OR (Active but Unverified)
                 $users = $this->userModel->where(function ($query) {
                     $query->where('status', User::STATUS_PENDING)
                         ->orWhere(function ($q) {
@@ -41,8 +40,6 @@ class UserRepository implements UserRepositoryInterface
                                 ->whereNull('email_verified_at');
                         });
                 });
-
-                // Apply status filter if provided in requested mode
                 if (isset($filters['status']) && $filters['status'] !== 'all') {
                     $users->where('status', $filters['status']);
                 }
@@ -50,22 +47,17 @@ class UserRepository implements UserRepositoryInterface
             } else {
                 $users = $this->userModel->query();
 
-                // Start with a base filter that EXCLUDES "Requests" types
-                // We want: NOT (Status == Pending) AND NOT (Status == Active AND Unverified)
-                // Equivalent to: Status != Pending AND (Status != Active OR Verified)
                 $users->where('status', '!=', User::STATUS_PENDING)
                     ->where(function ($q) {
                         $q->where('status', '!=', User::STATUS_ACTIVE)
                             ->orWhereNotNull('email_verified_at');
                     });
 
-                // Filter by specific status if provided and not in 'requested' mode
                 if ($filters['status'] !== 'all' && !isset($filters['requested'])) {
                     $users->where('status', $filters['status']);
                 }
             }
 
-            // Filter for Email Verification Status (Verified / Unverified)
             if (isset($filters['is_verified']) && $filters['is_verified'] !== 'all') {
                 if ($filters['is_verified'] === '1') {
                     $users->whereNotNull('email_verified_at');
@@ -191,20 +183,23 @@ class UserRepository implements UserRepositoryInterface
         try {
             $user['total'] = $this->userModel->count();
 
-            // Active users must be ACTIVE and VERIFIED
             $user['active'] = $this->userModel->where('status', User::STATUS_ACTIVE)
                 ->whereNotNull('email_verified_at')
                 ->count();
 
             $user['inactive'] = $this->userModel->where('status', User::STATUS_INACTIVE)->count();
 
-            // Pending users are PENDING OR (ACTIVE but UNVERIFIED)
-            $user['pending'] = $this->userModel->where('status', User::STATUS_PENDING)
-                ->orWhere(function ($q) {
-                    $q->where('status', User::STATUS_ACTIVE)
-                        ->whereNull('email_verified_at');
-                })
+            $user['pending_strict'] = $this->userModel->where('status', User::STATUS_PENDING)->count();
+
+            $user['approved_requests'] = $this->userModel->where('status', User::STATUS_ACTIVE)
+                ->whereNull('email_verified_at')
                 ->count();
+
+            $user['verified_requests'] = $this->userModel->where('status', User::STATUS_PENDING)
+                ->whereNotNull('email_verified_at')
+                ->count();
+
+            $user['pending'] = $user['pending_strict'] + $user['approved_requests'];
 
             return $user;
         } catch (Exception $e) {
