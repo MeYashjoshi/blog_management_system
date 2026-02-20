@@ -122,18 +122,7 @@
 						<div class="row" data-aos-offset="50" data-aos="fade-up" data-aos-duration="400">
 							<div class="col-12 m-auto">
 								<div class="theme-pagination text-center">
-									<ul>
-										<li>
-											<a href="#"><i class="fa-solid fa-angle-left"></i></a>
-										</li>
-										<li><a class="active" href="#">01</a></li>
-										<li><a href="#">02</a></li>
-										<li>...</li>
-										<li><a href="#">12</a></li>
-										<li>
-											<a href="#"><i class="fa-solid fa-angle-right"></i></a>
-										</li>
-									</ul>
+									{{ $blogs->links('vendor.pagination.custom') }}
 								</div>
 							</div>
 						</div>

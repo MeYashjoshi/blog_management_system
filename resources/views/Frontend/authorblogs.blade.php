@@ -82,7 +82,7 @@
 						<div class="row" data-aos-offset="50" data-aos="fade-up" data-aos-duration="400">
 							<div class="col-12 m-auto">
 								<div class="theme-pagination text-center">
-									{{ $blogs->links() }}
+									{{ $blogs->links('vendor.pagination.custom') }}
 								</div>
 							</div>
 						</div>

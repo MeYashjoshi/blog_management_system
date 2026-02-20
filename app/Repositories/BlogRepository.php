@@ -230,12 +230,8 @@ class BlogRepository implements BlogRepositoryInterface
 
         return $blog;
     }
-    public function RecentBlogs($request)
-    {
-    }
-    public function trendingBlogs($request)
-    {
-    }
+    public function RecentBlogs($request) {}
+    public function trendingBlogs($request) {}
 
     public function deleteBlog($request)
     {
