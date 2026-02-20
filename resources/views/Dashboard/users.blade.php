@@ -136,17 +136,7 @@
                                 value="{{ request('search') }}">
                         </div>
 
-                        <div class="col-md-2 d-flex gap-2">
 
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="bi bi-search"></i> Filter
-                            </button>
-
-                            <a href="{{ route('blogrequests.page') }}" class="btn btn-outline-secondary w-100">
-                                Reset
-                            </a>
-
-                        </div>
 
                     </div>
 
