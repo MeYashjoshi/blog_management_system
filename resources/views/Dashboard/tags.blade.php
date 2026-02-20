@@ -228,7 +228,7 @@
 
             $('#search').on('keyup', function () {
                 let search = $(this).val().trim();
-                if (search.length > 3) {
+                if (search.length > 3 || search.length === 0) {
                     get_data(1);
                 }
             });
