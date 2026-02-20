@@ -109,7 +109,7 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
         Route::get('users', 'showUsers')->name('users.page');
         Route::get('userrequests', 'showUserRequests')->name('userrequests.page');
 
-        Route::get('getUserDetails', 'getUserDetails')->name('getUserDetails');
+        Route::get('getuserdetails', 'getUserDetails')->name('getUserDetails');
         Route::get('getUsers', 'getUsers')->name('getUsers');
         Route::post('manageUser', 'manageUser')->name('manageUser');
         Route::post('changePassword', 'changePassword')->name('changePassword');
