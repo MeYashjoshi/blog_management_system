@@ -25,7 +25,9 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('about', 'showAbout')->name('about.page');
     Route::get('contactus', 'showContactus')->name('contactus.page');
     Route::get('dashboard', 'showDashboard')->name('dashboard.page');
-    Route::get('allblogs', 'showBlogs')->name('allblogs.page');
+    // Route::get('allblogs', 'showBlogs')->name('allblogs.page');
+
+    Route::get('author/{id}', [BlogController::class, 'showAuthor'])->name('author.page');
 });
 
 
@@ -57,9 +59,14 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
 
     Route::controller(BlogController::class)->group(function () {
 
+
+        //Home Routes
+        Route::get('allblogs', 'showBlogs')->name('allblogs.page');
+
+
         //Page Routes (Display forms)
         Route::get('blogs', 'showBlogs')->name('blogs.page');
-        Route::get('blog/{id}', 'showBlog')->name('showblog.page');
+        Route::get('blog/{slug}', 'showBlog')->name('showblog.page');
         Route::get('manageblog', 'showManageBlog')->name('manageblog.page');
         Route::get('blogrequests', 'getRequestedBlogs')->name('blogrequests.page');
         Route::get('requestedblog', 'showRequestedBlog')->name('requestedblog.page');
@@ -114,7 +121,6 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
         Route::post('manageUser', 'manageUser')->name('manageUser');
         Route::post('changePassword', 'changePassword')->name('changePassword');
         Route::post('statusUser', 'statusUser')->name('statusUser');
-        Route::post('changeRole', 'changeRole')->name('changeRole');
         Route::get('userStatistics', 'userStatistics')->name('userStatistics');
         Route::post('deleteUser', 'deleteUser')->name('deleteUser');
     });

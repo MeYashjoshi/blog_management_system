@@ -1,12 +1,18 @@
-<div class="sidebar-widget_1_author-intro mt-40">
-							<div class="sidebar-author-thumb text-center">
-								<img src="{{ asset('assets/img/blog/sidebar-author1.png') }}" alt="vexon" />
-								<h4>Jerry Helfer</h4>
-								<div class="heading1">
-									<p>Whether you’re a tech enthusiast or a business leader, these emerging trends are reshaping the future and offering endless opportunities for growth and creativity.</p>
-								</div>
-								<div class="footer-social1">
-									<a href="#" class="theme-btn1">View Profile</a>
-								</div>
-							</div>
-</div>
+@php
+	$sidebarAuthor = $author ?? ($blog->author ?? null);
+@endphp
+
+@if ($sidebarAuthor)
+	<div class="sidebar-widget_1_author-intro mt-40">
+		<div class="sidebar-author-thumb text-center">
+			<img class="round" src="{{ $sidebarAuthor->profile_url }}" alt="vexon" width="100" height="100" />
+			<h4 class="mt-2">{{ $sidebarAuthor->full_name }}</h4>
+			<div class="heading1">
+				<p>{{ $sidebarAuthor->bio }}</p>
+			</div>
+			<div class="footer-social1">
+				<a href="{{ route('author.page', $sidebarAuthor->id) }}" class="theme-btn1">View Profile</a>
+			</div>
+		</div>
+	</div>
+@endif

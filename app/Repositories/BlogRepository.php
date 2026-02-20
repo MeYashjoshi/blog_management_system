@@ -43,23 +43,30 @@ class BlogRepository implements BlogRepositoryInterface
         try {
             $blogs = $this->blogModel->with('category');
 
-            if ($filters['status'] != '' && $filters['status'] != 'all') {
+            if (isset($filters['status']) && $filters['status'] != '' && $filters['status'] != 'all') {
                 $blogs->where('status', $filters['status']);
             }
 
-            if ($filters['category'] != '' && $filters['category'] !== 'all') {
+            if (isset($filters['category']) && $filters['category'] != '' && $filters['category'] !== 'all') {
                 $blogs->where('category_id', $filters['category']);
             }
 
-            if ($filters['search'] != '' && strlen($filters['search']) >= 3) {
+            if (isset($filters['search']) && $filters['search'] != '' && strlen($filters['search']) >= 3) {
                 $blogs->where('title', 'like', '%' . $filters['search'] . '%');
             }
-            if ($filters['itemPerPage'] == 'All') {
+
+            if (isset($filters['author_id']) && $filters['author_id'] != '' && $filters['author_id'] != 'all') {
+                $blogs->where('author_id', $filters['author_id']);
+            }
+
+            $itemPerPage = $filters['itemPerPage'] ?? 10;
+
+            if ($itemPerPage == 'All') {
                 $total = $blogs->count();
                 return $blogs->paginate($total);
             }
             return $blogs->paginate(
-                $filters['itemPerPage'],
+                $itemPerPage,
                 ['*'],
                 'page',
                 $filters['page'] ?? 1
@@ -164,15 +171,15 @@ class BlogRepository implements BlogRepositoryInterface
             $blog = $this->blogModel->updateOrCreate([
                 'id' => $request['id']
             ], [
-                'author_id' =>  Auth::id(),
-                'category_id' =>  $request['category_id'],
-                'slung' =>  Str::slug($request['title']),
-                'featured_image' =>  $filename,
-                'title' =>  $request['title'],
-                'content' =>  $request['content'],
-                'tag_ids' =>  $request['tag_ids'] ?? [],
-                'published_at' =>  now(),
-                'status' =>  $request['status'],
+                'author_id' => Auth::id(),
+                'category_id' => $request['category_id'],
+                'slung' => Str::slug($request['title']),
+                'featured_image' => $filename,
+                'title' => $request['title'],
+                'content' => $request['content'],
+                'tag_ids' => $request['tag_ids'] ?? [],
+                'published_at' => now(),
+                'status' => $request['status'],
                 'rejection_reason' => 'N/A'
             ]);
 
@@ -223,8 +230,12 @@ class BlogRepository implements BlogRepositoryInterface
 
         return $blog;
     }
-    public function RecentBlogs($request) {}
-    public function trendingBlogs($request) {}
+    public function RecentBlogs($request)
+    {
+    }
+    public function trendingBlogs($request)
+    {
+    }
 
     public function deleteBlog($request)
     {

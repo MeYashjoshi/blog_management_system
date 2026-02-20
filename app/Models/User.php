@@ -69,7 +69,7 @@ class User extends Authenticatable implements MustVerifyEmail
         if ($this->profile) {
             return asset('storage/' . self::FILE_PATH . $this->profile);
         } else {
-            return asset('storage/' . self::FILE_PATH . $this->profile . 'default-profile-image.png');
+            return asset('storage/' . self::FILE_PATH . 'default-profile-image.png');
         }
     }
 }

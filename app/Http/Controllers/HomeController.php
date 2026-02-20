@@ -2,14 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\BlogRepositoryInterface;
+use App\Interfaces\CategoryRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends BaseController
 {
+    protected BlogRepositoryInterface $blogRepository;
+    protected CategoryRepositoryInterface $categoryRepository;
+
+    public function __construct(BlogRepositoryInterface $blogRepository, CategoryRepositoryInterface $categoryRepository)
+    {
+        $this->blogRepository = $blogRepository;
+        $this->categoryRepository = $categoryRepository;
+    }
+
+
     public function showHome()
     {
-            return view('frontend.index');
+        return view('frontend.index');
     }
 
     public function showDashboard()
@@ -21,11 +33,11 @@ class HomeController extends BaseController
 
     public function showAbout()
     {
-            return view('frontend.about');
+        return view('frontend.about');
     }
     public function showContactus()
     {
-            return view('frontend.contactus');
+        return view('frontend.contactus');
     }
     public function showBlogs()
     {

@@ -168,23 +168,6 @@ class UserController extends BaseController
         }
     }
 
-    public function changeRole(Request $request)
-    {
-        $request->validate([
-            'role' => 'required|in:admin,editor,user',
-            'id' => 'required|exists:users,id',
-        ]);
-
-        try {
-            $this->userRepository->changeRole($request->all());
-            return back()->with('success', 'User role updated successfully.');
-        } catch (Exception $e) {
-            return back()->withErrors([
-                'error' => $e->getMessage(),
-            ]);
-        }
-    }
-
     public function userStatistics()
     {
         try {

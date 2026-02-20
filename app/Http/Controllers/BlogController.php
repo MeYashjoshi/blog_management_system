@@ -6,6 +6,8 @@ use App\Http\Requests\StoreBlogRequest;
 use App\Http\Requests\UpdateStatusRequest;
 use App\Interfaces\BlogRepositoryInterface;
 use App\Interfaces\CategoryRepositoryInterface;
+use App\Models\User;
+use App\Models\Blog;
 use Exception;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
@@ -21,26 +23,69 @@ class BlogController extends BaseController
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function showBlogs()
+    public function showBlogs(Request $request)
     {
+        $filters = [
+            'status' => $request->get('status', 'all'),
+            'category' => $request->get('category', 'all'),
+            'search' => $request->get('search', ''),
+            'page' => $request->get('page', 1),
+            'itemPerPage' => $request->get('itemPerPage', 10),
+        ];
+        try {
+            $blogs = $this->blogRepository->getBlogs($filters);
+            $categories = $this->categoryRepository->getCategories(null);
+            return view('frontend.blogs', compact('blogs', 'categories'));
+        } catch (Exception $e) {
+            return back()->withErrors([
+                'error' => $e->getMessage(),
+            ]);
+        }
 
-        return view('frontend.blogs');
+
+    }
+
+    public function showAuthor(Request $request, $id)
+    {
+        try {
+            $author = User::findOrFail($id);
+            $filters = [
+                'status' => Blog::STATUS_ACTIVE,
+                'author_id' => $id,
+                'page' => $request->get('page', 1),
+                'itemPerPage' => $request->get('itemPerPage', 10),
+            ];
+            $blogs = $this->blogRepository->getBlogs($filters);
+
+            return view('frontend.authorblogs', compact('author', 'blogs'));
+        } catch (Exception $e) {
+            return redirect()->route('home.page')->withErrors([
+                'error' => 'Author not found or an error occurred.',
+            ]);
+        }
     }
 
     public function showBlog(Request $request)
     {
-        $blog = $this->blogRepository->getBlogs(null);
-        return view('frontend.blogsingle', compact('blog'));
+        try {
+            $blog = $this->blogRepository->getBlogDetails($request);
+            return view('frontend.blogsingle', compact('blog'));
+        } catch (Exception $e) {
+            return redirect()->route('home.page')->withErrors([
+                'error' => 'Blog not found or an error occurred.',
+            ]);
+        }
     }
+
 
     public function showMyBlogs(Request $request)
     {
 
         $filters = [
-            'status'   => $request->get('status', 'all'),
+            'status' => $request->get('status', 'all'),
             'category' => $request->get('category', 'all'),
-            'search'   => $request->get('search', ''),
-            'page'     => $request->get('page', 1),
+            'search' => $request->get('search', ''),
+            'page' => $request->get('page', 1),
             'itemPerPage' => $request->get('itemPerPage', 10),
         ];
 
@@ -84,10 +129,10 @@ class BlogController extends BaseController
         $this->checkRole('admin');
 
         $filters = [
-            'status'   => $request->get('status', 'all'),
+            'status' => $request->get('status', 'all'),
             'category' => $request->get('category', 'all'),
-            'search'   => $request->get('search', ''),
-            'page'     => $request->get('page', 1),
+            'search' => $request->get('search', ''),
+            'page' => $request->get('page', 1),
             'itemPerPage' => $request->get('itemPerPage', 10),
         ];
 
@@ -168,7 +213,9 @@ class BlogController extends BaseController
     }
 
 
-    public function getBlogDetails() {}
+    public function getBlogDetails()
+    {
+    }
 
     public function getBlogs()
     {
@@ -226,15 +273,19 @@ class BlogController extends BaseController
         }
     }
 
-    public function RecentBlogs() {}
+    public function RecentBlogs()
+    {
+    }
 
-    public function trendingBlogs() {}
+    public function trendingBlogs()
+    {
+    }
 
     public function deleteBlog(Request $request)
     {
         try {
 
-            $resp =  $this->blogRepository->deleteBlog($request->id);
+            $resp = $this->blogRepository->deleteBlog($request->id);
 
             if ($resp == 204) {
                 return back()->with('success', 'blog deleted successfully.');
@@ -251,7 +302,7 @@ class BlogController extends BaseController
     {
 
         try {
-            $resp =  $this->blogRepository->updateBlogStatus($request);
+            $resp = $this->blogRepository->updateBlogStatus($request);
 
             if ($resp == 200) {
                 return back()->with('success', 'blog status updated successfully.');
