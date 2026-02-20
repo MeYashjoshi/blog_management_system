@@ -114,6 +114,7 @@ Route::middleware(['auth:web', 'verified'])->group(function () {
         Route::post('manageUser', 'manageUser')->name('manageUser');
         Route::post('changePassword', 'changePassword')->name('changePassword');
         Route::post('statusUser', 'statusUser')->name('statusUser');
+        Route::post('changeRole', 'changeRole')->name('changeRole');
         Route::get('userStatistics', 'userStatistics')->name('userStatistics');
         Route::post('deleteUser', 'deleteUser')->name('deleteUser');
     });

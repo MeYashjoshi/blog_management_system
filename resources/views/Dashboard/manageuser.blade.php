@@ -56,6 +56,21 @@
                         Member since {{ $user->created_at->format('M Y') }}
                     </p>
 
+                    @if($user->email_verified_at)
+                        <form action="{{ route('changeRole') }}" method="POST" class="mb-4">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $user->id }}">
+                            <div class="input-group">
+                                <select name="role" class="form-select form-select-sm" aria-label="Role Select">
+                                    <option value="user" @selected($user->hasRole('user'))>User</option>
+                                    <option value="editor" @selected($user->hasRole('editor'))>Editor</option>
+                                    <option value="admin" @selected($user->hasRole('admin'))>Admin</option>
+                                </select>
+                                <button class="btn btn-outline-primary btn-sm" type="submit">Change</button>
+                            </div>
+                        </form>
+                    @endif
+
                     <form action="{{ route('statusUser') }}" method="POST">
                         @csrf
                         <input type="hidden" name="id" value="{{ $user->id }}">

@@ -212,4 +212,15 @@ class UserRepository implements UserRepositoryInterface
     public function deleteUser($request)
     {
     }
+
+    public function changeRole($request)
+    {
+        try {
+            $user = $this->userModel->findOrFail($request['id']);
+            $user->syncRoles($request['role']);
+            return $user;
+        } catch (Exception $e) {
+            throw new Exception("Failed to change user role: " . $e->getMessage());
+        }
+    }
 }
